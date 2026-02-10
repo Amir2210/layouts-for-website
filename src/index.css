@@ -22,6 +22,24 @@
 
   /* ── Typography ── */
   --font-family-heebo: "Heebo", sans-serif;
+
+  /* ── Animations ── */
+  --animate-float: float 6s ease-in-out infinite;
+  --animate-shimmer: shimmer 2.5s ease-in-out infinite;
+  --animate-bounce-slow: bounce-slow 2s ease-in-out infinite;
+
+  @keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-8px); }
+  }
+  @keyframes shimmer {
+    0%, 100% { opacity: 0.4; }
+    50% { opacity: 1; }
+  }
+  @keyframes bounce-slow {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(6px); }
+  }
 }
 
 @layer base {
@@ -38,6 +56,59 @@
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
   }
+
+  /* ── Gold text selection ── */
+  ::selection {
+    background-color: rgba(201, 169, 110, 0.35);
+    color: #F0EDE6;
+  }
+
+  /* ── Luxury scrollbar ── */
+  ::-webkit-scrollbar {
+    width: 6px;
+  }
+  ::-webkit-scrollbar-track {
+    background: var(--color-surface);
+  }
+  ::-webkit-scrollbar-thumb {
+    background: var(--color-primary-dark);
+    border-radius: 999px;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: var(--color-primary);
+  }
+}
+
+/* ── Gold glow utility ── */
+.gold-glow {
+  box-shadow:
+    0 0 20px rgba(201, 169, 110, 0.15),
+    0 0 60px rgba(201, 169, 110, 0.08);
+}
+.gold-glow-strong {
+  box-shadow:
+    0 0 24px rgba(201, 169, 110, 0.25),
+    0 0 80px rgba(201, 169, 110, 0.12),
+    inset 0 1px 0 rgba(216, 188, 134, 0.1);
+}
+
+/* ── Gold gradient text ── */
+.text-gold-gradient {
+  background: linear-gradient(135deg, #D8BC86 0%, #C9A96E 40%, #A88B52 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* ── Divider shimmer line ── */
+.divider-gold {
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(201, 169, 110, 0.6) 50%,
+    transparent 100%
+  );
 }
 
 /* ── Reduced-motion accessibility ── */
