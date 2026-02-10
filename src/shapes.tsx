@@ -1,136 +1,168 @@
-import React from "react";
+import React, { createContext, useContext } from "react";
 
-/* ── Text block — reusable, position controlled by parent ── */
-const TextBlock: React.FC<{ light?: boolean; className?: string }> = ({
-  light = false,
-  className = "",
-}) => (
-  <div className={`relative z-10 ${className}`}>
-    <h2
-      className={`text-xl font-extrabold leading-snug ${light ? "text-white" : "text-slate-800"}`}
+/* ── Full-screen context ── */
+export const FullScreenCtx = createContext(false);
+
+/* ── Text block — scales up automatically in full-screen ── */
+const TextBlock: React.FC<{
+  light?: boolean;
+  className?: string;
+  backdrop?: boolean;
+}> = ({ light = false, className = "", backdrop = false }) => {
+  const full = useContext(FullScreenCtx);
+
+  const h2Class = full
+    ? "text-4xl sm:text-5xl lg:text-6xl"
+    : "text-lg sm:text-xl";
+
+  const h3Class = full
+    ? "text-xl sm:text-2xl lg:text-3xl mt-3"
+    : "text-xs sm:text-sm mt-1";
+
+  const pClass = full
+    ? "text-base sm:text-lg lg:text-xl mt-4 max-w-[480px]"
+    : "text-[10px] sm:text-xs mt-2 max-w-[200px]";
+
+  return (
+    <div
+      className={`relative z-10 ${backdrop ? "bg-white/80 backdrop-blur-sm rounded-2xl px-6 py-5" : ""} ${className}`}
     >
-      כותרת ראשית
-    </h2>
-    <h3
-      className={`text-sm font-semibold mt-1.5 ${light ? "text-white/80" : "text-slate-500"}`}
-    >
-      כותרת משנית לדוגמה
-    </h3>
-    <p
-      className={`text-xs mt-2.5 leading-relaxed max-w-[260px] ${light ? "text-white/60" : "text-slate-400"}`}
-    >
-      זהו טקסט לדוגמה שמדגים כיצד התוכן ייראה בתוך התבנית הזו.
-    </p>
-  </div>
-);
+      <h2
+        className={`${h2Class} font-extrabold leading-tight ${light ? "text-white" : "text-slate-900"}`}
+      >
+        כותרת ראשית
+      </h2>
+      <h3
+        className={`${h3Class} font-semibold ${light ? "text-white/80" : "text-slate-500"}`}
+      >
+        כותרת משנית לדוגמה
+      </h3>
+      <p
+        className={`${pClass} leading-relaxed ${light ? "text-white/60" : "text-slate-400"}`}
+      >
+        זהו טקסט לדוגמה שמדגים כיצד התוכן ייראה בתוך התבנית הזו.
+      </p>
+    </div>
+  );
+};
 
 /** Shared wrapper */
-const ShapeContainer: React.FC<{
+const Box: React.FC<{
   children: React.ReactNode;
   className?: string;
 }> = ({ children, className = "" }) => (
-  <div
-    className={`relative w-full h-full overflow-hidden bg-white ${className}`}
-  >
+  <div className={`relative w-full h-full overflow-hidden bg-white ${className}`}>
     {children}
   </div>
 );
 
 /* ────────────────────────────────────────────────────────── */
 
-/** 1. הקוביה — right half primary, text on left white half */
+/** 1. הקוביה — split layout */
 export const CubeShape: React.FC = () => (
-  <ShapeContainer>
+  <Box>
     <div className="absolute inset-y-0 right-0 w-1/2 bg-primary" />
-    <TextBlock className="absolute top-1/2 -translate-y-1/2 right-[56%] text-right" />
-  </ShapeContainer>
+    <div className="absolute inset-0 flex items-center px-8 sm:px-12">
+      <TextBlock className="text-right max-w-[48%]" />
+    </div>
+  </Box>
 );
 
-/** 2. האלכסון — diagonal stripe, text at top-right on white area */
+/** 2. האלכסון — diagonal stripe */
 export const DiagonalShape: React.FC = () => (
-  <ShapeContainer>
+  <Box>
     <div
       className="absolute bg-primary"
       style={{
         width: "150%",
-        height: "40%",
-        top: "30%",
+        height: "45%",
+        top: "32%",
         left: "-25%",
         transform: "rotate(-12deg)",
-        transformOrigin: "center center",
+        transformOrigin: "center",
       }}
     />
-    <TextBlock className="absolute top-6 right-6 text-right" />
-  </ShapeContainer>
+    <div className="absolute inset-0 flex items-start justify-end p-8 sm:p-12">
+      <TextBlock className="text-right" />
+    </div>
+  </Box>
 );
 
-/** 3. הכדור — circle on right, text on left side */
+/** 3. הכדור — offset circle */
 export const BallShape: React.FC = () => (
-  <ShapeContainer>
+  <Box>
     <div
       className="absolute bg-primary rounded-full"
       style={{
-        width: "70%",
-        paddingBottom: "70%",
-        top: "22%",
-        right: "-8%",
+        width: "60%",
+        paddingBottom: "60%",
+        top: "20%",
+        right: "-5%",
       }}
     />
-    <TextBlock className="absolute top-1/2 -translate-y-1/2 right-[55%] text-right" />
-  </ShapeContainer>
+    <div className="absolute inset-0 flex items-center px-8 sm:px-12">
+      <TextBlock className="text-right max-w-[42%]" />
+    </div>
+  </Box>
 );
 
-/** 4. המסגרת — thick primary frame, text centered in white cutout */
+/** 4. המסגרת — picture frame */
 export const FrameShape: React.FC = () => (
-  <ShapeContainer>
+  <Box>
     <div className="absolute inset-0 bg-primary" />
-    <div className="absolute inset-[14%] bg-white rounded-lg" />
-    <div className="absolute inset-[18%] border-2 border-primary/25 rounded-md" />
+    <div className="absolute inset-[12%] bg-white rounded-2xl" />
+    <div className="absolute inset-[15%] border border-primary/20 rounded-xl" />
     <div className="absolute inset-0 flex items-center justify-center">
       <TextBlock className="text-center" />
     </div>
-  </ShapeContainer>
+  </Box>
 );
 
-/** 5. הגריד — bento-box grid with text in cells */
-export const GridShape: React.FC = () => (
-  <ShapeContainer className="p-2">
-    <div className="grid grid-cols-3 grid-rows-3 gap-1.5 w-full h-full">
-      <div className="bg-primary rounded-lg col-span-2 row-span-2 flex items-end p-4">
-        <div>
-          <h2 className="text-base font-extrabold text-white leading-snug">
-            כותרת ראשית
-          </h2>
-          <h3 className="text-xs font-semibold text-white/75 mt-1">
-            כותרת משנית
-          </h3>
-          <p className="text-[10px] text-white/55 mt-1 leading-tight">
-            טקסט לדוגמה קצר
-          </p>
+/** 5. הגריד — bento grid */
+export const GridShape: React.FC = () => {
+  const full = useContext(FullScreenCtx);
+
+  return (
+    <Box className={full ? "p-4 sm:p-6" : "p-2 sm:p-3"}>
+      <div className={`grid grid-cols-3 grid-rows-3 w-full h-full ${full ? "gap-3 sm:gap-4" : "gap-1.5 sm:gap-2"}`}>
+        <div className="bg-primary col-span-2 row-span-2 flex items-end p-5 sm:p-8">
+          <div>
+            <h2 className={`${full ? "text-3xl sm:text-4xl lg:text-5xl" : "text-sm sm:text-base"} font-extrabold text-white leading-tight`}>
+              כותרת ראשית
+            </h2>
+            <h3 className={`${full ? "text-lg sm:text-xl lg:text-2xl mt-2" : "text-[10px] sm:text-xs mt-0.5"} font-semibold text-white/70`}>
+              כותרת משנית לדוגמה
+            </h3>
+            <p className={`${full ? "text-sm sm:text-base lg:text-lg mt-3" : "text-[9px] sm:text-[10px] mt-1"} text-white/50 leading-snug`}>
+              טקסט לדוגמה קצר
+            </p>
+          </div>
         </div>
+        <div className="bg-primary" />
+        <div className="bg-primary/30" />
+        <div className="bg-primary/50" />
+        <div className="bg-primary col-span-2" />
       </div>
-      <div className="bg-primary rounded-lg" />
-      <div className="bg-primary/35 rounded-lg" />
-      <div className="bg-primary/55 rounded-lg" />
-      <div className="bg-primary rounded-lg col-span-2" />
-    </div>
-  </ShapeContainer>
-);
+    </Box>
+  );
+};
 
-/** 6. הקפסולה — pill on right, text on left */
+/** 6. הקפסולה — pill shape */
 export const CapsuleShape: React.FC = () => (
-  <ShapeContainer>
+  <Box>
     <div
       className="absolute bg-primary rounded-full"
       style={{
-        width: "42%",
-        height: "78%",
-        top: "11%",
+        width: "38%",
+        height: "76%",
+        top: "12%",
         right: "8%",
       }}
     />
-    <TextBlock className="absolute top-1/2 -translate-y-1/2 right-[55%] text-right" />
-  </ShapeContainer>
+    <div className="absolute inset-0 flex items-center px-8 sm:px-12">
+      <TextBlock className="text-right max-w-[48%]" />
+    </div>
+  </Box>
 );
 
 /* ────────────────────────────────────────────────────────── */
