@@ -1,9 +1,18 @@
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
 import { ArrowRight, Sparkles } from "lucide-react";
 import { layouts, type LayoutItem } from "./data";
 import { shapeMap, FullScreenCtx } from "./shapes";
 import Particles from "./Particles";
+
+/* ─── Frame sequence ──────────────────────────────────── */
+const frameModules = import.meta.glob<{ default: string }>(
+  "./assets/ezgif-frame-*.jpg",
+  { eager: true }
+);
+const frameSources = Object.entries(frameModules)
+  .sort(([a], [b]) => a.localeCompare(b))
+  .map(([, mod]) => mod.default);
 
 /* ─── Gallery Card ─────────────────────────────────────── */
 function GalleryCard({
@@ -67,72 +76,165 @@ const instantVariants = {
   show: { opacity: 1, y: 0, transition: { duration: 0 } },
 };
 
-/* ─── Hero Section ─────────────────────────────────────── */
+/* ─── Hero Section (scroll-driven frame sequence) ─────── */
 function HeroSection({
   prefersReduced,
 }: {
   prefersReduced: boolean | null;
 }) {
-  const scrollToGallery = () => {
-    document.getElementById("gallery")?.scrollIntoView({ behavior: "smooth" });
-  };
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+  const sectionRef = useRef<HTMLDivElement>(null);
+  const imagesRef = useRef<HTMLImageElement[]>([]);
+  const rafRef = useRef<number>(0);
+  const lastFrameRef = useRef<number>(-1);
+  const [ready, setReady] = useState(false);
+
+  /* Preload every frame into Image objects */
+  useEffect(() => {
+    let cancelled = false;
+    const imgs: HTMLImageElement[] = [];
+
+    const load = async () => {
+      await Promise.all(
+        frameSources.map(
+          (src, i) =>
+            new Promise<void>((resolve) => {
+              const img = new Image();
+              img.src = src;
+              img.onload = () => {
+                imgs[i] = img;
+                resolve();
+              };
+              img.onerror = () => resolve();
+            })
+        )
+      );
+      if (!cancelled) {
+        imagesRef.current = imgs;
+        setReady(true);
+      }
+    };
+    load();
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+
+  /* Draw the correct frame based on scroll position */
+  useEffect(() => {
+    if (!ready) return;
+    const canvas = canvasRef.current;
+    const section = sectionRef.current;
+    if (!canvas || !section) return;
+    const ctx = canvas.getContext("2d");
+    if (!ctx) return;
+
+    const totalFrames = imagesRef.current.length;
+
+    const drawFrame = (index: number) => {
+      if (index === lastFrameRef.current) return;
+      lastFrameRef.current = index;
+      const img = imagesRef.current[index];
+      if (!img) return;
+
+      const dpr = window.devicePixelRatio || 1;
+      const w = canvas.clientWidth;
+      const h = canvas.clientHeight;
+      canvas.width = w * dpr;
+      canvas.height = h * dpr;
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+
+      /* cover-fit the image */
+      const scale = Math.max(w / img.width, h / img.height);
+      const iw = img.width * scale;
+      const ih = img.height * scale;
+      ctx.drawImage(img, (w - iw) / 2, (h - ih) / 2, iw, ih);
+    };
+
+    const onScroll = () => {
+      const rect = section.getBoundingClientRect();
+      const scrollable = section.offsetHeight - window.innerHeight;
+      const progress = Math.min(Math.max(-rect.top / scrollable, 0), 1);
+      const frameIdx = Math.min(
+        Math.floor(progress * totalFrames),
+        totalFrames - 1
+      );
+      cancelAnimationFrame(rafRef.current);
+      rafRef.current = requestAnimationFrame(() => drawFrame(frameIdx));
+    };
+
+    drawFrame(0);
+    window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", onScroll);
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("resize", onScroll);
+      cancelAnimationFrame(rafRef.current);
+    };
+  }, [ready]);
 
   const fadeUp = (delay: number) =>
     prefersReduced
       ? { initial: {}, animate: { opacity: 1 }, transition: { duration: 0 } }
       : {
-        initial: { opacity: 0, y: 24 },
-        animate: { opacity: 1, y: 0 },
-        transition: { duration: 0.6, delay, ease: "easeOut" as const },
-      };
+          initial: { opacity: 0, y: 24 },
+          animate: { opacity: 1, y: 0 },
+          transition: { duration: 0.6, delay, ease: "easeOut" as const },
+        };
 
   return (
     <section
-      className="relative min-h-screen flex items-center justify-center px-8 py-24"
+      ref={sectionRef}
+      className="relative"
+      style={{ height: "500vh" }}
       aria-labelledby="hero-heading"
     >
-      {/* Decorative gradient orbs */}
-      <div
-        className="absolute inset-0 overflow-hidden pointer-events-none"
-        aria-hidden="true"
-      >
-        <div className="absolute top-1/4 right-1/4 w-96 h-96 bg-primary/8 rounded-full blur-3xl" />
-        <div className="absolute bottom-1/3 left-1/4 w-80 h-80 bg-primary/5 rounded-full blur-3xl" />
-      </div>
+      <div className="sticky top-0 h-screen w-full">
+        {/* Canvas background */}
+        <canvas
+          ref={canvasRef}
+          className="absolute inset-0 w-full h-full"
+          aria-hidden="true"
+        />
 
-      <div className="relative z-10 text-center max-w-3xl mx-auto">
-        {/* Premium badge */}
-        <motion.div
-          className="inline-flex items-center gap-4 px-8 py-4 rounded-full border border-primary/20 bg-primary/5 backdrop-blur-sm mb-8 text-base"
-          {...fadeUp(0.1)}
-        >
-          <Sparkles size={16} className="text-primary" />
-          <span className="text-base font-medium text-primary tracking-wide">
-            קולקציית פרימיום
-          </span>
-        </motion.div>
+        {/* Dark overlay for text readability */}
+        <div className="absolute inset-0 bg-black/30 pointer-events-none" />
 
-        {/* Headline */}
-        <motion.h1
-          id="hero-heading"
-          className="text-5xl sm:text-6xl lg:text-7xl font-extrabold text-text leading-tight tracking-tight"
-          {...fadeUp(0.2)}
-        >
-          תבניות עיצוב
-          <br />
-          <span className="text-primary">ברמה אחרת</span>
-        </motion.h1>
+        {/* Text overlay */}
+        <div className="relative z-10 flex items-center justify-center h-full px-8">
+          <div className="text-center max-w-3xl mx-auto">
+            {/* Premium badge */}
+            <motion.div
+              className="inline-flex items-center gap-4 px-8 py-4 rounded-full border border-primary/30 bg-black/40 backdrop-blur-sm mb-8 text-base"
+              {...fadeUp(0.1)}
+            >
+              <Sparkles size={16} className="text-primary" />
+              <span className="text-base font-medium text-primary tracking-wide">
+                קולקציית פרימיום
+              </span>
+            </motion.div>
 
-        {/* Subtitle */}
-        <motion.p
-          className="mt-8 text-xl sm:text-2xl text-text-muted leading-relaxed max-w-2xl mx-auto"
-          {...fadeUp(0.35)}
-        >
-          גלו אוסף מובחר של תבניות עיצוב מקצועיות — כל אחת מעוצבת בקפידה להעניק
-          לאתר שלכם מראה יוקרתי ונקי.
-        </motion.p>
+            {/* Headline */}
+            <motion.h1
+              id="hero-heading"
+              className="text-5xl sm:text-6xl lg:text-7xl font-extrabold text-white leading-tight tracking-tight drop-shadow-lg"
+              {...fadeUp(0.2)}
+            >
+              תבניות עיצוב
+              <br />
+              <span className="text-primary">ברמה אחרת</span>
+            </motion.h1>
 
-
+            {/* Subtitle */}
+            <motion.p
+              className="mt-8 text-xl sm:text-2xl text-white/80 leading-relaxed max-w-2xl mx-auto drop-shadow-md"
+              {...fadeUp(0.35)}
+            >
+              גלו אוסף מובחר של תבניות עיצוב מקצועיות — כל אחת מעוצבת בקפידה
+              להעניק לאתר שלכם מראה יוקרתי ונקי.
+            </motion.p>
+          </div>
+        </div>
       </div>
     </section>
   );
