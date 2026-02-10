@@ -1,26 +1,52 @@
 @import "tailwindcss";
 
 @theme {
-  --color-primary: #2845D6;
-  --color-primary-light: #3d5ae6;
-  --color-primary-dark: #1e35b0;
+  /* ── Primary / Accent — warm gold ── */
+  --color-primary: #C9A96E;
+  --color-primary-light: #D8BC86;
+  --color-primary-dark: #A88B52;
+
+  /* ── Surfaces — deep dark ── */
+  --color-surface: #0A0A14;
+  --color-surface-elevated: #111120;
+  --color-surface-card: #16162A;
+
+  /* ── Text ── */
+  --color-text: #F0EDE6;
+  --color-text-muted: #8A8A9A;
+  --color-text-subtle: #505064;
+
+  /* ── Borders ── */
+  --color-border: #22223A;
+  --color-border-hover: #33334E;
+
+  /* ── Typography ── */
   --font-family-heebo: "Heebo", sans-serif;
 }
 
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
+@layer base {
+  html {
+    direction: rtl;
+    scroll-behavior: smooth;
+  }
+
+  body {
+    font-family: "Heebo", sans-serif;
+    background-color: var(--color-surface);
+    color: var(--color-text);
+    min-height: 100vh;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
 }
 
-html {
-  direction: rtl;
-}
-
-body {
-  font-family: "Heebo", sans-serif;
-  background-color: #0a0a1a;
-  min-height: 100vh;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+/* ── Reduced-motion accessibility ── */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
 }

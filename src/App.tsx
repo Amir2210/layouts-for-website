@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import { ArrowRight } from "lucide-react";
+import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
+import { ArrowRight, Sparkles } from "lucide-react";
 import { layouts, type LayoutItem } from "./data";
 import { shapeMap, FullScreenCtx } from "./shapes";
 import Particles from "./Particles";
@@ -9,92 +9,212 @@ import Particles from "./Particles";
 function GalleryCard({
   item,
   onSelect,
+  prefersReduced,
 }: {
   item: LayoutItem;
   onSelect: (item: LayoutItem) => void;
+  prefersReduced: boolean | null;
 }) {
   const Shape = shapeMap[item.id];
 
   return (
-    <div onClick={() => onSelect(item)} className="group cursor-pointer">
-      <motion.div
-        className="relative bg-white/10 backdrop-blur-sm rounded-2xl overflow-hidden border border-white/15 shadow-sm transition-all duration-300 group-hover:shadow-lg group-hover:shadow-primary/20 group-hover:border-white/30"
-        whileHover={{ y: -4, scale: 1.01 }}
-        whileTap={{ scale: 0.98 }}
+    <article
+      onClick={() => onSelect(item)}
+      onKeyDown={(e) => {
+        if (e.key === "Enter") onSelect(item);
+      }}
+      className="group cursor-pointer"
+      role="button"
+      tabIndex={0}
+      aria-label={`תבנית: ${item.title}`}
+    >
+      <motion.figure
+        className="relative bg-surface-card/80 backdrop-blur-sm rounded-2xl overflow-hidden border border-border transition-all duration-300 group-hover:border-primary/30 group-hover:shadow-lg group-hover:shadow-primary/10"
+        whileHover={prefersReduced ? {} : { y: -4, scale: 1.01 }}
+        whileTap={prefersReduced ? {} : { scale: 0.98 }}
         transition={{ type: "spring", stiffness: 400, damping: 28 }}
       >
-        <div className="aspect-4/3">
-          {Shape && <Shape />}
-        </div>
+        <div className="aspect-4/3">{Shape && <Shape />}</div>
 
-        {/* Subtle overlay on hover */}
-        <div className="absolute inset-0 bg-primary/0 group-hover:bg-primary/3 transition-colors duration-300 pointer-events-none" />
-      </motion.div>
+        {/* Subtle gold overlay on hover */}
+        <div className="absolute inset-0 bg-primary/0 group-hover:bg-primary/5 transition-colors duration-300 pointer-events-none" />
+      </motion.figure>
 
-      <p className="mt-3 text-center text-base font-semibold text-slate-300 group-hover:text-white transition-colors duration-300">
+      <p className="mt-4 text-center text-lg font-semibold text-text-muted group-hover:text-primary transition-colors duration-300">
         {item.title}
       </p>
-    </div>
+    </article>
   );
 }
 
-/* ─── Stagger container variants ──────────────────────── */
+/* ─── Animation variants ──────────────────────────────── */
 const containerVariants = {
   hidden: {},
-  show: {
-    transition: { staggerChildren: 0.07 },
-  },
+  show: { transition: { staggerChildren: 0.08 } },
 };
 
 const cardVariants = {
-  hidden: { opacity: 0, y: 24 },
+  hidden: { opacity: 0, y: 32 },
   show: {
     opacity: 1,
     y: 0,
-    transition: { type: "spring" as const, stiffness: 260, damping: 24 },
+    transition: { type: "spring" as const, stiffness: 240, damping: 24 },
   },
 };
 
-/* ─── Gallery Page ─────────────────────────────────────── */
-function GalleryPage({
-  onSelect,
+const instantVariants = {
+  hidden: { opacity: 1, y: 0 },
+  show: { opacity: 1, y: 0, transition: { duration: 0 } },
+};
+
+/* ─── Hero Section ─────────────────────────────────────── */
+function HeroSection({
+  prefersReduced,
 }: {
-  onSelect: (item: LayoutItem) => void;
+  prefersReduced: boolean | null;
 }) {
+  const scrollToGallery = () => {
+    document.getElementById("gallery")?.scrollIntoView({ behavior: "smooth" });
+  };
+
+  const fadeUp = (delay: number) =>
+    prefersReduced
+      ? { initial: {}, animate: { opacity: 1 }, transition: { duration: 0 } }
+      : {
+        initial: { opacity: 0, y: 24 },
+        animate: { opacity: 1, y: 0 },
+        transition: { duration: 0.6, delay, ease: "easeOut" as const },
+      };
+
   return (
-    <motion.div
-      className="min-h-screen bg-transparent font-heebo flex items-center justify-center"
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      exit={{ opacity: 0 }}
-      transition={{ duration: 0.25 }}
+    <section
+      className="relative min-h-screen flex items-center justify-center px-8 py-24"
+      aria-labelledby="hero-heading"
     >
-      <div className="max-w-5xl w-full mx-auto px-5 sm:px-8 py-12 sm:py-16">
-        {/* Title */}
-        <motion.h1
-          className="text-3xl sm:text-4xl font-extrabold text-white text-center tracking-tight"
-          initial={{ opacity: 0, y: -12 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.4, ease: "easeOut" }}
+      {/* Decorative gradient orbs */}
+      <div
+        className="absolute inset-0 overflow-hidden pointer-events-none"
+        aria-hidden="true"
+      >
+        <div className="absolute top-1/4 right-1/4 w-96 h-96 bg-primary/8 rounded-full blur-3xl" />
+        <div className="absolute bottom-1/3 left-1/4 w-80 h-80 bg-primary/5 rounded-full blur-3xl" />
+      </div>
+
+      <div className="relative z-10 text-center max-w-3xl mx-auto">
+        {/* Premium badge */}
+        <motion.div
+          className="inline-flex items-center gap-4 px-8 py-4 rounded-full border border-primary/20 bg-primary/5 backdrop-blur-sm mb-8 text-base"
+          {...fadeUp(0.1)}
         >
-          גלריית תבניות עיצוב
+          <Sparkles size={16} className="text-primary" />
+          <span className="text-base font-medium text-primary tracking-wide">
+            קולקציית פרימיום
+          </span>
+        </motion.div>
+
+        {/* Headline */}
+        <motion.h1
+          id="hero-heading"
+          className="text-5xl sm:text-6xl lg:text-7xl font-extrabold text-text leading-tight tracking-tight"
+          {...fadeUp(0.2)}
+        >
+          תבניות עיצוב
+          <br />
+          <span className="text-primary">ברמה אחרת</span>
         </motion.h1>
 
-        {/* Grid */}
+        {/* Subtitle */}
+        <motion.p
+          className="mt-8 text-xl sm:text-2xl text-text-muted leading-relaxed max-w-2xl mx-auto"
+          {...fadeUp(0.35)}
+        >
+          גלו אוסף מובחר של תבניות עיצוב מקצועיות — כל אחת מעוצבת בקפידה להעניק
+          לאתר שלכם מראה יוקרתי ונקי.
+        </motion.p>
+
+
+      </div>
+    </section>
+  );
+}
+
+/* ─── Gallery Section ──────────────────────────────────── */
+function GallerySection({
+  onSelect,
+  prefersReduced,
+}: {
+  onSelect: (item: LayoutItem) => void;
+  prefersReduced: boolean | null;
+}) {
+  return (
+    <section
+      id="gallery"
+      className="px-8 py-24 lg:py-32"
+      aria-labelledby="gallery-heading"
+    >
+      <div className="max-w-6xl mx-auto">
+        {/* Section header */}
+        <header className="text-center mb-16">
+          <h2
+            id="gallery-heading"
+            className="text-3xl sm:text-4xl font-bold text-text tracking-tight"
+          >
+            בחרו את התבנית שלכם
+          </h2>
+          <p className="mt-4 text-text-muted text-lg sm:text-xl">
+            {layouts.length} תבניות מקצועיות מוכנות לשימוש
+          </p>
+          <div
+            className="mt-8 mx-auto w-16 h-0.5 bg-primary/40 rounded-full"
+            aria-hidden="true"
+          />
+        </header>
+
+        {/* Layout grid */}
         <motion.div
-          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 mt-14 sm:mt-20"
-          variants={containerVariants}
+          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8"
+          variants={prefersReduced ? { hidden: {}, show: {} } : containerVariants}
           initial="hidden"
-          animate="show"
+          whileInView="show"
+          viewport={{ once: true, margin: "-80px" }}
         >
           {layouts.map((item) => (
-            <motion.div key={item.id} variants={cardVariants}>
-              <GalleryCard item={item} onSelect={onSelect} />
+            <motion.div
+              key={item.id}
+              variants={prefersReduced ? instantVariants : cardVariants}
+            >
+              <GalleryCard
+                item={item}
+                onSelect={onSelect}
+                prefersReduced={prefersReduced}
+              />
             </motion.div>
           ))}
         </motion.div>
       </div>
-    </motion.div>
+    </section>
+  );
+}
+
+/* ─── Main Page (Hero + Gallery) ───────────────────────── */
+function MainPage({
+  onSelect,
+  prefersReduced,
+}: {
+  onSelect: (item: LayoutItem) => void;
+  prefersReduced: boolean | null;
+}) {
+  return (
+    <motion.main
+      className="min-h-screen bg-transparent font-heebo"
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      transition={prefersReduced ? { duration: 0 } : { duration: 0.3 }}
+    >
+      <HeroSection prefersReduced={prefersReduced} />
+      <GallerySection onSelect={onSelect} prefersReduced={prefersReduced} />
+    </motion.main>
   );
 }
 
@@ -102,9 +222,11 @@ function GalleryPage({
 function DetailPage({
   item,
   onBack,
+  prefersReduced,
 }: {
   item: LayoutItem;
   onBack: () => void;
+  prefersReduced: boolean | null;
 }) {
   const Shape = shapeMap[item.id];
 
@@ -120,18 +242,24 @@ function DetailPage({
   return (
     <motion.div
       className="fixed inset-0 bg-white font-heebo"
-      initial={{ opacity: 0 }}
+      role="dialog"
+      aria-label={`תצוגת תבנית: ${item.title}`}
+      initial={prefersReduced ? {} : { opacity: 0 }}
       animate={{ opacity: 1 }}
-      exit={{ opacity: 0 }}
-      transition={{ duration: 0.3, ease: "easeOut" }}
+      exit={prefersReduced ? {} : { opacity: 0 }}
+      transition={prefersReduced ? { duration: 0 } : { duration: 0.3, ease: "easeOut" }}
     >
       {/* Shape — full bleed, with full-screen text scaling */}
       <FullScreenCtx.Provider value={true}>
         <motion.div
           className="w-full h-full"
-          initial={{ scale: 1.02 }}
+          initial={prefersReduced ? {} : { scale: 1.02 }}
           animate={{ scale: 1 }}
-          transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+          transition={
+            prefersReduced
+              ? { duration: 0 }
+              : { duration: 0.5, ease: [0.22, 1, 0.36, 1] }
+          }
         >
           {Shape && <Shape />}
         </motion.div>
@@ -140,14 +268,16 @@ function DetailPage({
       {/* Back button */}
       <motion.button
         onClick={onBack}
-        className="absolute top-4 right-4 sm:top-6 sm:right-6 z-10 w-10 h-10 flex items-center justify-center bg-black/50 hover:bg-black/70 border border-white/20 rounded-xl shadow-sm hover:shadow-md backdrop-blur-md transition-all duration-200"
-        initial={{ opacity: 0, y: -8 }}
+        className="absolute top-8 right-8 z-10 w-12 h-12 flex items-center justify-center bg-surface/80 hover:bg-surface border border-border rounded-2xl shadow-lg backdrop-blur-md transition-all duration-200"
+        initial={prefersReduced ? {} : { opacity: 0, y: -8 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.25, duration: 0.3 }}
-        aria-label="חזרה"
+        transition={
+          prefersReduced ? { duration: 0 } : { delay: 0.25, duration: 0.3 }
+        }
+        aria-label="חזרה לגלריה"
         title="חזרה (Esc)"
       >
-        <ArrowRight size={18} className="text-white" />
+        <ArrowRight size={18} className="text-text" />
       </motion.button>
     </motion.div>
   );
@@ -156,6 +286,7 @@ function DetailPage({
 /* ─── App ──────────────────────────────────────────────── */
 export default function App() {
   const [selected, setSelected] = useState<LayoutItem | null>(null);
+  const prefersReduced = useReducedMotion();
 
   const getItemFromHash = useCallback(() => {
     const hash = window.location.hash.replace("#", "");
@@ -179,16 +310,16 @@ export default function App() {
 
   return (
     <>
-      {/* Particles background – fixed behind everything */}
-      <div className="fixed inset-0 -z-10">
+      {/* Particles background — gold-toned for luxury feel */}
+      <div className="fixed inset-0 -z-10" aria-hidden="true">
         <Particles
-          particleColors={["#ffffff"]}
-          particleCount={200}
+          particleColors={["#C9A96E", "#D8BC86", "#A88B52"]}
+          particleCount={150}
           particleSpread={10}
-          speed={0.1}
-          particleBaseSize={100}
+          speed={0.08}
+          particleBaseSize={80}
           moveParticlesOnHover
-          alphaParticles={false}
+          alphaParticles
           disableRotation={false}
           pixelRatio={1}
         />
@@ -196,9 +327,18 @@ export default function App() {
 
       <AnimatePresence mode="wait">
         {selected ? (
-          <DetailPage key={selected.id} item={selected} onBack={goBack} />
+          <DetailPage
+            key={selected.id}
+            item={selected}
+            onBack={goBack}
+            prefersReduced={prefersReduced}
+          />
         ) : (
-          <GalleryPage key="gallery" onSelect={openDetail} />
+          <MainPage
+            key="main"
+            onSelect={openDetail}
+            prefersReduced={prefersReduced}
+          />
         )}
       </AnimatePresence>
     </>
