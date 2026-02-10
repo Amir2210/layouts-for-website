@@ -1,38 +1,21 @@
 export interface LayoutItem {
   id: string;
   title: string;
-  description: string;
 }
 
 export const layouts: LayoutItem[] = [
-  {
-    id: "cube",
-    title: "הקוביה",
-    description: "חלוקה סימטרית לשני חלקים",
-  },
-  {
-    id: "diagonal",
-    title: "האלכסון",
-    description: "פס אלכסוני דינמי",
-  },
-  {
-    id: "ball",
-    title: "הכדור",
-    description: "עיגול מרכזי עם חיתוך",
-  },
-  {
-    id: "frame",
-    title: "המסגרת",
-    description: "מלבן מרכזי במסגרת",
-  },
-  {
-    id: "grid",
-    title: "הגריד",
-    description: 'תבנית "בנטו בוקס"',
-  },
-  {
-    id: "capsule",
-    title: "הקפסולה",
-    description: "צורת גלולה מעוגלת",
-  },
+  { id: "cube", title: "הקוביה" },
+  { id: "diagonal", title: "האלכסון" },
+  { id: "ball", title: "הכדור" },
+  { id: "frame", title: "המסגרת" },
+  { id: "grid", title: "הגריד" },
+  { id: "thirds", title: "השלישיות" },
+  { id: "wave", title: "הגל" },
+  { id: "corner", title: "הפינה" },
+  { id: "layers", title: "השכבות" },
+  { id: "zigzag", title: "הזיגזג" },
+  { id: "window", title: "החלון" },
+  { id: "gradient", title: "הגרדיאנט" },
+  { id: "mosaic", title: "הפסיפס" },
+  { id: "horizon", title: "האופק" },
 ];
