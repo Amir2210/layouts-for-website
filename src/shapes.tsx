@@ -1,11 +1,25 @@
-import React, { createContext, useContext } from "react";
+﻿import React, { createContext, useContext } from "react";
 import { motion, type Variants } from "framer-motion";
 
-/* ── Full-screen context ── */
+/* ג”€ג”€ Full-screen context ג”€ג”€ */
 export const FullScreenCtx = createContext(false);
 
-/* ── Text block — scales up in full-screen ── */
-/* ── Text block — scales up in full-screen ── */
+const MDiv = motion.div;
+const ShapeMotion: React.FC<React.ComponentProps<typeof motion.div>> = ({ children, ...props }) => {
+  const full = useContext(FullScreenCtx);
+  const p = { ...props };
+  // In detail view, force animation if using whileInView
+  if (full && p.whileInView && !p.animate) {
+    p.animate = p.whileInView;
+    delete p.whileInView;
+  }
+  // Ensure permissive viewport check
+  p.viewport = { once: true, amount: 0, ...p.viewport };
+  return <MDiv {...p}>{children}</MDiv>;
+};
+
+/* ג”€ג”€ Text block ג€” scales up in full-screen ג”€ג”€ */
+/* ג”€ג”€ Text block ג€” scales up in full-screen ג”€ג”€ */
 const TextBlock: React.FC<{
   light?: boolean;
   className?: string;
@@ -44,7 +58,7 @@ const TextBlock: React.FC<{
   };
 
   return (
-    <motion.div
+    <ShapeMotion
       className={`relative z-10 flex flex-col ${align === "center"
         ? "items-center text-center"
         : align === "left"
@@ -61,19 +75,19 @@ const TextBlock: React.FC<{
         variants={itemVariants}
         className={`${h2} font-extrabold tracking-tight ${textColor} ${shadowClass}`}
       >
-        כותרת ראשית
+        ׳›׳•׳×׳¨׳× ׳¨׳׳©׳™׳×
       </motion.h2>
       <motion.h3
         variants={itemVariants}
         className={`${h3} font-bold tracking-wide uppercase ${subColor} ${shadowClass}`}
       >
-        כותרת משנית מרשימה
+        ׳›׳•׳×׳¨׳× ׳׳©׳ ׳™׳× ׳׳¨׳©׳™׳׳”
       </motion.h3>
       <motion.p
         variants={itemVariants}
         className={`${p} font-medium ${descColor} ${shadowClass}`}
       >
-        טקסט לדוגמה הממחיש את העיצוב הנקי והמקצועי של התבנית. הטיפוגרפיה מותאמת לקריאות מיטבית.
+        ׳˜׳§׳¡׳˜ ׳׳“׳•׳’׳׳” ׳”׳׳׳—׳™׳© ׳׳× ׳”׳¢׳™׳¦׳•׳‘ ׳”׳ ׳§׳™ ׳•׳”׳׳§׳¦׳•׳¢׳™ ׳©׳ ׳”׳×׳‘׳ ׳™׳×. ׳”׳˜׳™׳₪׳•׳’׳¨׳₪׳™׳” ׳׳•׳×׳׳׳× ׳׳§׳¨׳™׳׳•׳× ׳׳™׳˜׳‘׳™׳×.
       </motion.p>
 
       {/* Decorative button for "Call to Action" feel */}
@@ -85,10 +99,10 @@ const TextBlock: React.FC<{
             : "bg-slate-900 text-white hover:bg-slate-800"
             }`}
         >
-          קרא עוד
+          ׳§׳¨׳ ׳¢׳•׳“
         </motion.button>
       )}
-    </motion.div>
+    </ShapeMotion>
   );
 };
 
@@ -102,12 +116,12 @@ const Box: React.FC<{ children: React.ReactNode; className?: string }> = ({
   </div>
 );
 
-/* ════════════════════════════════════════════════════════════ */
+/* ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג• */
 
-/** 1. הקוביה — clean vertical split */
+/** 1. ׳”׳§׳•׳‘׳™׳” ג€” clean vertical split */
 export const CubeShape: React.FC = () => (
   <Box>
-    <motion.div
+    <ShapeMotion
       initial={{ x: "100%" }}
       whileInView={{ x: "0%" }}
       transition={{ duration: 0.8, ease: "circOut" }}
@@ -119,10 +133,10 @@ export const CubeShape: React.FC = () => (
   </Box>
 );
 
-/** 2. האלכסון — bold diagonal cut */
+/** 2. ׳”׳׳׳›׳¡׳•׳ ג€” bold diagonal cut */
 export const DiagonalShape: React.FC = () => (
   <Box>
-    <motion.div
+    <ShapeMotion
       initial={{ x: "-100%", rotate: -10 }}
       whileInView={{ x: "-25%", rotate: -10 }}
       transition={{ duration: 0.8, delay: 0.1, ease: "backOut" }}
@@ -141,10 +155,10 @@ export const DiagonalShape: React.FC = () => (
   </Box>
 );
 
-/** 3. הכדור — large offset circle */
+/** 3. ׳”׳›׳“׳•׳¨ ג€” large offset circle */
 export const BallShape: React.FC = () => (
   <Box>
-    <motion.div
+    <ShapeMotion
       initial={{ scale: 0, opacity: 0 }}
       whileInView={{ scale: 1, opacity: 1 }}
       transition={{ duration: 0.8, type: "spring", bounce: 0.3 }}
@@ -157,11 +171,11 @@ export const BallShape: React.FC = () => (
   </Box>
 );
 
-/** 4. המסגרת — elegant picture frame */
+/** 4. ׳”׳׳¡׳’׳¨׳× ג€” elegant picture frame */
 export const FrameShape: React.FC = () => (
   <Box>
     <div className="absolute inset-0 bg-primary" />
-    <motion.div
+    <ShapeMotion
       initial={{ scale: 0.8, opacity: 0 }}
       whileInView={{ scale: 1, opacity: 1 }}
       transition={{ duration: 0.8, ease: "easeOut" }}
@@ -173,13 +187,13 @@ export const FrameShape: React.FC = () => (
   </Box>
 );
 
-/** 5. הגריד — bento grid */
+/** 5. ׳”׳’׳¨׳™׳“ ג€” bento grid */
 export const GridShape: React.FC = () => {
   const full = useContext(FullScreenCtx);
   return (
     <Box className={full ? "p-4 sm:p-6" : "p-2 sm:p-3"}>
       <div className={`grid grid-cols-3 grid-rows-3 w-full h-full ${full ? "gap-3 sm:gap-4" : "gap-1.5 sm:gap-2"}`}>
-        <motion.div
+        <ShapeMotion
           initial={{ opacity: 0, scale: 0.9 }}
           whileInView={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.5 }}
@@ -187,32 +201,32 @@ export const GridShape: React.FC = () => {
         >
           <div>
             <h2 className={`${full ? "text-3xl sm:text-4xl lg:text-5xl" : "text-sm sm:text-base"} font-extrabold text-white leading-tight drop-shadow-md`}>
-              כותרת ראשית
+              ׳›׳•׳×׳¨׳× ׳¨׳׳©׳™׳×
             </h2>
             <h3 className={`${full ? "text-lg sm:text-xl lg:text-2xl mt-2" : "text-[10px] sm:text-xs mt-0.5"} font-semibold text-white/90 drop-shadow-sm`}>
-              כותרת משנית
+              ׳›׳•׳×׳¨׳× ׳׳©׳ ׳™׳×
             </h3>
           </div>
-        </motion.div>
-        <motion.div initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} transition={{ delay: 0.1 }} className="bg-primary" />
-        <motion.div initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} transition={{ delay: 0.2 }} className="bg-primary/25" />
-        <motion.div initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} transition={{ delay: 0.3 }} className="bg-primary/50" />
-        <motion.div initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} transition={{ delay: 0.4 }} className="bg-primary col-span-2" />
+        </ShapeMotion>
+        <ShapeMotion initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} transition={{ delay: 0.1 }} className="bg-primary" />
+        <ShapeMotion initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} transition={{ delay: 0.2 }} className="bg-primary/25" />
+        <ShapeMotion initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} transition={{ delay: 0.3 }} className="bg-primary/50" />
+        <ShapeMotion initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} transition={{ delay: 0.4 }} className="bg-primary col-span-2" />
       </div>
     </Box>
   );
 };
 
-/** 6. השלישיות — three columns with center content */
+/** 6. ׳”׳©׳׳™׳©׳™׳•׳× ג€” three columns with center content */
 export const ThirdsShape: React.FC = () => (
   <Box>
-    <motion.div
+    <ShapeMotion
       initial={{ height: "0%" }}
       whileInView={{ height: "100%" }}
       transition={{ duration: 0.6, ease: "easeInOut" }}
       className="absolute inset-y-0 right-0 w-[30%] bg-primary"
     />
-    <motion.div
+    <ShapeMotion
       initial={{ height: "0%" }}
       whileInView={{ height: "100%" }}
       transition={{ duration: 0.6, delay: 0.1, ease: "easeInOut" }}
@@ -224,16 +238,16 @@ export const ThirdsShape: React.FC = () => (
   </Box>
 );
 
-/** 7. הגל — wave with curved divider */
+/** 7. ׳”׳’׳ ג€” wave with curved divider */
 export const WaveShape: React.FC = () => (
   <Box>
-    <motion.div
+    <ShapeMotion
       initial={{ y: "100%" }}
       whileInView={{ y: "0%" }}
       transition={{ duration: 0.8, ease: "circOut" }}
       className="absolute bottom-0 left-0 right-0 h-[50%] bg-primary"
     />
-    <motion.div
+    <ShapeMotion
       initial={{ scaleY: 0 }}
       whileInView={{ scaleY: 1 }}
       transition={{ duration: 0.6, delay: 0.3 }}
@@ -246,16 +260,16 @@ export const WaveShape: React.FC = () => (
   </Box>
 );
 
-/** 8. הפינה — L-shaped corner composition */
+/** 8. ׳”׳₪׳™׳ ׳” ג€” L-shaped corner composition */
 export const CornerShape: React.FC = () => (
   <Box>
-    <motion.div
+    <ShapeMotion
       initial={{ x: "100%", y: "-100%" }}
       whileInView={{ x: "0%", y: "0%" }}
       transition={{ duration: 0.8 }}
       className="absolute top-0 right-0 w-[60%] h-[50%] bg-primary"
     />
-    <motion.div
+    <ShapeMotion
       initial={{ opacity: 0 }}
       whileInView={{ opacity: 1 }}
       transition={{ duration: 0.8, delay: 0.3 }}
@@ -267,69 +281,69 @@ export const CornerShape: React.FC = () => (
   </Box>
 );
 
-/** 9. השכבות — three fading horizontal bands */
+/** 9. ׳”׳©׳›׳‘׳•׳× ג€” three fading horizontal bands */
 export const LayersShape: React.FC = () => (
   <Box>
-    <motion.div initial={{ x: "100%" }} whileInView={{ x: "0%" }} transition={{ duration: 0.6, delay: 0.0 }} className="absolute top-0 left-0 right-0 h-[22%] bg-primary" />
-    <motion.div initial={{ x: "100%" }} whileInView={{ x: "0%" }} transition={{ duration: 0.6, delay: 0.1 }} className="absolute top-[26%] left-0 right-0 h-[16%] bg-primary/45" />
-    <motion.div initial={{ x: "100%" }} whileInView={{ x: "0%" }} transition={{ duration: 0.6, delay: 0.2 }} className="absolute top-[46%] left-0 right-0 h-[10%] bg-primary/20" />
+    <ShapeMotion initial={{ x: "100%" }} whileInView={{ x: "0%" }} transition={{ duration: 0.6, delay: 0.0 }} className="absolute top-0 left-0 right-0 h-[22%] bg-primary" />
+    <ShapeMotion initial={{ x: "100%" }} whileInView={{ x: "0%" }} transition={{ duration: 0.6, delay: 0.1 }} className="absolute top-[26%] left-0 right-0 h-[16%] bg-primary/45" />
+    <ShapeMotion initial={{ x: "100%" }} whileInView={{ x: "0%" }} transition={{ duration: 0.6, delay: 0.2 }} className="absolute top-[46%] left-0 right-0 h-[10%] bg-primary/20" />
     <div className="absolute inset-0 flex items-end justify-end p-[8%]">
       <TextBlock className="text-right" />
     </div>
   </Box>
 );
 
-/** 10. הזיגזג — alternating staggered blocks */
+/** 10. ׳”׳–׳™׳’׳–׳’ ג€” alternating staggered blocks */
 export const ZigzagShape: React.FC = () => (
   <Box>
-    <motion.div initial={{ x: 50, opacity: 0 }} whileInView={{ x: 0, opacity: 1 }} transition={{ delay: 0.1 }} className="absolute top-0 right-0 w-[55%] h-[33%] bg-primary" />
-    <motion.div initial={{ x: -50, opacity: 0 }} whileInView={{ x: 0, opacity: 1 }} transition={{ delay: 0.2 }} className="absolute top-[33%] left-0 w-[55%] h-[34%] bg-primary/60" />
-    <motion.div initial={{ x: 50, opacity: 0 }} whileInView={{ x: 0, opacity: 1 }} transition={{ delay: 0.3 }} className="absolute bottom-0 right-0 w-[55%] h-[33%] bg-primary/30" />
+    <ShapeMotion initial={{ x: 50, opacity: 0 }} whileInView={{ x: 0, opacity: 1 }} transition={{ delay: 0.1 }} className="absolute top-0 right-0 w-[55%] h-[33%] bg-primary" />
+    <ShapeMotion initial={{ x: -50, opacity: 0 }} whileInView={{ x: 0, opacity: 1 }} transition={{ delay: 0.2 }} className="absolute top-[33%] left-0 w-[55%] h-[34%] bg-primary/60" />
+    <ShapeMotion initial={{ x: 50, opacity: 0 }} whileInView={{ x: 0, opacity: 1 }} transition={{ delay: 0.3 }} className="absolute bottom-0 right-0 w-[55%] h-[33%] bg-primary/30" />
     <div className="absolute inset-0 flex items-center justify-center">
       <TextBlock className="text-center" align="center" />
     </div>
   </Box>
 );
 
-/** 11. החלון — four-pane grid */
+/** 11. ׳”׳—׳׳•׳ ג€” four-pane grid */
 export const WindowShape: React.FC = () => (
   <Box>
-    <motion.div initial={{ scale: 0 }} whileInView={{ scale: 1 }} transition={{ duration: 0.5 }} className="absolute top-[2%] right-[2%] w-[47%] h-[47%] bg-primary" />
-    <motion.div initial={{ scale: 0 }} whileInView={{ scale: 1 }} transition={{ duration: 0.5, delay: 0.1 }} className="absolute top-[2%] left-[2%] w-[47%] h-[47%] bg-primary/25" />
-    <motion.div initial={{ scale: 0 }} whileInView={{ scale: 1 }} transition={{ duration: 0.5, delay: 0.2 }} className="absolute bottom-[2%] right-[2%] w-[47%] h-[47%] bg-primary/45" />
-    <motion.div initial={{ scale: 0 }} whileInView={{ scale: 1 }} transition={{ duration: 0.5, delay: 0.3 }} className="absolute bottom-[2%] left-[2%] w-[47%] h-[47%] bg-primary/12" />
+    <ShapeMotion initial={{ scale: 0 }} whileInView={{ scale: 1 }} transition={{ duration: 0.5 }} className="absolute top-[2%] right-[2%] w-[47%] h-[47%] bg-primary" />
+    <ShapeMotion initial={{ scale: 0 }} whileInView={{ scale: 1 }} transition={{ duration: 0.5, delay: 0.1 }} className="absolute top-[2%] left-[2%] w-[47%] h-[47%] bg-primary/25" />
+    <ShapeMotion initial={{ scale: 0 }} whileInView={{ scale: 1 }} transition={{ duration: 0.5, delay: 0.2 }} className="absolute bottom-[2%] right-[2%] w-[47%] h-[47%] bg-primary/45" />
+    <ShapeMotion initial={{ scale: 0 }} whileInView={{ scale: 1 }} transition={{ duration: 0.5, delay: 0.3 }} className="absolute bottom-[2%] left-[2%] w-[47%] h-[47%] bg-primary/12" />
     <div className="absolute inset-0 flex items-center justify-center">
       <TextBlock className="text-center" align="center" />
     </div>
   </Box>
 );
 
-/** 12. הגרדיאנט — fading vertical strips */
+/** 12. ׳”׳’׳¨׳“׳™׳׳ ׳˜ ג€” fading vertical strips */
 export const GradientShape: React.FC = () => (
   <Box>
-    <motion.div initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} transition={{ delay: 0.0 }} className="absolute inset-y-0 right-0 w-[20%] bg-primary" />
-    <motion.div initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} transition={{ delay: 0.1 }} className="absolute inset-y-0 right-[20%] w-[20%] bg-primary/70" />
-    <motion.div initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} transition={{ delay: 0.2 }} className="absolute inset-y-0 right-[40%] w-[20%] bg-primary/45" />
-    <motion.div initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} transition={{ delay: 0.3 }} className="absolute inset-y-0 right-[60%] w-[20%] bg-primary/22" />
-    <motion.div initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} transition={{ delay: 0.4 }} className="absolute inset-y-0 left-0 w-[20%] bg-primary/8" />
+    <ShapeMotion initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} transition={{ delay: 0.0 }} className="absolute inset-y-0 right-0 w-[20%] bg-primary" />
+    <ShapeMotion initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} transition={{ delay: 0.1 }} className="absolute inset-y-0 right-[20%] w-[20%] bg-primary/70" />
+    <ShapeMotion initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} transition={{ delay: 0.2 }} className="absolute inset-y-0 right-[40%] w-[20%] bg-primary/45" />
+    <ShapeMotion initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} transition={{ delay: 0.3 }} className="absolute inset-y-0 right-[60%] w-[20%] bg-primary/22" />
+    <ShapeMotion initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} transition={{ delay: 0.4 }} className="absolute inset-y-0 left-0 w-[20%] bg-primary/8" />
     <div className="absolute inset-0 flex items-center px-[8%]">
       <TextBlock light className="text-right max-w-[35%]" />
     </div>
   </Box>
 );
 
-/** 13. הפסיפס — scattered mosaic grid */
+/** 13. ׳”׳₪׳¡׳™׳₪׳¡ ג€” scattered mosaic grid */
 export const MosaicShape: React.FC = () => {
   const full = useContext(FullScreenCtx);
   return (
     <Box className={full ? "p-4 sm:p-6" : "p-2 sm:p-3"}>
       <div className={`grid grid-cols-4 grid-rows-3 w-full h-full ${full ? "gap-3 sm:gap-4" : "gap-1.5 sm:gap-2"}`}>
-        <motion.div initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} transition={{ delay: 0.1 }} className="bg-primary col-span-1 row-span-2" />
-        <motion.div initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} transition={{ delay: 0.2 }} className="bg-primary/20" />
-        <motion.div initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} transition={{ delay: 0.3 }} className="bg-primary col-span-2" />
-        <motion.div initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} transition={{ delay: 0.4 }} className="bg-primary/45 col-span-2" />
-        <motion.div initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} transition={{ delay: 0.5 }} className="bg-primary/12" />
-        <motion.div
+        <ShapeMotion initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} transition={{ delay: 0.1 }} className="bg-primary col-span-1 row-span-2" />
+        <ShapeMotion initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} transition={{ delay: 0.2 }} className="bg-primary/20" />
+        <ShapeMotion initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} transition={{ delay: 0.3 }} className="bg-primary col-span-2" />
+        <ShapeMotion initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} transition={{ delay: 0.4 }} className="bg-primary/45 col-span-2" />
+        <ShapeMotion initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} transition={{ delay: 0.5 }} className="bg-primary/12" />
+        <ShapeMotion
           initial={{ y: 20, opacity: 0 }}
           whileInView={{ y: 0, opacity: 1 }}
           transition={{ delay: 0.6 }}
@@ -337,30 +351,30 @@ export const MosaicShape: React.FC = () => {
         >
           <div>
             <h2 className={`${full ? "text-2xl sm:text-3xl lg:text-4xl" : "text-xs sm:text-sm"} font-extrabold text-white leading-tight drop-shadow-md`}>
-              כותרת ראשית
+              ׳›׳•׳×׳¨׳× ׳¨׳׳©׳™׳×
             </h2>
             <h3 className={`${full ? "text-base sm:text-lg mt-1" : "text-[9px] sm:text-[10px] mt-0.5"} font-semibold text-white/90 drop-shadow-sm`}>
-              כותרת משנית
+              ׳›׳•׳×׳¨׳× ׳׳©׳ ׳™׳×
             </h3>
           </div>
-        </motion.div>
-        <motion.div initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} transition={{ delay: 0.7 }} className="bg-primary/35" />
-        <motion.div initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} transition={{ delay: 0.8 }} className="bg-primary" />
+        </ShapeMotion>
+        <ShapeMotion initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} transition={{ delay: 0.7 }} className="bg-primary/35" />
+        <ShapeMotion initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} transition={{ delay: 0.8 }} className="bg-primary" />
       </div>
     </Box>
   );
 };
 
-/** 14. האופק — clean horizon split */
+/** 14. ׳”׳׳•׳₪׳§ ג€” clean horizon split */
 export const HorizonShape: React.FC = () => (
   <Box>
-    <motion.div
+    <ShapeMotion
       initial={{ height: "0%" }}
       whileInView={{ height: "38%" }}
       transition={{ duration: 0.8, ease: "circOut" }}
       className="absolute bottom-0 left-0 right-0 bg-primary"
     />
-    <motion.div
+    <ShapeMotion
       initial={{ scaleX: 0 }}
       whileInView={{ scaleX: 1 }}
       transition={{ duration: 1, delay: 0.4, ease: "circOut" }}
@@ -372,10 +386,10 @@ export const HorizonShape: React.FC = () => (
   </Box>
 );
 
-/** 15. הקשת — rounded arch with content below */
+/** 15. ׳”׳§׳©׳× ג€” rounded arch with content below */
 export const ArchShape: React.FC = () => (
   <Box>
-    <motion.div
+    <ShapeMotion
       initial={{ y: "-100%" }}
       whileInView={{ y: "0%" }}
       transition={{ duration: 0.7, ease: "easeOut" }}
@@ -388,7 +402,7 @@ export const ArchShape: React.FC = () => (
         borderRadius: "0 0 50% 50%",
       }}
     />
-    <motion.div
+    <ShapeMotion
       initial={{ opacity: 0 }}
       whileInView={{ opacity: 1 }}
       transition={{ delay: 0.5 }}
@@ -400,10 +414,10 @@ export const ArchShape: React.FC = () => (
   </Box>
 );
 
-/** 16. היהלום — rotated diamond focal point */
+/** 16. ׳”׳™׳”׳׳•׳ ג€” rotated diamond focal point */
 export const DiamondShape: React.FC = () => (
   <Box>
-    <motion.div
+    <ShapeMotion
       initial={{ scale: 0, rotate: 0 }}
       whileInView={{ scale: 1, rotate: 45 }}
       transition={{ duration: 0.8, type: "spring" }}
@@ -416,7 +430,7 @@ export const DiamondShape: React.FC = () => (
         transform: "translate(-50%, -50%) rotate(45deg)",
       }}
     />
-    <motion.div
+    <ShapeMotion
       initial={{ scale: 0, opacity: 0 }}
       whileInView={{ scale: 1, opacity: 1 }}
       transition={{ duration: 0.8, delay: 0.2 }}
@@ -435,23 +449,23 @@ export const DiamondShape: React.FC = () => (
   </Box>
 );
 
-/** 17. הספירלה — concentric offset rectangles */
+/** 17. ׳”׳¡׳₪׳™׳¨׳׳” ג€” concentric offset rectangles */
 export const SpiralShape: React.FC = () => (
   <Box>
-    <motion.div initial={{ opacity: 0, scale: 1.1 }} whileInView={{ opacity: 1, scale: 1 }} transition={{ delay: 0.0 }} className="absolute top-[6%] right-[6%] w-[82%] h-[82%] border-[3px] border-primary" />
-    <motion.div initial={{ opacity: 0, scale: 1.1 }} whileInView={{ opacity: 1, scale: 1 }} transition={{ delay: 0.1 }} className="absolute top-[14%] right-[14%] w-[66%] h-[66%] border-[3px] border-primary/60" />
-    <motion.div initial={{ opacity: 0, scale: 1.1 }} whileInView={{ opacity: 1, scale: 1 }} transition={{ delay: 0.2 }} className="absolute top-[22%] right-[22%] w-[50%] h-[50%] border-[3px] border-primary/35" />
-    <motion.div initial={{ opacity: 0, scale: 1.1 }} whileInView={{ opacity: 1, scale: 1 }} transition={{ delay: 0.3 }} className="absolute top-[30%] right-[30%] w-[34%] h-[34%] bg-primary/12" />
+    <ShapeMotion initial={{ opacity: 0, scale: 1.1 }} whileInView={{ opacity: 1, scale: 1 }} transition={{ delay: 0.0 }} className="absolute top-[6%] right-[6%] w-[82%] h-[82%] border-[3px] border-primary" />
+    <ShapeMotion initial={{ opacity: 0, scale: 1.1 }} whileInView={{ opacity: 1, scale: 1 }} transition={{ delay: 0.1 }} className="absolute top-[14%] right-[14%] w-[66%] h-[66%] border-[3px] border-primary/60" />
+    <ShapeMotion initial={{ opacity: 0, scale: 1.1 }} whileInView={{ opacity: 1, scale: 1 }} transition={{ delay: 0.2 }} className="absolute top-[22%] right-[22%] w-[50%] h-[50%] border-[3px] border-primary/35" />
+    <ShapeMotion initial={{ opacity: 0, scale: 1.1 }} whileInView={{ opacity: 1, scale: 1 }} transition={{ delay: 0.3 }} className="absolute top-[30%] right-[30%] w-[34%] h-[34%] bg-primary/12" />
     <div className="absolute inset-0 flex items-end px-[8%] pb-[6%]">
       <TextBlock className="text-right max-w-[50%]" />
     </div>
   </Box>
 );
 
-/** 18. הסרט — diagonal ribbon banner */
+/** 18. ׳”׳¡׳¨׳˜ ג€” diagonal ribbon banner */
 export const RibbonShape: React.FC = () => (
   <Box>
-    <motion.div
+    <ShapeMotion
       initial={{ x: "-100%" }}
       whileInView={{ x: "-30%" }}
       transition={{ duration: 0.8, ease: "anticipate" }}
@@ -465,7 +479,7 @@ export const RibbonShape: React.FC = () => (
         transformOrigin: "center",
       }}
     />
-    <motion.div
+    <ShapeMotion
       initial={{ x: "-100%" }}
       whileInView={{ x: "-30%" }}
       transition={{ duration: 0.9, delay: 0.1, ease: "anticipate" }}
@@ -485,50 +499,50 @@ export const RibbonShape: React.FC = () => (
   </Box>
 );
 
-/** 19. העמודים — vertical columns of varying widths */
+/** 19. ׳”׳¢׳׳•׳“׳™׳ ג€” vertical columns of varying widths */
 export const PillarsShape: React.FC = () => (
   <Box>
-    <motion.div initial={{ height: 0 }} whileInView={{ height: "88%" }} transition={{ duration: 0.6, delay: 0.0 }} className="absolute bottom-[6%] right-[5%] w-[18%] bg-primary" />
-    <motion.div initial={{ height: 0 }} whileInView={{ height: "76%" }} transition={{ duration: 0.6, delay: 0.1 }} className="absolute bottom-[12%] right-[27%] w-[12%] bg-primary/65" />
-    <motion.div initial={{ height: 0 }} whileInView={{ height: "64%" }} transition={{ duration: 0.6, delay: 0.2 }} className="absolute bottom-[18%] right-[43%] w-[8%] bg-primary/40" />
-    <motion.div initial={{ height: 0 }} whileInView={{ height: "52%" }} transition={{ duration: 0.6, delay: 0.3 }} className="absolute bottom-[24%] right-[55%] w-[6%] bg-primary/20" />
+    <ShapeMotion initial={{ height: 0 }} whileInView={{ height: "88%" }} transition={{ duration: 0.6, delay: 0.0 }} className="absolute bottom-[6%] right-[5%] w-[18%] bg-primary" />
+    <ShapeMotion initial={{ height: 0 }} whileInView={{ height: "76%" }} transition={{ duration: 0.6, delay: 0.1 }} className="absolute bottom-[12%] right-[27%] w-[12%] bg-primary/65" />
+    <ShapeMotion initial={{ height: 0 }} whileInView={{ height: "64%" }} transition={{ duration: 0.6, delay: 0.2 }} className="absolute bottom-[18%] right-[43%] w-[8%] bg-primary/40" />
+    <ShapeMotion initial={{ height: 0 }} whileInView={{ height: "52%" }} transition={{ duration: 0.6, delay: 0.3 }} className="absolute bottom-[24%] right-[55%] w-[6%] bg-primary/20" />
     <div className="absolute inset-0 flex items-end px-[8%] pb-[8%]">
       <TextBlock className="text-right max-w-[38%]" />
     </div>
   </Box>
 );
 
-/** 20. המדרגות — staircase ascending blocks */
+/** 20. ׳”׳׳“׳¨׳’׳•׳× ג€” staircase ascending blocks */
 export const StepsShape: React.FC = () => (
   <Box>
-    <motion.div initial={{ y: "100%" }} whileInView={{ y: "0%" }} transition={{ duration: 0.5, delay: 0.0 }} className="absolute bottom-0 right-0 w-[25%] h-[25%] bg-primary/20" />
-    <motion.div initial={{ y: "100%" }} whileInView={{ y: "0%" }} transition={{ duration: 0.5, delay: 0.1 }} className="absolute bottom-0 right-[25%] w-[25%] h-[50%] bg-primary/40" />
-    <motion.div initial={{ y: "100%" }} whileInView={{ y: "0%" }} transition={{ duration: 0.5, delay: 0.2 }} className="absolute bottom-0 right-[50%] w-[25%] h-[75%] bg-primary/70" />
-    <motion.div initial={{ y: "100%" }} whileInView={{ y: "0%" }} transition={{ duration: 0.5, delay: 0.3 }} className="absolute bottom-0 right-[75%] w-[25%] h-full bg-primary" />
+    <ShapeMotion initial={{ y: "100%" }} whileInView={{ y: "0%" }} transition={{ duration: 0.5, delay: 0.0 }} className="absolute bottom-0 right-0 w-[25%] h-[25%] bg-primary/20" />
+    <ShapeMotion initial={{ y: "100%" }} whileInView={{ y: "0%" }} transition={{ duration: 0.5, delay: 0.1 }} className="absolute bottom-0 right-[25%] w-[25%] h-[50%] bg-primary/40" />
+    <ShapeMotion initial={{ y: "100%" }} whileInView={{ y: "0%" }} transition={{ duration: 0.5, delay: 0.2 }} className="absolute bottom-0 right-[50%] w-[25%] h-[75%] bg-primary/70" />
+    <ShapeMotion initial={{ y: "100%" }} whileInView={{ y: "0%" }} transition={{ duration: 0.5, delay: 0.3 }} className="absolute bottom-0 right-[75%] w-[25%] h-full bg-primary" />
     <div className="absolute inset-0 flex items-start justify-end p-[8%]">
       <TextBlock className="text-right max-w-[48%]" />
     </div>
   </Box>
 );
 
-/** 21. הליקוי — overlapping circles */
+/** 21. ׳”׳׳™׳§׳•׳™ ג€” overlapping circles */
 export const EclipseShape: React.FC = () => (
   <Box>
-    <motion.div
+    <ShapeMotion
       initial={{ scale: 0 }}
       whileInView={{ scale: 1 }}
       transition={{ duration: 0.8, type: "spring" }}
       className="absolute bg-primary rounded-full"
       style={{ width: "48%", paddingBottom: "48%", top: "18%", right: "10%" }}
     />
-    <motion.div
+    <ShapeMotion
       initial={{ scale: 0 }}
       whileInView={{ scale: 1 }}
       transition={{ duration: 0.8, delay: 0.1, type: "spring" }}
       className="absolute bg-primary/35 rounded-full"
       style={{ width: "48%", paddingBottom: "48%", top: "30%", right: "30%" }}
     />
-    <motion.div
+    <ShapeMotion
       initial={{ scale: 0 }}
       whileInView={{ scale: 1 }}
       transition={{ duration: 0.8, delay: 0.2, type: "spring" }}
@@ -541,25 +555,25 @@ export const EclipseShape: React.FC = () => (
   </Box>
 );
 
-/** 22. הצלב — plus/cross intersection */
+/** 22. ׳”׳¦׳׳‘ ג€” plus/cross intersection */
 export const CrossShape: React.FC = () => (
   <Box>
     {/* Vertical bar */}
-    <motion.div initial={{ scaleY: 0 }} whileInView={{ scaleY: 1 }} transition={{ duration: 0.6 }} className="absolute top-0 bottom-0 left-1/2 -translate-x-1/2 w-[30%] bg-primary/30" />
+    <ShapeMotion initial={{ scaleY: 0 }} whileInView={{ scaleY: 1 }} transition={{ duration: 0.6 }} className="absolute top-0 bottom-0 left-1/2 -translate-x-1/2 w-[30%] bg-primary/30" />
     {/* Horizontal bar */}
-    <motion.div initial={{ scaleX: 0 }} whileInView={{ scaleX: 1 }} transition={{ duration: 0.6, delay: 0.2 }} className="absolute left-0 right-0 top-1/2 -translate-y-1/2 h-[30%] bg-primary" />
+    <ShapeMotion initial={{ scaleX: 0 }} whileInView={{ scaleX: 1 }} transition={{ duration: 0.6, delay: 0.2 }} className="absolute left-0 right-0 top-1/2 -translate-y-1/2 h-[30%] bg-primary" />
     {/* Center square */}
-    <motion.div initial={{ scale: 0, rotate: -90 }} whileInView={{ scale: 1, rotate: 0 }} transition={{ duration: 0.6, delay: 0.4 }} className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[30%] h-[30%] bg-primary" />
+    <ShapeMotion initial={{ scale: 0, rotate: -90 }} whileInView={{ scale: 1, rotate: 0 }} transition={{ duration: 0.6, delay: 0.4 }} className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[30%] h-[30%] bg-primary" />
     <div className="absolute inset-0 flex items-start justify-end p-[8%]">
       <TextBlock className="text-right max-w-[30%]" />
     </div>
   </Box>
 );
 
-/** 23. הפירמידה — triangular pyramid composition */
+/** 23. ׳”׳₪׳™׳¨׳׳™׳“׳” ג€” triangular pyramid composition */
 export const PyramidShape: React.FC = () => (
   <Box>
-    <motion.div
+    <ShapeMotion
       initial={{ y: "100%" }}
       whileInView={{ y: "0%" }}
       transition={{ duration: 0.8, ease: "circOut" }}
@@ -575,19 +589,19 @@ export const PyramidShape: React.FC = () => (
         borderBottom: "52vh solid var(--color-primary)",
       }}
     />
-    <motion.div initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} transition={{ delay: 0.4 }} className="absolute bottom-0 left-0 right-0 h-[12%] bg-primary/20" />
+    <ShapeMotion initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} transition={{ delay: 0.4 }} className="absolute bottom-0 left-0 right-0 h-[12%] bg-primary/20" />
     <div className="absolute inset-0 flex items-start justify-center pt-[8%]">
       <TextBlock className="text-center" align="center" />
     </div>
   </Box>
 );
 
-/** 24. הפיצול — asymmetric offset split */
+/** 24. ׳”׳₪׳™׳¦׳•׳ ג€” asymmetric offset split */
 export const SplitShape: React.FC = () => (
   <Box>
-    <motion.div initial={{ x: "100%" }} whileInView={{ x: "0%" }} transition={{ duration: 0.7 }} className="absolute top-0 right-0 w-[55%] h-[60%] bg-primary" />
-    <motion.div initial={{ x: "-100%" }} whileInView={{ x: "0%" }} transition={{ duration: 0.7 }} className="absolute bottom-0 left-0 w-[55%] h-[60%] bg-primary/40" />
-    <motion.div initial={{ x: "100%" }} whileInView={{ x: "0%" }} transition={{ duration: 0.7, delay: 0.2 }} className="absolute top-[60%] right-0 w-[55%] h-[10%] bg-primary/15" />
+    <ShapeMotion initial={{ x: "100%" }} whileInView={{ x: "0%" }} transition={{ duration: 0.7 }} className="absolute top-0 right-0 w-[55%] h-[60%] bg-primary" />
+    <ShapeMotion initial={{ x: "-100%" }} whileInView={{ x: "0%" }} transition={{ duration: 0.7 }} className="absolute bottom-0 left-0 w-[55%] h-[60%] bg-primary/40" />
+    <ShapeMotion initial={{ x: "100%" }} whileInView={{ x: "0%" }} transition={{ duration: 0.7, delay: 0.2 }} className="absolute top-[60%] right-0 w-[55%] h-[10%] bg-primary/15" />
     <div className="absolute inset-0 flex items-center justify-center">
       <div className="bg-white/90 backdrop-blur-sm p-6 rounded-xl shadow-lg border border-white/20">
         <TextBlock className="text-center" align="center" />
@@ -596,20 +610,20 @@ export const SplitShape: React.FC = () => (
   </Box>
 );
 
-/** 25. האריחים — irregular tile layout */
+/** 25. ׳”׳׳¨׳™׳—׳™׳ ג€” irregular tile layout */
 export const TilesShape: React.FC = () => {
   const full = useContext(FullScreenCtx);
   return (
     <Box className={full ? "p-4 sm:p-6" : "p-2 sm:p-3"}>
       <div className={`grid grid-cols-5 grid-rows-3 w-full h-full ${full ? "gap-3 sm:gap-4" : "gap-1.5 sm:gap-2"}`}>
-        <motion.div initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} transition={{ delay: 0.0 }} className="bg-primary col-span-2 row-span-1" />
-        <motion.div initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} transition={{ delay: 0.1 }} className="bg-primary/20 col-span-1 row-span-2" />
-        <motion.div initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} transition={{ delay: 0.2 }} className="bg-primary/55 col-span-2 row-span-1" />
-        <motion.div initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} transition={{ delay: 0.3 }} className="bg-primary/35 col-span-1 row-span-1" />
-        <motion.div initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} transition={{ delay: 0.4 }} className="bg-primary col-span-1 row-span-2" />
-        <motion.div initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} transition={{ delay: 0.5 }} className="bg-primary/15 col-span-2 row-span-1" />
-        <motion.div initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} transition={{ delay: 0.6 }} className="bg-primary/70 col-span-1 row-span-1" />
-        <motion.div
+        <ShapeMotion initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} transition={{ delay: 0.0 }} className="bg-primary col-span-2 row-span-1" />
+        <ShapeMotion initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} transition={{ delay: 0.1 }} className="bg-primary/20 col-span-1 row-span-2" />
+        <ShapeMotion initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} transition={{ delay: 0.2 }} className="bg-primary/55 col-span-2 row-span-1" />
+        <ShapeMotion initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} transition={{ delay: 0.3 }} className="bg-primary/35 col-span-1 row-span-1" />
+        <ShapeMotion initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} transition={{ delay: 0.4 }} className="bg-primary col-span-1 row-span-2" />
+        <ShapeMotion initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} transition={{ delay: 0.5 }} className="bg-primary/15 col-span-2 row-span-1" />
+        <ShapeMotion initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} transition={{ delay: 0.6 }} className="bg-primary/70 col-span-1 row-span-1" />
+        <ShapeMotion
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.7 }}
@@ -617,67 +631,67 @@ export const TilesShape: React.FC = () => {
         >
           <div>
             <h2 className={`${full ? "text-2xl sm:text-3xl lg:text-4xl" : "text-xs sm:text-sm"} font-extrabold text-white leading-tight drop-shadow-md`}>
-              כותרת ראשית
+              ׳›׳•׳×׳¨׳× ׳¨׳׳©׳™׳×
             </h2>
             <h3 className={`${full ? "text-base sm:text-lg mt-1" : "text-[9px] sm:text-[10px] mt-0.5"} font-semibold text-white/90 drop-shadow-sm`}>
-              כותרת משנית
+              ׳›׳•׳×׳¨׳× ׳׳©׳ ׳™׳×
             </h3>
           </div>
-        </motion.div>
-        <motion.div initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} transition={{ delay: 0.8 }} className="bg-primary/45 col-span-1 row-span-1" />
+        </ShapeMotion>
+        <ShapeMotion initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} transition={{ delay: 0.8 }} className="bg-primary/45 col-span-1 row-span-1" />
       </div>
     </Box>
   );
 };
 
-/** 26. הווילון — side curtain reveal */
+/** 26. ׳”׳•׳•׳™׳׳•׳ ג€” side curtain reveal */
 export const CurtainShape: React.FC = () => (
   <Box>
-    <motion.div initial={{ width: "0%" }} whileInView={{ width: "35%" }} transition={{ duration: 0.8, ease: "easeInOut" }} className="absolute inset-y-0 right-0 bg-primary" />
-    <motion.div initial={{ width: "0%" }} whileInView={{ width: "8%" }} transition={{ duration: 0.8, delay: 0.1, ease: "easeInOut" }} className="absolute inset-y-0 right-[35%] bg-primary/50" />
-    <motion.div initial={{ width: "0%" }} whileInView={{ width: "4%" }} transition={{ duration: 0.8, delay: 0.2, ease: "easeInOut" }} className="absolute inset-y-0 right-[43%] bg-primary/25" />
-    <motion.div initial={{ width: "0%" }} whileInView={{ width: "2%" }} transition={{ duration: 0.8, delay: 0.3, ease: "easeInOut" }} className="absolute inset-y-0 right-[47%] bg-primary/10" />
+    <ShapeMotion initial={{ width: "0%" }} whileInView={{ width: "35%" }} transition={{ duration: 0.8, ease: "easeInOut" }} className="absolute inset-y-0 right-0 bg-primary" />
+    <ShapeMotion initial={{ width: "0%" }} whileInView={{ width: "8%" }} transition={{ duration: 0.8, delay: 0.1, ease: "easeInOut" }} className="absolute inset-y-0 right-[35%] bg-primary/50" />
+    <ShapeMotion initial={{ width: "0%" }} whileInView={{ width: "4%" }} transition={{ duration: 0.8, delay: 0.2, ease: "easeInOut" }} className="absolute inset-y-0 right-[43%] bg-primary/25" />
+    <ShapeMotion initial={{ width: "0%" }} whileInView={{ width: "2%" }} transition={{ duration: 0.8, delay: 0.3, ease: "easeInOut" }} className="absolute inset-y-0 right-[47%] bg-primary/10" />
     <div className="absolute inset-0 flex items-center px-[8%]">
       <TextBlock className="text-right max-w-[32%]" light />
     </div>
   </Box>
 );
 
-/** 27. הגשר — horizontal bridge with supports */
+/** 27. ׳”׳’׳©׳¨ ג€” horizontal bridge with supports */
 export const BridgeShape: React.FC = () => (
   <Box>
     {/* Bridge deck */}
-    <motion.div initial={{ scaleX: 0 }} whileInView={{ scaleX: 1 }} transition={{ duration: 0.8 }} className="absolute left-0 right-0 top-[35%] h-[14%] bg-primary" />
+    <ShapeMotion initial={{ scaleX: 0 }} whileInView={{ scaleX: 1 }} transition={{ duration: 0.8 }} className="absolute left-0 right-0 top-[35%] h-[14%] bg-primary" />
     {/* Left support */}
-    <motion.div initial={{ height: 0 }} whileInView={{ height: "55%" }} transition={{ duration: 0.6, delay: 0.4 }} className="absolute top-[35%] right-[12%] w-[14%] bg-primary/60" />
+    <ShapeMotion initial={{ height: 0 }} whileInView={{ height: "55%" }} transition={{ duration: 0.6, delay: 0.4 }} className="absolute top-[35%] right-[12%] w-[14%] bg-primary/60" />
     {/* Right support */}
-    <motion.div initial={{ height: 0 }} whileInView={{ height: "55%" }} transition={{ duration: 0.6, delay: 0.5 }} className="absolute top-[35%] left-[12%] w-[14%] bg-primary/60" />
+    <ShapeMotion initial={{ height: 0 }} whileInView={{ height: "55%" }} transition={{ duration: 0.6, delay: 0.5 }} className="absolute top-[35%] left-[12%] w-[14%] bg-primary/60" />
     {/* Base */}
-    <motion.div initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} transition={{ delay: 0.6 }} className="absolute bottom-0 left-0 right-0 h-[10%] bg-primary/20" />
+    <ShapeMotion initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} transition={{ delay: 0.6 }} className="absolute bottom-0 left-0 right-0 h-[10%] bg-primary/20" />
     <div className="absolute inset-0 flex items-start justify-center pt-[8%]">
       <TextBlock className="text-center" align="center" />
     </div>
   </Box>
 );
 
-/** 28. הקן — nested rectangles / frames */
+/** 28. ׳”׳§׳ ג€” nested rectangles / frames */
 export const NestShape: React.FC = () => (
   <Box>
-    <motion.div initial={{ opacity: 0, scale: 0.8 }} whileInView={{ opacity: 1, scale: 1 }} transition={{ delay: 0.0 }} className="absolute inset-[5%] border-[3px] border-primary" />
-    <motion.div initial={{ opacity: 0, scale: 0.8 }} whileInView={{ opacity: 1, scale: 1 }} transition={{ delay: 0.1 }} className="absolute inset-[12%] border-[3px] border-primary/55" />
-    <motion.div initial={{ opacity: 0, scale: 0.8 }} whileInView={{ opacity: 1, scale: 1 }} transition={{ delay: 0.2 }} className="absolute inset-[19%] border-[3px] border-primary/30" />
-    <motion.div initial={{ opacity: 0, scale: 0.8 }} whileInView={{ opacity: 1, scale: 1 }} transition={{ delay: 0.3 }} className="absolute inset-[26%] bg-primary/10" />
+    <ShapeMotion initial={{ opacity: 0, scale: 0.8 }} whileInView={{ opacity: 1, scale: 1 }} transition={{ delay: 0.0 }} className="absolute inset-[5%] border-[3px] border-primary" />
+    <ShapeMotion initial={{ opacity: 0, scale: 0.8 }} whileInView={{ opacity: 1, scale: 1 }} transition={{ delay: 0.1 }} className="absolute inset-[12%] border-[3px] border-primary/55" />
+    <ShapeMotion initial={{ opacity: 0, scale: 0.8 }} whileInView={{ opacity: 1, scale: 1 }} transition={{ delay: 0.2 }} className="absolute inset-[19%] border-[3px] border-primary/30" />
+    <ShapeMotion initial={{ opacity: 0, scale: 0.8 }} whileInView={{ opacity: 1, scale: 1 }} transition={{ delay: 0.3 }} className="absolute inset-[26%] bg-primary/10" />
     <div className="absolute inset-0 flex items-center justify-center">
       <TextBlock className="text-center" align="center" />
     </div>
   </Box>
 );
 
-/** 29. הפסגה — mountain peak / chevron */
+/** 29. ׳”׳₪׳¡׳’׳” ג€” mountain peak / chevron */
 export const PeakShape: React.FC = () => (
   <Box>
     {/* Main peak */}
-    <motion.div
+    <ShapeMotion
       initial={{ y: "100%" }}
       whileInView={{ y: "0%" }}
       transition={{ duration: 0.6, ease: "easeOut" }}
@@ -691,7 +705,7 @@ export const PeakShape: React.FC = () => (
       }}
     />
     {/* Secondary peak */}
-    <motion.div
+    <ShapeMotion
       initial={{ y: "100%" }}
       whileInView={{ y: "0%" }}
       transition={{ duration: 0.6, delay: 0.1, ease: "easeOut" }}
@@ -705,7 +719,7 @@ export const PeakShape: React.FC = () => (
       }}
     />
     {/* Small peak */}
-    <motion.div
+    <ShapeMotion
       initial={{ y: "100%" }}
       whileInView={{ y: "0%" }}
       transition={{ duration: 0.6, delay: 0.2, ease: "easeOut" }}
@@ -724,36 +738,36 @@ export const PeakShape: React.FC = () => (
   </Box>
 );
 
-/** 30. המסלול — circular orbital paths */
+/** 30. ׳”׳׳¡׳׳•׳ ג€” circular orbital paths */
 export const OrbitShape: React.FC = () => (
   <Box>
     {/* Outer orbit ring */}
-    <motion.div initial={{ rotate: 0 }} whileInView={{ rotate: 360 }} transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
+    <ShapeMotion initial={{ rotate: 0 }} whileInView={{ rotate: 360 }} transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
       className="absolute border-2 border-primary/25 rounded-full"
       style={{ width: "80%", height: "80%", top: "10%", left: "10%" }}
     />
     {/* Middle orbit ring */}
-    <motion.div initial={{ rotate: 0 }} whileInView={{ rotate: -360 }} transition={{ duration: 15, repeat: Infinity, ease: "linear" }}
+    <ShapeMotion initial={{ rotate: 0 }} whileInView={{ rotate: -360 }} transition={{ duration: 15, repeat: Infinity, ease: "linear" }}
       className="absolute border-2 border-primary/45 rounded-full"
       style={{ width: "55%", height: "55%", top: "22.5%", left: "22.5%" }}
     />
     {/* Inner orbit ring */}
-    <motion.div initial={{ rotate: 0 }} whileInView={{ rotate: 360 }} transition={{ duration: 10, repeat: Infinity, ease: "linear" }}
+    <ShapeMotion initial={{ rotate: 0 }} whileInView={{ rotate: 360 }} transition={{ duration: 10, repeat: Infinity, ease: "linear" }}
       className="absolute border-2 border-primary/70 rounded-full"
       style={{ width: "30%", height: "30%", top: "35%", left: "35%" }}
     />
     {/* Center dot */}
-    <motion.div initial={{ scale: 0 }} whileInView={{ scale: 1 }} className="absolute bg-primary rounded-full"
+    <ShapeMotion initial={{ scale: 0 }} whileInView={{ scale: 1 }} className="absolute bg-primary rounded-full"
       style={{ width: "10%", height: "10%", top: "45%", left: "45%" }}
     />
     {/* Orbiting element 1 */}
-    <motion.div
+    <ShapeMotion
       animate={{ rotate: 360 }}
       transition={{ duration: 8, repeat: Infinity, ease: "linear" }}
       className="absolute w-full h-full top-0 left-0 pointer-events-none"
     >
       <div className="absolute bg-primary rounded-full" style={{ width: "6%", paddingBottom: "6%", top: "8%", left: "47%" }} />
-    </motion.div>
+    </ShapeMotion>
 
     <div className="absolute inset-0 flex items-end justify-end p-[8%]">
       <TextBlock className="text-right max-w-[40%]" />
@@ -761,10 +775,10 @@ export const OrbitShape: React.FC = () => (
   </Box>
 );
 
-/** 31. המשושה — Hexagon mask */
+/** 31. ׳”׳׳©׳•׳©׳” ג€” Hexagon mask */
 export const HexagonShape: React.FC = () => (
   <Box>
-    <motion.div
+    <ShapeMotion
       initial={{ scale: 0, opacity: 0 }}
       whileInView={{ scale: 1, opacity: 1 }}
       transition={{ duration: 0.8, type: "spring" }}
@@ -777,7 +791,7 @@ export const HexagonShape: React.FC = () => (
         clipPath: "polygon(25% 0%, 75% 0%, 100% 50%, 75% 100%, 25% 100%, 0% 50%)",
       }}
     />
-    <motion.div
+    <ShapeMotion
       initial={{ scale: 0, opacity: 0 }}
       whileInView={{ scale: 1, opacity: 1 }}
       transition={{ duration: 0.8, delay: 0.2, type: "spring" }}
@@ -797,21 +811,21 @@ export const HexagonShape: React.FC = () => (
   </Box>
 );
 
-/** 32. הקולנוע — Cinematic widescreen */
+/** 32. ׳”׳§׳•׳׳ ׳•׳¢ ג€” Cinematic widescreen */
 export const CinemaShape: React.FC = () => (
   <Box className="bg-black">
-    <motion.div initial={{ height: "50%" }} whileInView={{ height: "15%" }} transition={{ duration: 1, ease: "easeInOut" }} className="absolute inset-x-0 top-0 bg-black z-10" />
-    <motion.div initial={{ height: "50%" }} whileInView={{ height: "15%" }} transition={{ duration: 1, ease: "easeInOut" }} className="absolute inset-x-0 bottom-0 bg-black z-10" />
-    <motion.div initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} transition={{ delay: 0.8, duration: 0.5 }} className="absolute inset-0 top-[15%] bottom-[15%] bg-primary/80 flex items-center justify-center">
+    <ShapeMotion initial={{ height: "50%" }} whileInView={{ height: "15%" }} transition={{ duration: 1, ease: "easeInOut" }} className="absolute inset-x-0 top-0 bg-black z-10" />
+    <ShapeMotion initial={{ height: "50%" }} whileInView={{ height: "15%" }} transition={{ duration: 1, ease: "easeInOut" }} className="absolute inset-x-0 bottom-0 bg-black z-10" />
+    <ShapeMotion initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} transition={{ delay: 0.8, duration: 0.5 }} className="absolute inset-0 top-[15%] bottom-[15%] bg-primary/80 flex items-center justify-center">
       <TextBlock className="text-center max-w-[60%]" light align="center" />
-    </motion.div>
+    </ShapeMotion>
   </Box>
 );
 
-/** 33. האוריגמי — Folded paper look */
+/** 33. ׳”׳׳•׳¨׳™׳’׳׳™ ג€” Folded paper look */
 export const OrigamiShape: React.FC = () => (
   <Box>
-    <motion.div
+    <ShapeMotion
       initial={{ rotateY: 90, opacity: 0 }}
       whileInView={{ rotateY: 0, opacity: 1 }}
       transition={{ duration: 0.8 }}
@@ -824,7 +838,7 @@ export const OrigamiShape: React.FC = () => (
         clipPath: "polygon(0 0, 100% 0, 0 100%)",
       }}
     />
-    <motion.div
+    <ShapeMotion
       initial={{ rotateX: 90, opacity: 0 }}
       whileInView={{ rotateX: 0, opacity: 1 }}
       transition={{ duration: 0.8, delay: 0.2 }}
@@ -837,7 +851,7 @@ export const OrigamiShape: React.FC = () => (
         clipPath: "polygon(100% 0, 100% 100%, 0 100%)",
       }}
     />
-    <motion.div
+    <ShapeMotion
       initial={{ rotateY: -90, opacity: 0 }}
       whileInView={{ rotateY: 0, opacity: 1 }}
       transition={{ duration: 0.8, delay: 0.4 }}
@@ -850,7 +864,7 @@ export const OrigamiShape: React.FC = () => (
         clipPath: "polygon(0 0, 100% 100%, 0 100%)",
       }}
     />
-    <motion.div
+    <ShapeMotion
       initial={{ rotateX: -90, opacity: 0 }}
       whileInView={{ rotateX: 0, opacity: 1 }}
       transition={{ duration: 0.8, delay: 0.6 }}
@@ -869,10 +883,10 @@ export const OrigamiShape: React.FC = () => (
   </Box>
 );
 
-/** 34. הריחוף — Floating card with shadow */
+/** 34. ׳”׳¨׳™׳—׳•׳£ ג€” Floating card with shadow */
 export const FloatShape: React.FC = () => (
   <Box className="bg-slate-50">
-    <motion.div
+    <ShapeMotion
       initial={{ y: 0 }}
       animate={{ y: [0, -15, 0] }}
       transition={{ repeat: Infinity, duration: 4, ease: "easeInOut" }}
@@ -880,25 +894,25 @@ export const FloatShape: React.FC = () => (
     >
       <div className="absolute top-0 left-0 w-full h-2 bg-primary" />
       <TextBlock className="text-center" align="center" />
-    </motion.div>
+    </ShapeMotion>
   </Box>
 );
 
-/** 35. הפרוסות — Glitch/Slice effect */
+/** 35. ׳”׳₪׳¨׳•׳¡׳•׳× ג€” Glitch/Slice effect */
 export const SlicesShape: React.FC = () => (
   <Box>
     <div className="flex w-full h-full">
       <div className="w-1/4 h-full bg-primary/10 relative overflow-hidden">
-        <motion.div initial={{ y: "100%" }} whileInView={{ y: 16 }} transition={{ duration: 0.5, delay: 0.0 }} className="absolute inset-0 bg-primary/20" />
+        <ShapeMotion initial={{ y: "100%" }} whileInView={{ y: 16 }} transition={{ duration: 0.5, delay: 0.0 }} className="absolute inset-0 bg-primary/20" />
       </div>
       <div className="w-1/4 h-full bg-primary/20 relative overflow-hidden">
-        <motion.div initial={{ y: "-100%" }} whileInView={{ y: -8 }} transition={{ duration: 0.5, delay: 0.1 }} className="absolute inset-0 bg-primary/40" />
+        <ShapeMotion initial={{ y: "-100%" }} whileInView={{ y: -8 }} transition={{ duration: 0.5, delay: 0.1 }} className="absolute inset-0 bg-primary/40" />
       </div>
       <div className="w-1/4 h-full bg-primary/30 relative overflow-hidden">
-        <motion.div initial={{ y: "100%" }} whileInView={{ y: 24 }} transition={{ duration: 0.5, delay: 0.2 }} className="absolute inset-0 bg-primary/60" />
+        <ShapeMotion initial={{ y: "100%" }} whileInView={{ y: 24 }} transition={{ duration: 0.5, delay: 0.2 }} className="absolute inset-0 bg-primary/60" />
       </div>
       <div className="w-1/4 h-full bg-primary/40 relative overflow-hidden">
-        <motion.div initial={{ y: "-100%" }} whileInView={{ y: -12 }} transition={{ duration: 0.5, delay: 0.3 }} className="absolute inset-0 bg-primary/80" />
+        <ShapeMotion initial={{ y: "-100%" }} whileInView={{ y: -12 }} transition={{ duration: 0.5, delay: 0.3 }} className="absolute inset-0 bg-primary/80" />
       </div>
     </div>
     <div className="absolute inset-0 flex items-center justify-center mix-blend-multiply">
@@ -907,26 +921,26 @@ export const SlicesShape: React.FC = () => (
   </Box>
 );
 
-/** 36. המיקוד — Blur focus center */
+/** 36. ׳”׳׳™׳§׳•׳“ ג€” Blur focus center */
 export const FocusShape: React.FC = () => (
   <Box>
-    <motion.div initial={{ filter: "blur(0px)" }} whileInView={{ filter: "blur(4px)" }} transition={{ duration: 1 }} className="absolute inset-0 bg-primary/10 backdrop-blur-sm" />
-    <motion.div
+    <ShapeMotion initial={{ filter: "blur(0px)" }} whileInView={{ filter: "blur(4px)" }} transition={{ duration: 1 }} className="absolute inset-0 bg-primary/10 backdrop-blur-sm" />
+    <ShapeMotion
       initial={{ scale: 1.5, opacity: 0 }}
       whileInView={{ scale: 1, opacity: 1 }}
       transition={{ duration: 0.6, ease: "easeOut" }}
       className="absolute inset-[20%] bg-white rounded-full shadow-lg z-10 flex items-center justify-center border-4 border-primary/20"
     >
       <TextBlock className="text-center max-w-[70%]" align="center" />
-    </motion.div>
+    </ShapeMotion>
   </Box>
 );
 
-/** 37. הספקטרום — Gradient spectrum */
+/** 37. ׳”׳¡׳₪׳§׳˜׳¨׳•׳ ג€” Gradient spectrum */
 export const SpectrumShape: React.FC = () => (
   <Box>
-    <motion.div initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} transition={{ duration: 1.5 }} className="absolute inset-0 bg-gradient-to-tr from-primary via-primary/40 to-white" />
-    <motion.div
+    <ShapeMotion initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} transition={{ duration: 1.5 }} className="absolute inset-0 bg-gradient-to-tr from-primary via-primary/40 to-white" />
+    <ShapeMotion
       animate={{ opacity: [0.5, 0.8, 0.5], scale: [1, 1.1, 1] }}
       transition={{ duration: 4, repeat: Infinity }}
       className="absolute inset-0 bg-gradient-to-bl from-transparent via-white/30 to-primary/20 mix-blend-overlay"
@@ -937,36 +951,36 @@ export const SpectrumShape: React.FC = () => (
   </Box>
 );
 
-/** 38. השער — Portal frames */
+/** 38. ׳”׳©׳¢׳¨ ג€” Portal frames */
 export const PortalShape: React.FC = () => (
   <Box>
-    <motion.div initial={{ scale: 0 }} whileInView={{ scale: 1 }} transition={{ duration: 0.5, delay: 0.0 }} className="absolute inset-0 bg-primary/5" />
-    <motion.div initial={{ scale: 0 }} whileInView={{ scale: 1 }} transition={{ duration: 0.5, delay: 0.1 }} className="absolute inset-[10%] border border-primary/20" />
-    <motion.div initial={{ scale: 0 }} whileInView={{ scale: 1 }} transition={{ duration: 0.5, delay: 0.2 }} className="absolute inset-[20%] border border-primary/40" />
-    <motion.div initial={{ scale: 0 }} whileInView={{ scale: 1 }} transition={{ duration: 0.5, delay: 0.3 }} className="absolute inset-[30%] border border-primary/60" />
-    <motion.div
+    <ShapeMotion initial={{ scale: 0 }} whileInView={{ scale: 1 }} transition={{ duration: 0.5, delay: 0.0 }} className="absolute inset-0 bg-primary/5" />
+    <ShapeMotion initial={{ scale: 0 }} whileInView={{ scale: 1 }} transition={{ duration: 0.5, delay: 0.1 }} className="absolute inset-[10%] border border-primary/20" />
+    <ShapeMotion initial={{ scale: 0 }} whileInView={{ scale: 1 }} transition={{ duration: 0.5, delay: 0.2 }} className="absolute inset-[20%] border border-primary/40" />
+    <ShapeMotion initial={{ scale: 0 }} whileInView={{ scale: 1 }} transition={{ duration: 0.5, delay: 0.3 }} className="absolute inset-[30%] border border-primary/60" />
+    <ShapeMotion
       initial={{ scale: 0, rotate: 180 }}
       whileInView={{ scale: 1, rotate: 0 }}
       transition={{ duration: 0.8, delay: 0.4 }}
       className="absolute inset-[40%] bg-primary shadow-lg flex items-center justify-center"
     >
-      <span className="text-white text-4xl font-bold">↵</span>
-    </motion.div>
+      <span className="text-white text-4xl font-bold">ג†µ</span>
+    </ShapeMotion>
     <div className="absolute inset-x-0 bottom-[10%] text-center">
       <TextBlock className="inline-block" align="center" />
     </div>
   </Box>
 );
 
-/** 39. הסימטריה — Mirror split */
+/** 39. ׳”׳¡׳™׳׳˜׳¨׳™׳” ג€” Mirror split */
 export const SymmetryShape: React.FC = () => (
   <Box>
-    <motion.div initial={{ x: "-100%" }} whileInView={{ x: "0%" }} transition={{ duration: 0.7, ease: "circOut" }} className="absolute inset-y-0 left-0 w-1/2 bg-primary flex items-center justify-end pr-4">
+    <ShapeMotion initial={{ x: "-100%" }} whileInView={{ x: "0%" }} transition={{ duration: 0.7, ease: "circOut" }} className="absolute inset-y-0 left-0 w-1/2 bg-primary flex items-center justify-end pr-4">
       <div className="w-16 h-16 border-4 border-white/30 rounded-full" />
-    </motion.div>
-    <motion.div initial={{ x: "100%" }} whileInView={{ x: "0%" }} transition={{ duration: 0.7, ease: "circOut" }} className="absolute inset-y-0 right-0 w-1/2 bg-primary/10 flex items-center justify-start pl-4">
+    </ShapeMotion>
+    <ShapeMotion initial={{ x: "100%" }} whileInView={{ x: "0%" }} transition={{ duration: 0.7, ease: "circOut" }} className="absolute inset-y-0 right-0 w-1/2 bg-primary/10 flex items-center justify-start pl-4">
       <div className="w-16 h-16 border-4 border-primary/30 rounded-full" />
-    </motion.div>
+    </ShapeMotion>
     <div className="absolute inset-0 flex items-center justify-center pt-[40%]">
       <div className="bg-white/90 backdrop-blur-sm p-6 rounded-xl shadow-lg border border-white/20">
         <TextBlock className="text-center" align="center" />
@@ -975,7 +989,7 @@ export const SymmetryShape: React.FC = () => (
   </Box>
 );
 
-/** 40. המטריצה — Tech/Code look */
+/** 40. ׳”׳׳˜׳¨׳™׳¦׳” ג€” Tech/Code look */
 export const MatrixShape: React.FC = () => {
   const full = useContext(FullScreenCtx);
   return (
@@ -983,7 +997,7 @@ export const MatrixShape: React.FC = () => {
       <div className="absolute inset-0 opacity-20"
         style={{ backgroundImage: 'radial-gradient(var(--color-primary) 1px, transparent 1px)', backgroundSize: '10px 10px' }}
       />
-      <motion.div
+      <ShapeMotion
         initial={{ height: 0, opacity: 0 }}
         whileInView={{ height: "80%", opacity: 1 }}
         transition={{ duration: 0.8 }}
@@ -991,12 +1005,12 @@ export const MatrixShape: React.FC = () => {
       >
         <h2 className={`${full ? "text-5xl" : "text-xl"} font-mono text-primary mb-2`}>&lt;Code /&gt;</h2>
         <TextBlock className="text-left font-mono" light align="left" />
-      </motion.div>
+      </ShapeMotion>
     </Box>
   );
 };
 
-/* ════════════════════════════════════════════════════════════ */
+/* ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג• */
 
 export const shapeMap: Record<string, React.FC> = {
   cube: CubeShape,
@@ -1040,3 +1054,5 @@ export const shapeMap: Record<string, React.FC> = {
   symmetry: SymmetryShape,
   matrix: MatrixShape,
 };
+
+
