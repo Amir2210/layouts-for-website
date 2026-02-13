@@ -23,9 +23,9 @@ const TextBlock: React.FC<{
     ? "text-base sm:text-lg lg:text-xl leading-8 max-w-[600px]"
     : "text-[9px] sm:text-[10px] leading-tight max-w-[180px]";
 
-  const textColor = light ? "text-white" : "text-slate-900";
-  const subColor = light ? "text-white/90" : "text-slate-600";
-  const descColor = light ? "text-white/80" : "text-slate-500";
+  const textColor = light ? "text-white" : "text-slate-950";
+  const subColor = light ? "text-white/95" : "text-slate-700";
+  const descColor = light ? "text-white/90" : "text-slate-600";
 
   // Text shadow for light text to pop on any bg
   const shadowClass = light ? "drop-shadow-md" : "";
@@ -312,7 +312,7 @@ export const GradientShape: React.FC = () => (
     <motion.div initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} transition={{ delay: 0.3 }} className="absolute inset-y-0 right-[60%] w-[20%] bg-primary/22" />
     <motion.div initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} transition={{ delay: 0.4 }} className="absolute inset-y-0 left-0 w-[20%] bg-primary/8" />
     <div className="absolute inset-0 flex items-center px-[8%]">
-      <TextBlock light className="text-right max-w-[42%]" />
+      <TextBlock light className="text-right max-w-[35%]" />
     </div>
   </Box>
 );
@@ -588,7 +588,9 @@ export const SplitShape: React.FC = () => (
     <motion.div initial={{ x: "-100%" }} whileInView={{ x: "0%" }} transition={{ duration: 0.7 }} className="absolute bottom-0 left-0 w-[55%] h-[60%] bg-primary/40" />
     <motion.div initial={{ x: "100%" }} whileInView={{ x: "0%" }} transition={{ duration: 0.7, delay: 0.2 }} className="absolute top-[60%] right-0 w-[55%] h-[10%] bg-primary/15" />
     <div className="absolute inset-0 flex items-center justify-center">
-      <TextBlock className="text-center" align="center" />
+      <div className="bg-white/90 backdrop-blur-sm p-6 rounded-xl shadow-lg border border-white/20">
+        <TextBlock className="text-center" align="center" />
+      </div>
     </div>
   </Box>
 );
@@ -965,7 +967,9 @@ export const SymmetryShape: React.FC = () => (
       <div className="w-16 h-16 border-4 border-primary/30 rounded-full" />
     </motion.div>
     <div className="absolute inset-0 flex items-center justify-center pt-[40%]">
-      <TextBlock className="text-center" align="center" />
+      <div className="bg-white/90 backdrop-blur-sm p-6 rounded-xl shadow-lg border border-white/20">
+        <TextBlock className="text-center" align="center" />
+      </div>
     </div>
   </Box>
 );
