@@ -514,19 +514,56 @@ export default function App() {
   const [selected, setSelected] = useState<LayoutItem | null>(null);
   const prefersReduced = useReducedMotion();
 
+  // Ref to store the scroll position before navigating to detail view
+  const scrollPositionRef = useRef(0);
+
   const getItemFromHash = useCallback(() => {
     const hash = window.location.hash.replace("#", "");
     return layouts.find((l) => l.id === hash) || null;
   }, []);
 
   useEffect(() => {
-    setSelected(getItemFromHash());
-    const onHashChange = () => setSelected(getItemFromHash());
+    const newItem = getItemFromHash();
+
+    // If we are opening a detail item (newItem is present), save current scroll
+    if (newItem && !selected) {
+      scrollPositionRef.current = window.scrollY;
+    }
+
+    setSelected(newItem);
+
+    const onHashChange = () => {
+      const nextItem = getItemFromHash();
+
+      // If navigating TO detail view
+      if (nextItem && !selected) {
+        scrollPositionRef.current = window.scrollY;
+      }
+
+      setSelected(nextItem);
+    };
+
     window.addEventListener("hashchange", onHashChange);
     return () => window.removeEventListener("hashchange", onHashChange);
-  }, [getItemFromHash]);
+  }, [getItemFromHash, selected]); // Added selected as dependency to know transition state
+
+  // Restore scroll when returning to Main Page
+  useEffect(() => {
+    if (!selected) {
+      // Small timeout to allow the Main Page to mount and layout
+      const timer = setTimeout(() => {
+        window.scrollTo({ top: scrollPositionRef.current, behavior: "instant" });
+      }, 50); // 50ms is usually enough for React to render
+      return () => clearTimeout(timer);
+    } else {
+      // When entering detail page, scroll to top
+      window.scrollTo(0, 0);
+    }
+  }, [selected]);
 
   const openDetail = (item: LayoutItem) => {
+    // Save scroll explicitly before hash change for robustness
+    scrollPositionRef.current = window.scrollY;
     window.location.hash = item.id;
   };
 
