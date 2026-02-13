@@ -191,16 +191,16 @@ function HeroSection({
     prefersReduced
       ? { initial: {}, animate: { opacity: 1 }, transition: { duration: 0 } }
       : {
-          initial: { opacity: 0, y: 24 },
-          animate: { opacity: 1, y: 0 },
-          transition: { duration: 0.6, delay, ease: "easeOut" as const },
-        };
+        initial: { opacity: 0, y: 24 },
+        animate: { opacity: 1, y: 0 },
+        transition: { duration: 0.6, delay, ease: "easeOut" as const },
+      };
 
   return (
     <section
       ref={sectionRef}
       className="relative"
-      style={{ height: "500vh" }}
+      style={{ height: "350vh" }}
       aria-labelledby="hero-heading"
     >
       <div className="sticky top-0 h-screen w-full">

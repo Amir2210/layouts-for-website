@@ -596,6 +596,197 @@ export const OrbitShape: React.FC = () => (
   </Box>
 );
 
+/** 31. המשושה — Hexagon mask */
+export const HexagonShape: React.FC = () => (
+  <Box>
+    <div
+      className="absolute bg-primary"
+      style={{
+        width: "60%",
+        height: "60%",
+        top: "20%",
+        left: "20%",
+        clipPath: "polygon(25% 0%, 75% 0%, 100% 50%, 75% 100%, 25% 100%, 0% 50%)",
+      }}
+    />
+    <div
+      className="absolute bg-primary/20"
+      style={{
+        width: "70%",
+        height: "70%",
+        top: "15%",
+        left: "15%",
+        clipPath: "polygon(25% 0%, 75% 0%, 100% 50%, 75% 100%, 25% 100%, 0% 50%)",
+        zIndex: -1,
+      }}
+    />
+    <div className="absolute inset-0 flex items-center justify-center">
+      <TextBlock className="text-center" light />
+    </div>
+  </Box>
+);
+
+/** 32. הקולנוע — Cinematic widescreen */
+export const CinemaShape: React.FC = () => (
+  <Box className="bg-black">
+    <div className="absolute inset-x-0 top-0 h-[15%] bg-black z-10" />
+    <div className="absolute inset-x-0 bottom-0 h-[15%] bg-black z-10" />
+    <div className="absolute inset-0 top-[15%] bottom-[15%] bg-primary/80 flex items-center justify-center">
+      <TextBlock className="text-center max-w-[60%]" light />
+    </div>
+  </Box>
+);
+
+/** 33. האוריגמי — Folded paper look */
+export const OrigamiShape: React.FC = () => (
+  <Box>
+    <div
+      className="absolute bg-primary"
+      style={{
+        width: "50%",
+        height: "50%",
+        top: "10%",
+        left: "10%",
+        clipPath: "polygon(0 0, 100% 0, 0 100%)",
+      }}
+    />
+    <div
+      className="absolute bg-primary/70"
+      style={{
+        width: "50%",
+        height: "50%",
+        top: "10%",
+        left: "10%",
+        clipPath: "polygon(100% 0, 100% 100%, 0 100%)",
+      }}
+    />
+    <div
+      className="absolute bg-primary/40"
+      style={{
+        width: "50%",
+        height: "50%",
+        bottom: "10%",
+        right: "10%",
+        clipPath: "polygon(0 0, 100% 100%, 0 100%)",
+      }}
+    />
+    <div
+      className="absolute bg-primary/20"
+      style={{
+        width: "50%",
+        height: "50%",
+        bottom: "10%",
+        right: "10%",
+        clipPath: "polygon(0 0, 100% 0, 100% 100%)",
+      }}
+    />
+    <div className="absolute inset-0 flex items-center justify-center">
+      <TextBlock className="text-center" />
+    </div>
+  </Box>
+);
+
+/** 34. הריחוף — Floating card with shadow */
+export const FloatShape: React.FC = () => (
+  <Box className="bg-slate-50">
+    <div className="absolute inset-[15%] bg-white shadow-2xl rounded-xl border border-slate-100 flex items-center justify-center p-6">
+      <div className="absolute top-0 left-0 w-full h-2 bg-primary" />
+      <TextBlock className="text-center" />
+    </div>
+  </Box>
+);
+
+/** 35. הפרוסות — Glitch/Slice effect */
+export const SlicesShape: React.FC = () => (
+  <Box>
+    <div className="flex w-full h-full">
+      <div className="w-1/4 h-full bg-primary/10 relative overflow-hidden">
+        <div className="absolute inset-0 bg-primary/20 translate-y-4" />
+      </div>
+      <div className="w-1/4 h-full bg-primary/20 relative overflow-hidden">
+        <div className="absolute inset-0 bg-primary/40 -translate-y-2" />
+      </div>
+      <div className="w-1/4 h-full bg-primary/30 relative overflow-hidden">
+        <div className="absolute inset-0 bg-primary/60 translate-y-6" />
+      </div>
+      <div className="w-1/4 h-full bg-primary/40 relative overflow-hidden">
+        <div className="absolute inset-0 bg-primary/80 -translate-y-3" />
+      </div>
+    </div>
+    <div className="absolute inset-0 flex items-center justify-center mix-blend-multiply">
+      <TextBlock className="text-center" />
+    </div>
+  </Box>
+);
+
+/** 36. המיקוד — Blur focus center */
+export const FocusShape: React.FC = () => (
+  <Box>
+    <div className="absolute inset-0 bg-primary/10 backdrop-blur-sm" />
+    <div className="absolute inset-[20%] bg-white rounded-full shadow-lg z-10 flex items-center justify-center border-4 border-primary/20">
+      <TextBlock className="text-center max-w-[70%]" />
+    </div>
+  </Box>
+);
+
+/** 37. הספקטרום — Gradient spectrum */
+export const SpectrumShape: React.FC = () => (
+  <Box>
+    <div className="absolute inset-0 bg-gradient-to-tr from-primary via-primary/40 to-white" />
+    <div className="absolute inset-0 bg-gradient-to-bl from-transparent via-white/30 to-primary/20 mix-blend-overlay" />
+    <div className="absolute inset-0 flex items-end p-[10%]">
+      <TextBlock className="text-right" light />
+    </div>
+  </Box>
+);
+
+/** 38. השער — Portal frames */
+export const PortalShape: React.FC = () => (
+  <Box>
+    <div className="absolute inset-0 bg-primary/5" />
+    <div className="absolute inset-[10%] border border-primary/20" />
+    <div className="absolute inset-[20%] border border-primary/40" />
+    <div className="absolute inset-[30%] border border-primary/60" />
+    <div className="absolute inset-[40%] bg-primary shadow-lg flex items-center justify-center">
+      <span className="text-white text-4xl font-bold">↵</span>
+    </div>
+    <div className="absolute inset-x-0 bottom-[10%] text-center">
+      <TextBlock className="inline-block" />
+    </div>
+  </Box>
+);
+
+/** 39. הסימטריה — Mirror split */
+export const SymmetryShape: React.FC = () => (
+  <Box>
+    <div className="absolute inset-y-0 left-0 w-1/2 bg-primary flex items-center justify-end pr-4">
+      <div className="w-16 h-16 border-4 border-white/30 rounded-full" />
+    </div>
+    <div className="absolute inset-y-0 right-0 w-1/2 bg-primary/10 flex items-center justify-start pl-4">
+      <div className="w-16 h-16 border-4 border-primary/30 rounded-full" />
+    </div>
+    <div className="absolute inset-0 flex items-center justify-center pt-[40%]">
+      <TextBlock className="text-center" />
+    </div>
+  </Box>
+);
+
+/** 40. המטריצה — Tech/Code look */
+export const MatrixShape: React.FC = () => {
+  const full = useContext(FullScreenCtx);
+  return (
+    <Box className="bg-slate-900 text-primary-content">
+      <div className="absolute inset-0 opacity-20"
+        style={{ backgroundImage: 'radial-gradient(var(--color-primary) 1px, transparent 1px)', backgroundSize: '10px 10px' }}
+      />
+      <div className="absolute top-[10%] left-[10%] border-l-2 border-primary h-[80%] pl-4 flex flex-col justify-center">
+        <h2 className={`${full ? "text-5xl" : "text-xl"} font-mono text-primary mb-2`}>&lt;Code /&gt;</h2>
+        <TextBlock className="text-left font-mono" light />
+      </div>
+    </Box>
+  );
+};
+
 /* ════════════════════════════════════════════════════════════ */
 
 export const shapeMap: Record<string, React.FC> = {
@@ -629,4 +820,14 @@ export const shapeMap: Record<string, React.FC> = {
   nest: NestShape,
   peak: PeakShape,
   orbit: OrbitShape,
+  hexagon: HexagonShape,
+  cinema: CinemaShape,
+  origami: OrigamiShape,
+  float: FloatShape,
+  slices: SlicesShape,
+  focus: FocusShape,
+  spectrum: SpectrumShape,
+  portal: PortalShape,
+  symmetry: SymmetryShape,
+  matrix: MatrixShape,
 };
