@@ -201,10 +201,10 @@ export const GridShape: React.FC = () => {
         >
           <div>
             <h2 className={`${full ? "text-3xl sm:text-4xl lg:text-5xl" : "text-sm sm:text-base"} font-extrabold text-white leading-tight drop-shadow-md`}>
-              ׳›׳•׳×׳¨׳× ׳¨׳׳©׳™׳×
+              כותרת ראשית
             </h2>
             <h3 className={`${full ? "text-lg sm:text-xl lg:text-2xl mt-2" : "text-[10px] sm:text-xs mt-0.5"} font-semibold text-white/90 drop-shadow-sm`}>
-              ׳›׳•׳×׳¨׳× ׳׳©׳ ׳™׳×
+              כותרת משנית
             </h3>
           </div>
         </ShapeMotion>
@@ -351,10 +351,10 @@ export const MosaicShape: React.FC = () => {
         >
           <div>
             <h2 className={`${full ? "text-2xl sm:text-3xl lg:text-4xl" : "text-xs sm:text-sm"} font-extrabold text-white leading-tight drop-shadow-md`}>
-              ׳›׳•׳×׳¨׳× ׳¨׳׳©׳™׳×
+              כותרת ראשית
             </h2>
             <h3 className={`${full ? "text-base sm:text-lg mt-1" : "text-[9px] sm:text-[10px] mt-0.5"} font-semibold text-white/90 drop-shadow-sm`}>
-              ׳›׳•׳×׳¨׳× ׳׳©׳ ׳™׳×
+              כותרת משנית
             </h3>
           </div>
         </ShapeMotion>
@@ -631,10 +631,10 @@ export const TilesShape: React.FC = () => {
         >
           <div>
             <h2 className={`${full ? "text-2xl sm:text-3xl lg:text-4xl" : "text-xs sm:text-sm"} font-extrabold text-white leading-tight drop-shadow-md`}>
-              ׳›׳•׳×׳¨׳× ׳¨׳׳©׳™׳×
+              כותרת ראשית
             </h2>
             <h3 className={`${full ? "text-base sm:text-lg mt-1" : "text-[9px] sm:text-[10px] mt-0.5"} font-semibold text-white/90 drop-shadow-sm`}>
-              ׳›׳•׳×׳¨׳× ׳׳©׳ ׳™׳×
+              כותרת משנית
             </h3>
           </div>
         </ShapeMotion>
@@ -964,7 +964,7 @@ export const PortalShape: React.FC = () => (
       transition={{ duration: 0.8, delay: 0.4 }}
       className="absolute inset-[40%] bg-primary shadow-lg flex items-center justify-center"
     >
-      <span className="text-white text-4xl font-bold">ג†µ</span>
+      <span className="text-white text-4xl font-bold">↩</span>
     </ShapeMotion>
     <div className="absolute inset-x-0 bottom-[10%] text-center">
       <TextBlock className="inline-block" align="center" />
