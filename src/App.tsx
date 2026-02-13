@@ -248,7 +248,7 @@ function HeroSection({
             >
               תבניות עיצוב
               <br />
-              <span className="text-gold-gradient">ברמה אחרת</span>
+              <span className="text-white">ברמה אחרת</span>
             </motion.h1>
 
             {/* Subtitle */}

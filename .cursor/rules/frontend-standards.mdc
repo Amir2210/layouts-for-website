@@ -1,0 +1,95 @@
+---
+description: Core frontend standards — semantic HTML, 8px grid, accessible animations, CSS variable theming
+alwaysApply: true
+---
+
+# Frontend Standards
+
+## 1. Semantic HTML5
+
+Use semantic elements instead of generic `<div>` wrappers for better accessibility and SEO.
+
+```tsx
+// ❌ BAD
+<div className="header">…</div>
+<div className="main-content">…</div>
+<div className="footer">…</div>
+
+// ✅ GOOD
+<header>…</header>
+<main>…</main>
+<footer>…</footer>
+```
+
+Prefer `<section>`, `<article>`, `<nav>`, `<aside>`, `<figure>`, `<figcaption>`, `<time>`, and `<address>` where they convey meaning. Only use `<div>` for purely presentational grouping.
+
+## 2. 8px Grid Spacing
+
+All spacing (margin, padding, gap) must be multiples of **8px** (0.5rem). Use Tailwind's corresponding values:
+
+| Pixels | Tailwind | rem   |
+|--------|----------|-------|
+| 8      | `2`      | 0.5   |
+| 16     | `4`      | 1     |
+| 24     | `6`      | 1.5   |
+| 32     | `8`      | 2     |
+| 40     | `10`     | 2.5   |
+| 48     | `12`     | 3     |
+
+```tsx
+// ❌ BAD — 20px is not on the 8px grid
+<div className="p-5 gap-7">…</div>
+
+// ✅ GOOD — 16px and 24px are on the grid
+<div className="p-4 gap-6">…</div>
+```
+
+## 3. Reduced-Motion Accessibility
+
+All animations must be disabled or toned down when the user prefers reduced motion.
+
+**CSS / Tailwind:**
+```css
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+```
+
+**Framer Motion (used in this project):**
+```tsx
+import { useReducedMotion } from "framer-motion";
+
+function Component() {
+  const prefersReduced = useReducedMotion();
+  return (
+    <motion.div
+      animate={{ opacity: 1, y: prefersReduced ? 0 : -12 }}
+      transition={prefersReduced ? { duration: 0 } : { duration: 0.4 }}
+    />
+  );
+}
+```
+
+## 4. CSS Variables for Colors
+
+Define all colors as CSS custom properties (via Tailwind `@theme` or `:root`) so themes can be swapped by reassigning variables. Never use raw hex/rgb values inline or in class utilities.
+
+```css
+/* ✅ Define in index.css @theme block */
+@theme {
+  --color-primary: #2845D6;
+  --color-surface: #0a0a1a;
+  --color-text: #e2e8f0;
+}
+```
+
+```tsx
+// ❌ BAD — hardcoded color
+<div className="bg-[#0a0a1a] text-[#e2e8f0]">…</div>
+
+// ✅ GOOD — uses theme variable
+<div className="bg-surface text-text">…</div>
+```
