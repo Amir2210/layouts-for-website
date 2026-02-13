@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback, useRef } from "react";
+import { useState, useEffect, useCallback, useRef, useLayoutEffect } from "react";
 import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
 import { ArrowRight, Sparkles, ChevronDown, Crown } from "lucide-react";
 import { layouts, type LayoutItem } from "./data";
@@ -406,10 +406,18 @@ function LuxuryFooter() {
 function MainPage({
   onSelect,
   prefersReduced,
+  initialScroll = 0,
 }: {
   onSelect: (item: LayoutItem) => void;
   prefersReduced: boolean | null;
+  initialScroll?: number;
 }) {
+  useLayoutEffect(() => {
+    if (initialScroll > 0) {
+      window.scrollTo({ top: initialScroll, behavior: "instant" });
+    }
+  }, [initialScroll]);
+
   return (
     <motion.main
       className="min-h-screen bg-transparent font-heebo"
@@ -523,6 +531,13 @@ export default function App() {
   }, []);
 
   useEffect(() => {
+    // Disable browser's automatic scroll restoration
+    if ('scrollRestoration' in window.history) {
+      window.history.scrollRestoration = 'manual';
+    }
+  }, []);
+
+  useEffect(() => {
     const newItem = getItemFromHash();
 
     // If we are opening a detail item (newItem is present), save current scroll
@@ -547,16 +562,9 @@ export default function App() {
     return () => window.removeEventListener("hashchange", onHashChange);
   }, [getItemFromHash, selected]); // Added selected as dependency to know transition state
 
-  // Restore scroll when returning to Main Page
+  // Scroll to top when entering Detail Page
   useEffect(() => {
-    if (!selected) {
-      // Small timeout to allow the Main Page to mount and layout
-      const timer = setTimeout(() => {
-        window.scrollTo({ top: scrollPositionRef.current, behavior: "instant" });
-      }, 50); // 50ms is usually enough for React to render
-      return () => clearTimeout(timer);
-    } else {
-      // When entering detail page, scroll to top
+    if (selected) {
       window.scrollTo(0, 0);
     }
   }, [selected]);
@@ -601,6 +609,7 @@ export default function App() {
             key="main"
             onSelect={openDetail}
             prefersReduced={prefersReduced}
+            initialScroll={scrollPositionRef.current}
           />
         )}
       </AnimatePresence>
