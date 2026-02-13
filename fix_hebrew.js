@@ -1,4 +1,5 @@
-const fs = require('fs');
+import fs from 'fs';
+
 const path = 'src/shapes.tsx';
 let content = fs.readFileSync(path, 'utf8');
 
