@@ -1,7 +1,7 @@
 ﻿import React, { createContext, useContext } from "react";
 import { motion, type Variants } from "framer-motion";
 
-/* ג”€ג”€ Full-screen context ג”€ג”€ */
+/* ── Full-screen context ── */
 export const FullScreenCtx = createContext(false);
 
 const MDiv = motion.div;
@@ -18,8 +18,8 @@ const ShapeMotion: React.FC<React.ComponentProps<typeof motion.div>> = ({ childr
   return <MDiv {...p}>{children}</MDiv>;
 };
 
-/* ג”€ג”€ Text block ג€” scales up in full-screen ג”€ג”€ */
-/* ג”€ג”€ Text block ג€” scales up in full-screen ג”€ג”€ */
+/* ── Text block — scales up in full-screen ── */
+/* ── Text block — scales up in full-screen ── */
 const TextBlock: React.FC<{
   light?: boolean;
   className?: string;
@@ -75,19 +75,19 @@ const TextBlock: React.FC<{
         variants={itemVariants}
         className={`${h2} font-extrabold tracking-tight ${textColor} ${shadowClass}`}
       >
-        ׳›׳•׳×׳¨׳× ׳¨׳׳©׳™׳×
+        כותרת ראשית
       </motion.h2>
       <motion.h3
         variants={itemVariants}
         className={`${h3} font-bold tracking-wide uppercase ${subColor} ${shadowClass}`}
       >
-        ׳›׳•׳×׳¨׳× ׳׳©׳ ׳™׳× ׳׳¨׳©׳™׳׳”
+        כותרת משנית מרשימה
       </motion.h3>
       <motion.p
         variants={itemVariants}
         className={`${p} font-medium ${descColor} ${shadowClass}`}
       >
-        ׳˜׳§׳¡׳˜ ׳׳“׳•׳’׳׳” ׳”׳׳׳—׳™׳© ׳׳× ׳”׳¢׳™׳¦׳•׳‘ ׳”׳ ׳§׳™ ׳•׳”׳׳§׳¦׳•׳¢׳™ ׳©׳ ׳”׳×׳‘׳ ׳™׳×. ׳”׳˜׳™׳₪׳•׳’׳¨׳₪׳™׳” ׳׳•׳×׳׳׳× ׳׳§׳¨׳™׳׳•׳× ׳׳™׳˜׳‘׳™׳×.
+        טקסט לדוגמה הממחיש את העיצוב הנקי והמקצועי של התבנית. הטיפוגרפיה מותאמת לקריאות מיטבית.
       </motion.p>
 
       {/* Decorative button for "Call to Action" feel */}
@@ -99,7 +99,7 @@ const TextBlock: React.FC<{
             : "bg-slate-900 text-white hover:bg-slate-800"
             }`}
         >
-          ׳§׳¨׳ ׳¢׳•׳“
+          קרא עוד
         </motion.button>
       )}
     </ShapeMotion>
@@ -116,9 +116,9 @@ const Box: React.FC<{ children: React.ReactNode; className?: string }> = ({
   </div>
 );
 
-/* ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג• */
+/* ════════════════════════════════════════════════════════════ */
 
-/** 1. ׳”׳§׳•׳‘׳™׳” ג€” clean vertical split */
+/** 1. הקוביה — clean vertical split */
 export const CubeShape: React.FC = () => (
   <Box>
     <ShapeMotion
@@ -133,7 +133,7 @@ export const CubeShape: React.FC = () => (
   </Box>
 );
 
-/** 2. ׳”׳׳׳›׳¡׳•׳ ג€” bold diagonal cut */
+/** 2. האלכסון — bold diagonal cut */
 export const DiagonalShape: React.FC = () => (
   <Box>
     <ShapeMotion
@@ -155,7 +155,7 @@ export const DiagonalShape: React.FC = () => (
   </Box>
 );
 
-/** 3. ׳”׳›׳“׳•׳¨ ג€” large offset circle */
+/** 3. הכדור — large offset circle */
 export const BallShape: React.FC = () => (
   <Box>
     <ShapeMotion
@@ -171,7 +171,7 @@ export const BallShape: React.FC = () => (
   </Box>
 );
 
-/** 4. ׳”׳׳¡׳’׳¨׳× ג€” elegant picture frame */
+/** 4. המסגרת — elegant picture frame */
 export const FrameShape: React.FC = () => (
   <Box>
     <div className="absolute inset-0 bg-primary" />
@@ -187,7 +187,7 @@ export const FrameShape: React.FC = () => (
   </Box>
 );
 
-/** 5. ׳”׳’׳¨׳™׳“ ג€” bento grid */
+/** 5. הגריד — bento grid */
 export const GridShape: React.FC = () => {
   const full = useContext(FullScreenCtx);
   return (
@@ -217,7 +217,7 @@ export const GridShape: React.FC = () => {
   );
 };
 
-/** 6. ׳”׳©׳׳™׳©׳™׳•׳× ג€” three columns with center content */
+/** 6. השלישיות — three columns with center content */
 export const ThirdsShape: React.FC = () => (
   <Box>
     <ShapeMotion
@@ -238,7 +238,7 @@ export const ThirdsShape: React.FC = () => (
   </Box>
 );
 
-/** 7. ׳”׳’׳ ג€” wave with curved divider */
+/** 7. הגל — wave with curved divider */
 export const WaveShape: React.FC = () => (
   <Box>
     <ShapeMotion
@@ -260,7 +260,7 @@ export const WaveShape: React.FC = () => (
   </Box>
 );
 
-/** 8. ׳”׳₪׳™׳ ׳” ג€” L-shaped corner composition */
+/** 8. הפינה — L-shaped corner composition */
 export const CornerShape: React.FC = () => (
   <Box>
     <ShapeMotion
@@ -281,7 +281,7 @@ export const CornerShape: React.FC = () => (
   </Box>
 );
 
-/** 9. ׳”׳©׳›׳‘׳•׳× ג€” three fading horizontal bands */
+/** 9. השכבות — three fading horizontal bands */
 export const LayersShape: React.FC = () => (
   <Box>
     <ShapeMotion initial={{ x: "100%" }} whileInView={{ x: "0%" }} transition={{ duration: 0.6, delay: 0.0 }} className="absolute top-0 left-0 right-0 h-[22%] bg-primary" />
@@ -293,7 +293,7 @@ export const LayersShape: React.FC = () => (
   </Box>
 );
 
-/** 10. ׳”׳–׳™׳’׳–׳’ ג€” alternating staggered blocks */
+/** 10. הזיגזג — alternating staggered blocks */
 export const ZigzagShape: React.FC = () => (
   <Box>
     <ShapeMotion initial={{ x: 50, opacity: 0 }} whileInView={{ x: 0, opacity: 1 }} transition={{ delay: 0.1 }} className="absolute top-0 right-0 w-[55%] h-[33%] bg-primary" />
@@ -305,7 +305,7 @@ export const ZigzagShape: React.FC = () => (
   </Box>
 );
 
-/** 11. ׳”׳—׳׳•׳ ג€” four-pane grid */
+/** 11. החלון — four-pane grid */
 export const WindowShape: React.FC = () => (
   <Box>
     <ShapeMotion initial={{ scale: 0 }} whileInView={{ scale: 1 }} transition={{ duration: 0.5 }} className="absolute top-[2%] right-[2%] w-[47%] h-[47%] bg-primary" />
@@ -318,7 +318,7 @@ export const WindowShape: React.FC = () => (
   </Box>
 );
 
-/** 12. ׳”׳’׳¨׳“׳™׳׳ ׳˜ ג€” fading vertical strips */
+/** 12. הגרדיאנט — fading vertical strips */
 export const GradientShape: React.FC = () => (
   <Box>
     <ShapeMotion initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} transition={{ delay: 0.0 }} className="absolute inset-y-0 right-0 w-[20%] bg-primary" />
@@ -332,7 +332,7 @@ export const GradientShape: React.FC = () => (
   </Box>
 );
 
-/** 13. ׳”׳₪׳¡׳™׳₪׳¡ ג€” scattered mosaic grid */
+/** 13. הפסיפס — scattered mosaic grid */
 export const MosaicShape: React.FC = () => {
   const full = useContext(FullScreenCtx);
   return (
@@ -365,7 +365,7 @@ export const MosaicShape: React.FC = () => {
   );
 };
 
-/** 14. ׳”׳׳•׳₪׳§ ג€” clean horizon split */
+/** 14. האופק — clean horizon split */
 export const HorizonShape: React.FC = () => (
   <Box>
     <ShapeMotion
@@ -386,7 +386,7 @@ export const HorizonShape: React.FC = () => (
   </Box>
 );
 
-/** 15. ׳”׳§׳©׳× ג€” rounded arch with content below */
+/** 15. הקשת — rounded arch with content below */
 export const ArchShape: React.FC = () => (
   <Box>
     <ShapeMotion
@@ -414,7 +414,7 @@ export const ArchShape: React.FC = () => (
   </Box>
 );
 
-/** 16. ׳”׳™׳”׳׳•׳ ג€” rotated diamond focal point */
+/** 16. היהלום — rotated diamond focal point */
 export const DiamondShape: React.FC = () => (
   <Box>
     <ShapeMotion
@@ -449,7 +449,7 @@ export const DiamondShape: React.FC = () => (
   </Box>
 );
 
-/** 17. ׳”׳¡׳₪׳™׳¨׳׳” ג€” concentric offset rectangles */
+/** 17. הספירלה — concentric offset rectangles */
 export const SpiralShape: React.FC = () => (
   <Box>
     <ShapeMotion initial={{ opacity: 0, scale: 1.1 }} whileInView={{ opacity: 1, scale: 1 }} transition={{ delay: 0.0 }} className="absolute top-[6%] right-[6%] w-[82%] h-[82%] border-[3px] border-primary" />
@@ -462,7 +462,7 @@ export const SpiralShape: React.FC = () => (
   </Box>
 );
 
-/** 18. ׳”׳¡׳¨׳˜ ג€” diagonal ribbon banner */
+/** 18. הסרט — diagonal ribbon banner */
 export const RibbonShape: React.FC = () => (
   <Box>
     <ShapeMotion
@@ -499,7 +499,7 @@ export const RibbonShape: React.FC = () => (
   </Box>
 );
 
-/** 19. ׳”׳¢׳׳•׳“׳™׳ ג€” vertical columns of varying widths */
+/** 19. העמודים — vertical columns of varying widths */
 export const PillarsShape: React.FC = () => (
   <Box>
     <ShapeMotion initial={{ height: 0 }} whileInView={{ height: "88%" }} transition={{ duration: 0.6, delay: 0.0 }} className="absolute bottom-[6%] right-[5%] w-[18%] bg-primary" />
@@ -512,7 +512,7 @@ export const PillarsShape: React.FC = () => (
   </Box>
 );
 
-/** 20. ׳”׳׳“׳¨׳’׳•׳× ג€” staircase ascending blocks */
+/** 20. המדרגות — staircase ascending blocks */
 export const StepsShape: React.FC = () => (
   <Box>
     <ShapeMotion initial={{ y: "100%" }} whileInView={{ y: "0%" }} transition={{ duration: 0.5, delay: 0.0 }} className="absolute bottom-0 right-0 w-[25%] h-[25%] bg-primary/20" />
@@ -525,7 +525,7 @@ export const StepsShape: React.FC = () => (
   </Box>
 );
 
-/** 21. ׳”׳׳™׳§׳•׳™ ג€” overlapping circles */
+/** 21. הליקוי — overlapping circles */
 export const EclipseShape: React.FC = () => (
   <Box>
     <ShapeMotion
@@ -555,7 +555,7 @@ export const EclipseShape: React.FC = () => (
   </Box>
 );
 
-/** 22. ׳”׳¦׳׳‘ ג€” plus/cross intersection */
+/** 22. הצלב — plus/cross intersection */
 export const CrossShape: React.FC = () => (
   <Box>
     {/* Vertical bar */}
@@ -570,7 +570,7 @@ export const CrossShape: React.FC = () => (
   </Box>
 );
 
-/** 23. ׳”׳₪׳™׳¨׳׳™׳“׳” ג€” triangular pyramid composition */
+/** 23. הפירמידה — triangular pyramid composition */
 export const PyramidShape: React.FC = () => (
   <Box>
     <ShapeMotion
@@ -596,7 +596,7 @@ export const PyramidShape: React.FC = () => (
   </Box>
 );
 
-/** 24. ׳”׳₪׳™׳¦׳•׳ ג€” asymmetric offset split */
+/** 24. הפיצול — asymmetric offset split */
 export const SplitShape: React.FC = () => (
   <Box>
     <ShapeMotion initial={{ x: "100%" }} whileInView={{ x: "0%" }} transition={{ duration: 0.7 }} className="absolute top-0 right-0 w-[55%] h-[60%] bg-primary" />
@@ -610,7 +610,7 @@ export const SplitShape: React.FC = () => (
   </Box>
 );
 
-/** 25. ׳”׳׳¨׳™׳—׳™׳ ג€” irregular tile layout */
+/** 25. האריחים — irregular tile layout */
 export const TilesShape: React.FC = () => {
   const full = useContext(FullScreenCtx);
   return (
@@ -644,7 +644,7 @@ export const TilesShape: React.FC = () => {
   );
 };
 
-/** 26. ׳”׳•׳•׳™׳׳•׳ ג€” side curtain reveal */
+/** 26. הוילון — side curtain reveal */
 export const CurtainShape: React.FC = () => (
   <Box>
     <ShapeMotion initial={{ width: "0%" }} whileInView={{ width: "35%" }} transition={{ duration: 0.8, ease: "easeInOut" }} className="absolute inset-y-0 right-0 bg-primary" />
@@ -657,7 +657,7 @@ export const CurtainShape: React.FC = () => (
   </Box>
 );
 
-/** 27. ׳”׳’׳©׳¨ ג€” horizontal bridge with supports */
+/** 27. הגשר — horizontal bridge with supports */
 export const BridgeShape: React.FC = () => (
   <Box>
     {/* Bridge deck */}
@@ -674,7 +674,7 @@ export const BridgeShape: React.FC = () => (
   </Box>
 );
 
-/** 28. ׳”׳§׳ ג€” nested rectangles / frames */
+/** 28. הקן — nested rectangles / frames */
 export const NestShape: React.FC = () => (
   <Box>
     <ShapeMotion initial={{ opacity: 0, scale: 0.8 }} whileInView={{ opacity: 1, scale: 1 }} transition={{ delay: 0.0 }} className="absolute inset-[5%] border-[3px] border-primary" />
@@ -687,7 +687,7 @@ export const NestShape: React.FC = () => (
   </Box>
 );
 
-/** 29. ׳”׳₪׳¡׳’׳” ג€” mountain peak / chevron */
+/** 29. הפסגה — mountain peak / chevron */
 export const PeakShape: React.FC = () => (
   <Box>
     {/* Main peak */}
@@ -738,7 +738,7 @@ export const PeakShape: React.FC = () => (
   </Box>
 );
 
-/** 30. ׳”׳׳¡׳׳•׳ ג€” circular orbital paths */
+/** 30. המסלול — circular orbital paths */
 export const OrbitShape: React.FC = () => (
   <Box>
     {/* Outer orbit ring */}
@@ -775,7 +775,7 @@ export const OrbitShape: React.FC = () => (
   </Box>
 );
 
-/** 31. ׳”׳׳©׳•׳©׳” ג€” Hexagon mask */
+/** 31. המשושה — Hexagon mask */
 export const HexagonShape: React.FC = () => (
   <Box>
     <ShapeMotion
@@ -811,7 +811,7 @@ export const HexagonShape: React.FC = () => (
   </Box>
 );
 
-/** 32. ׳”׳§׳•׳׳ ׳•׳¢ ג€” Cinematic widescreen */
+/** 32. הקולנוע — Cinematic widescreen */
 export const CinemaShape: React.FC = () => (
   <Box className="bg-black">
     <ShapeMotion initial={{ height: "50%" }} whileInView={{ height: "15%" }} transition={{ duration: 1, ease: "easeInOut" }} className="absolute inset-x-0 top-0 bg-black z-10" />
@@ -822,7 +822,7 @@ export const CinemaShape: React.FC = () => (
   </Box>
 );
 
-/** 33. ׳”׳׳•׳¨׳™׳’׳׳™ ג€” Folded paper look */
+/** 33. האוריגמי — Folded paper look */
 export const OrigamiShape: React.FC = () => (
   <Box>
     <ShapeMotion
@@ -883,7 +883,7 @@ export const OrigamiShape: React.FC = () => (
   </Box>
 );
 
-/** 34. ׳”׳¨׳™׳—׳•׳£ ג€” Floating card with shadow */
+/** 34. הריחוף — Floating card with shadow */
 export const FloatShape: React.FC = () => (
   <Box className="bg-slate-50">
     <ShapeMotion
@@ -898,7 +898,7 @@ export const FloatShape: React.FC = () => (
   </Box>
 );
 
-/** 35. ׳”׳₪׳¨׳•׳¡׳•׳× ג€” Glitch/Slice effect */
+/** 35. הפרוסות — Glitch/Slice effect */
 export const SlicesShape: React.FC = () => (
   <Box>
     <div className="flex w-full h-full">
@@ -921,7 +921,7 @@ export const SlicesShape: React.FC = () => (
   </Box>
 );
 
-/** 36. ׳”׳׳™׳§׳•׳“ ג€” Blur focus center */
+/** 36. המיקוד — Blur focus center */
 export const FocusShape: React.FC = () => (
   <Box>
     <ShapeMotion initial={{ filter: "blur(0px)" }} whileInView={{ filter: "blur(4px)" }} transition={{ duration: 1 }} className="absolute inset-0 bg-primary/10 backdrop-blur-sm" />
@@ -936,7 +936,7 @@ export const FocusShape: React.FC = () => (
   </Box>
 );
 
-/** 37. ׳”׳¡׳₪׳§׳˜׳¨׳•׳ ג€” Gradient spectrum */
+/** 37. הספקטרום — Gradient spectrum */
 export const SpectrumShape: React.FC = () => (
   <Box>
     <ShapeMotion initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} transition={{ duration: 1.5 }} className="absolute inset-0 bg-gradient-to-tr from-primary via-primary/40 to-white" />
@@ -951,7 +951,7 @@ export const SpectrumShape: React.FC = () => (
   </Box>
 );
 
-/** 38. ׳”׳©׳¢׳¨ ג€” Portal frames */
+/** 38. השער — Portal frames */
 export const PortalShape: React.FC = () => (
   <Box>
     <ShapeMotion initial={{ scale: 0 }} whileInView={{ scale: 1 }} transition={{ duration: 0.5, delay: 0.0 }} className="absolute inset-0 bg-primary/5" />
@@ -972,7 +972,7 @@ export const PortalShape: React.FC = () => (
   </Box>
 );
 
-/** 39. ׳”׳¡׳™׳׳˜׳¨׳™׳” ג€” Mirror split */
+/** 39. הסימטריה — Mirror split */
 export const SymmetryShape: React.FC = () => (
   <Box>
     <ShapeMotion initial={{ x: "-100%" }} whileInView={{ x: "0%" }} transition={{ duration: 0.7, ease: "circOut" }} className="absolute inset-y-0 left-0 w-1/2 bg-primary flex items-center justify-end pr-4">
@@ -989,7 +989,7 @@ export const SymmetryShape: React.FC = () => (
   </Box>
 );
 
-/** 40. ׳”׳׳˜׳¨׳™׳¦׳” ג€” Tech/Code look */
+/** 40. המטריצה — Tech/Code look */
 export const MatrixShape: React.FC = () => {
   const full = useContext(FullScreenCtx);
   return (
@@ -1010,7 +1010,7 @@ export const MatrixShape: React.FC = () => {
   );
 };
 
-/* ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג•ג• */
+/* ════════════════════════════════════════════════════════════ */
 
 export const shapeMap: Record<string, React.FC> = {
   cube: CubeShape,
