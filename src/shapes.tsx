@@ -53,8 +53,9 @@ const TextBlock: React.FC<{
         } ${className}`}
       variants={full ? containerVariants : {}}
       initial={full ? "hidden" : "show"}
-      whileInView="show"
-      viewport={{ once: true }}
+      animate={full ? "show" : undefined}
+      whileInView={full ? undefined : "show"}
+      viewport={{ once: true, amount: 0 }}
     >
       <motion.h2
         variants={itemVariants}
