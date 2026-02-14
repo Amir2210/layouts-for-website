@@ -1,6 +1,6 @@
-import React, { useEffect, useContext, useState } from "react";
+import { useEffect } from "react";
 import { motion } from "framer-motion";
-import { ArrowRight, Crown, CheckCircle } from "lucide-react";
+import { ArrowRight, Crown } from "lucide-react";
 import { type LayoutItem } from "../data";
 import { shapeMap, FullScreenCtx } from "../shapes";
 
@@ -8,16 +8,13 @@ import { shapeMap, FullScreenCtx } from "../shapes";
 export default function DetailPage({
   item,
   onBack,
-  onSelectTemplate,
   prefersReduced,
 }: {
   item: LayoutItem;
   onBack: () => void;
-  onSelectTemplate: (item: LayoutItem) => void;
   prefersReduced: boolean | null;
 }) {
   const Shape = shapeMap[item.id];
-  const [isHoveringCTA, setIsHoveringCTA] = useState(false);
 
   /* Escape key to go back */
   useEffect(() => {
@@ -89,23 +86,7 @@ export default function DetailPage({
       </motion.div>
 
       {/* "I Want This Template" Floating Action Button */}
-      <motion.div
-        className="absolute bottom-10 left-1/2 -translate-x-1/2 z-20"
-        initial={{ y: 50, opacity: 0 }}
-        animate={{ y: 0, opacity: 1 }}
-        transition={{ delay: 0.5, type: "spring" }}
-      >
-        <button
-          onClick={() => onSelectTemplate(item)}
-          onMouseEnter={() => setIsHoveringCTA(true)}
-          onMouseLeave={() => setIsHoveringCTA(false)}
-          className="relative px-8 py-4 bg-black/80 backdrop-blur-md text-primary border border-primary/40 rounded-full shadow-2xl flex items-center gap-3 overflow-hidden group hover:bg-black transition-all duration-300 hover:scale-105"
-        >
-          <div className="absolute inset-0 bg-primary/10 translate-y-full group-hover:translate-y-0 transition-transform duration-300" />
-          <CheckCircle className="w-5 h-5 text-primary" />
-          <span className="text-lg font-bold tracking-wide uppercase">אני רוצה את התבנית הזו</span>
-        </button>
-      </motion.div>
+
     </motion.div>
   );
 }

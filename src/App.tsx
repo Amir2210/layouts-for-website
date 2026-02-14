@@ -94,7 +94,6 @@ function MainPage({
 /* ─── App ──────────────────────────────────────────────── */
 export default function App() {
   const [selected, setSelected] = useState<LayoutItem | null>(null);
-  const [inquiryTemplate, setInquiryTemplate] = useState<LayoutItem | null>(null);
   const prefersReduced = useReducedMotion();
 
   // Ref to store the scroll position before navigating to detail view
@@ -149,21 +148,19 @@ export default function App() {
     window.location.hash = item.id;
   };
 
+  const [isLoading, setIsLoading] = useState(false);
   const goBack = () => {
-    window.location.hash = "";
+    setIsLoading(true);
+    // Short delay to show loader before actual navigation/state change
+    setTimeout(() => {
+      window.location.hash = "";
+      setIsLoading(false);
+    }, 800);
   };
 
-  const handleSelectTemplateForInquiry = (item: LayoutItem) => {
-    setInquiryTemplate(item);
-    goBack();
-    // Use timeout to allow view to switch back to main page before scrolling
-    setTimeout(() => {
-      const contactSection = document.getElementById("contact");
-      if (contactSection) {
-        contactSection.scrollIntoView({ behavior: "smooth" });
-      }
-    }, 100);
-  };
+
+
+
 
   return (
     <>
@@ -182,13 +179,38 @@ export default function App() {
         />
       </div>
 
+      <AnimatePresence>
+        {isLoading && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-50 flex items-center justify-center bg-black/90 backdrop-blur-md"
+          >
+            <div className="flex flex-col items-center gap-4">
+              <motion.div
+                animate={{ rotate: 360 }}
+                transition={{ duration: 1.5, repeat: Infinity, ease: "linear" }}
+                className="w-16 h-16 border-4 border-primary/30 border-t-primary rounded-full"
+              />
+              <motion.span
+                animate={{ opacity: [0.5, 1, 0.5] }}
+                transition={{ duration: 1.5, repeat: Infinity }}
+                className="text-primary font-medium tracking-widest uppercase text-sm"
+              >
+                טוען...
+              </motion.span>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
       <AnimatePresence mode="wait">
         {selected ? (
           <DetailPage
             key={selected.id}
             item={selected}
             onBack={goBack}
-            onSelectTemplate={handleSelectTemplateForInquiry}
             prefersReduced={prefersReduced}
           />
         ) : (
@@ -197,7 +219,7 @@ export default function App() {
             onSelect={openDetail}
             prefersReduced={prefersReduced}
             initialScroll={scrollPositionRef.current}
-            selectedTemplateForContact={inquiryTemplate}
+            selectedTemplateForContact={null}
           />
         )}
       </AnimatePresence>
