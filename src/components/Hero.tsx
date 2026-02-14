@@ -176,7 +176,7 @@ export default function HeroSection({
 
             {/* Subtitle */}
             <motion.p
-              className="mt-8 text-xl sm:text-2xl text-white/70 leading-relaxed max-w-2xl mx-auto"
+              className="mt-8 text-xl sm:text-2xl text-white leading-relaxed max-w-2xl mx-auto"
               style={{ textShadow: "0 2px 16px rgba(0,0,0,0.4)" }}
               {...fadeUp(0.35)}
             >

@@ -1,4 +1,4 @@
-﻿import React, { createContext, useContext } from "react";
+import React, { createContext, useContext } from "react";
 import {
   RadarShape, PrismShape, TargetShape, StreamShape, CavernShape, LadderShape, CircuitShape, MeshShape, VoidShape, SpotShape,
   StripeShape, CheckersShape, ClockShape, FanShape, DoorShape, ScrollShape, IslandShape, CloudShape, ForestShape, MountainShape,
@@ -8,6 +8,7 @@ import {
   OceanShape, RiverShape, LakeShape, RainShape, SnowShape, WindShape, FireShape, IceShape, EarthShape, SkyShape
 } from "./shapes_part2";
 import { motion, type Variants } from "framer-motion";
+import portraitImage from "./assets/portrait/portrait png.png";
 
 /* ── Full-screen context ── */
 export const FullScreenCtx = createContext(false);
@@ -133,10 +134,13 @@ export const CubeShape: React.FC = () => (
       initial={{ x: "100%" }}
       whileInView={{ x: "0%" }}
       transition={{ duration: 0.8, ease: "circOut" }}
-      className="absolute inset-y-0 right-0 w-1/2 bg-primary"
-    />
-    <div className="absolute inset-0 flex items-center px-[8%]">
-      <TextBlock className="text-right max-w-[46%]" />
+      className="absolute inset-y-0 right-0 w-[50%] bg-primary overflow-hidden"
+    >
+      <img src={portraitImage} alt="Portrait" className="w-full h-full object-cover object-top" />
+      <div className="absolute inset-0 bg-gradient-to-l from-transparent to-primary/10 mix-blend-multiply" />
+    </ShapeMotion>
+    <div className="absolute inset-0 flex items-center justify-end px-[8%]">
+      <TextBlock className="text-left max-w-[40%]" align="left" />
     </div>
   </Box>
 );
@@ -146,19 +150,21 @@ export const DiagonalShape: React.FC = () => (
   <Box>
     <ShapeMotion
       initial={{ x: "-100%", rotate: -10 }}
-      whileInView={{ x: "-25%", rotate: -10 }}
+      whileInView={{ x: "-15%", rotate: -10 }}
       transition={{ duration: 0.8, delay: 0.1, ease: "backOut" }}
-      className="absolute bg-primary"
+      className="absolute bg-primary overflow-hidden shadow-2xl"
       style={{
-        width: "150%",
-        height: "50%",
-        top: "30%",
-        left: "-25%",
+        width: "120%",
+        height: "60%",
+        top: "20%",
+        left: "-20%",
         transformOrigin: "center",
       }}
-    />
-    <div className="absolute inset-0 flex items-start justify-end p-[8%]">
-      <TextBlock className="text-right" />
+    >
+      <img src={portraitImage} alt="" className="w-full h-full object-cover object-top -rotate-[10deg] scale-125" style={{ transform: "rotate(10deg) scale(1.1)" }} />
+    </ShapeMotion>
+    <div className="absolute inset-0 flex items-end justify-end p-[8%]">
+      <TextBlock className="text-right max-w-[45%]" />
     </div>
   </Box>
 );
@@ -170,11 +176,12 @@ export const BallShape: React.FC = () => (
       initial={{ scale: 0, opacity: 0 }}
       whileInView={{ scale: 1, opacity: 1 }}
       transition={{ duration: 0.8, type: "spring", bounce: 0.3 }}
-      className="absolute bg-primary rounded-full"
-      style={{ width: "58%", paddingBottom: "58%", top: "22%", right: "-4%" }}
-    />
-    <div className="absolute inset-0 flex items-center px-[8%]">
-      <TextBlock className="text-right max-w-[40%]" />
+      className="absolute right-[-10%] top-[10%] w-[70%] pb-[70%] bg-primary rounded-full overflow-hidden shadow-2xl border-4 border-white"
+    >
+      <img src={portraitImage} alt="" className="absolute inset-0 w-full h-full object-cover object-[center_20%]" />
+    </ShapeMotion>
+    <div className="absolute inset-0 flex items-center justify-end px-[8%]">
+      <TextBlock className="text-left max-w-[45%]" align="left" />
     </div>
   </Box>
 );
@@ -182,16 +189,22 @@ export const BallShape: React.FC = () => (
 /** 4. המסגרת — elegant picture frame */
 export const FrameShape: React.FC = () => (
   <Box>
-    <div className="absolute inset-0 bg-primary" />
+    <div className="absolute inset-0 bg-slate-100" />
     <ShapeMotion
-      initial={{ scale: 0.8, opacity: 0 }}
+      initial={{ scale: 0.9, opacity: 0 }}
       whileInView={{ scale: 1, opacity: 1 }}
       transition={{ duration: 0.8, ease: "easeOut" }}
-      className="absolute inset-[10%] bg-white rounded-xl shadow-2xl"
-    />
-    <div className="absolute inset-0 flex items-center justify-center">
-      <TextBlock className="text-center" align="center" />
-    </div>
+      className="absolute inset-[8%] bg-white shadow-2xl overflow-hidden"
+    >
+      <div className="absolute inset-0 grid grid-cols-2">
+        <div className="relative h-full overflow-hidden">
+          <img src={portraitImage} alt="" className="w-full h-full object-cover object-center" />
+        </div>
+        <div className="flex items-center justify-center p-8 bg-white">
+          <TextBlock className="text-center" align="center" />
+        </div>
+      </div>
+    </ShapeMotion>
   </Box>
 );
 
@@ -200,26 +213,40 @@ export const GridShape: React.FC = () => {
   const full = useContext(FullScreenCtx);
   return (
     <Box className={full ? "p-4 sm:p-6" : "p-2 sm:p-3"}>
-      <div className={`grid grid-cols-3 grid-rows-3 w-full h-full ${full ? "gap-3 sm:gap-4" : "gap-1.5 sm:gap-2"}`}>
+      <div className={`grid grid-cols-2 grid-rows-2 w-full h-full ${full ? "gap-3 sm:gap-4" : "gap-1.5 sm:gap-2"}`}>
         <ShapeMotion
-          initial={{ opacity: 0, scale: 0.9 }}
+          initial={{ opacity: 0, scale: 0.95 }}
           whileInView={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 0.5 }}
-          className="bg-primary col-span-2 row-span-2 flex items-end p-[10%]"
+          transition={{ duration: 0.6 }}
+          className="relative row-span-2 overflow-hidden bg-slate-200 rounded-lg"
+        >
+          <img src={portraitImage} alt="" className="w-full h-full object-cover object-center" />
+        </ShapeMotion>
+
+        <ShapeMotion
+          initial={{ opacity: 0, x: 20 }}
+          whileInView={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.5, delay: 0.1 }}
+          className="bg-primary flex items-end p-[10%] rounded-lg"
         >
           <div>
-            <h2 className={`${full ? "text-3xl sm:text-4xl lg:text-5xl" : "text-sm sm:text-base"} font-extrabold text-white leading-tight drop-shadow-md`}>
+            <h2 className={`${full ? "text-2xl sm:text-3xl lg:text-4xl" : "text-sm sm:text-base"} font-extrabold text-white leading-tight`}>
               כותרת ראשית
             </h2>
-            <h3 className={`${full ? "text-lg sm:text-xl lg:text-2xl mt-2" : "text-[10px] sm:text-xs mt-0.5"} font-semibold text-white/90 drop-shadow-sm`}>
-              כותרת משנית
-            </h3>
           </div>
         </ShapeMotion>
-        <ShapeMotion initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} transition={{ delay: 0.1 }} className="bg-primary" />
-        <ShapeMotion initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} transition={{ delay: 0.2 }} className="bg-primary/25" />
-        <ShapeMotion initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} transition={{ delay: 0.3 }} className="bg-primary/50" />
-        <ShapeMotion initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} transition={{ delay: 0.4 }} className="bg-primary col-span-2" />
+
+        <ShapeMotion
+          initial={{ opacity: 0, x: 20 }}
+          whileInView={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.5, delay: 0.2 }}
+          className="bg-slate-100 flex items-start p-[10%] rounded-lg"
+        >
+          <div className="text-slate-800">
+            <h3 className={`${full ? "text-base sm:text-lg" : "text-xs"} font-semibold mb-2`}>פסקה קצרה</h3>
+            <p className={`${full ? "text-sm" : "text-[10px]"} leading-tight opacity-80`}>לורם איפסום דולור סיט אמט, קונסקטור אדיפיסינג אלית.</p>
+          </div>
+        </ShapeMotion>
       </div>
     </Box>
   );
@@ -229,19 +256,21 @@ export const GridShape: React.FC = () => {
 export const ThirdsShape: React.FC = () => (
   <Box>
     <ShapeMotion
-      initial={{ height: "0%" }}
-      whileInView={{ height: "100%" }}
+      initial={{ width: "0%" }}
+      whileInView={{ width: "45%" }}
       transition={{ duration: 0.6, ease: "easeInOut" }}
-      className="absolute inset-y-0 right-0 w-[30%] bg-primary"
-    />
+      className="absolute inset-y-0 right-0 bg-primary overflow-hidden z-10"
+    >
+      <img src={portraitImage} alt="" className="w-full h-full object-cover object-left" />
+    </ShapeMotion>
     <ShapeMotion
-      initial={{ height: "0%" }}
-      whileInView={{ height: "100%" }}
-      transition={{ duration: 0.6, delay: 0.1, ease: "easeInOut" }}
-      className="absolute inset-y-0 left-0 w-[30%] bg-primary/20"
+      initial={{ width: "0%" }}
+      whileInView={{ width: "100%" }}
+      transition={{ duration: 0.8, delay: 0.1, ease: "easeInOut" }}
+      className="absolute inset-y-0 left-0 bg-slate-100"
     />
-    <div className="absolute inset-0 flex items-center justify-center">
-      <TextBlock className="text-center" align="center" />
+    <div className="absolute inset-0 flex items-center justify-end px-[8%] z-20">
+      <TextBlock className="text-left max-w-[45%]" align="left" />
     </div>
   </Box>
 );
@@ -251,19 +280,15 @@ export const WaveShape: React.FC = () => (
   <Box>
     <ShapeMotion
       initial={{ y: "100%" }}
-      whileInView={{ y: "0%" }}
+      whileInView={{ y: "15%" }}
       transition={{ duration: 0.8, ease: "circOut" }}
-      className="absolute bottom-0 left-0 right-0 h-[50%] bg-primary"
-    />
-    <ShapeMotion
-      initial={{ scaleY: 0 }}
-      whileInView={{ scaleY: 1 }}
-      transition={{ duration: 0.6, delay: 0.3 }}
-      className="absolute left-0 right-0 bg-white"
-      style={{ height: "18%", top: "38%", borderRadius: "0 0 50% 50%", originY: 0 }}
-    />
-    <div className="absolute inset-0 flex items-start justify-end p-[8%]">
-      <TextBlock className="text-right" />
+      className="absolute bottom-0 left-0 right-0 h-full bg-primary overflow-hidden rounded-t-[50%]"
+    >
+      <img src={portraitImage} alt="" className="w-full h-full object-cover object-top" />
+    </ShapeMotion>
+
+    <div className="absolute top-0 left-0 right-0 h-[25%] flex items-center justify-center px-[8%] z-20 bg-white/80 backdrop-blur-sm">
+      <TextBlock className="text-center" align="center" />
     </div>
   </Box>
 );
@@ -272,19 +297,15 @@ export const WaveShape: React.FC = () => (
 export const CornerShape: React.FC = () => (
   <Box>
     <ShapeMotion
-      initial={{ x: "100%", y: "-100%" }}
-      whileInView={{ x: "0%", y: "0%" }}
-      transition={{ duration: 0.8 }}
-      className="absolute top-0 right-0 w-[60%] h-[50%] bg-primary"
-    />
-    <ShapeMotion
-      initial={{ opacity: 0 }}
-      whileInView={{ opacity: 1 }}
-      transition={{ duration: 0.8, delay: 0.3 }}
-      className="absolute bottom-0 left-0 w-[35%] h-[25%] bg-primary/15"
-    />
-    <div className="absolute inset-0 flex items-end px-[8%] pb-[8%]">
-      <TextBlock className="text-right max-w-[55%]" />
+      initial={{ x: "100%" }}
+      whileInView={{ x: "0%" }}
+      transition={{ duration: 0.8, ease: "circOut" }}
+      className="absolute top-0 right-0 left-[30%] bottom-[10%] bg-primary overflow-hidden rounded-bl-[100px]"
+    >
+      <img src={portraitImage} alt="" className="w-full h-full object-cover object-center" />
+    </ShapeMotion>
+    <div className="absolute inset-y-0 left-0 w-[40%] flex items-center p-[8%] bg-gradient-to-r from-white via-white/90 to-transparent z-10">
+      <TextBlock className="text-left" align="left" />
     </div>
   </Box>
 );
@@ -292,11 +313,12 @@ export const CornerShape: React.FC = () => (
 /** 9. השכבות — three fading horizontal bands */
 export const LayersShape: React.FC = () => (
   <Box>
-    <ShapeMotion initial={{ x: "100%" }} whileInView={{ x: "0%" }} transition={{ duration: 0.6, delay: 0.0 }} className="absolute top-0 left-0 right-0 h-[22%] bg-primary" />
-    <ShapeMotion initial={{ x: "100%" }} whileInView={{ x: "0%" }} transition={{ duration: 0.6, delay: 0.1 }} className="absolute top-[26%] left-0 right-0 h-[16%] bg-primary/45" />
-    <ShapeMotion initial={{ x: "100%" }} whileInView={{ x: "0%" }} transition={{ duration: 0.6, delay: 0.2 }} className="absolute top-[46%] left-0 right-0 h-[10%] bg-primary/20" />
-    <div className="absolute inset-0 flex items-end justify-end p-[8%]">
-      <TextBlock className="text-right" />
+    <ShapeMotion initial={{ height: "0%" }} whileInView={{ height: "65%" }} transition={{ duration: 0.8 }} className="absolute bottom-0 left-0 right-0 bg-primary overflow-hidden">
+      <img src={portraitImage} alt="" className="w-full h-full object-cover object-top" />
+    </ShapeMotion>
+
+    <div className="absolute top-0 left-0 right-0 h-[35%] flex items-center justify-center p-[8%]">
+      <TextBlock className="text-center" align="center" />
     </div>
   </Box>
 );
@@ -304,11 +326,13 @@ export const LayersShape: React.FC = () => (
 /** 10. הזיגזג — alternating staggered blocks */
 export const ZigzagShape: React.FC = () => (
   <Box>
-    <ShapeMotion initial={{ x: 50, opacity: 0 }} whileInView={{ x: 0, opacity: 1 }} transition={{ delay: 0.1 }} className="absolute top-0 right-0 w-[55%] h-[33%] bg-primary" />
-    <ShapeMotion initial={{ x: -50, opacity: 0 }} whileInView={{ x: 0, opacity: 1 }} transition={{ delay: 0.2 }} className="absolute top-[33%] left-0 w-[55%] h-[34%] bg-primary/60" />
-    <ShapeMotion initial={{ x: 50, opacity: 0 }} whileInView={{ x: 0, opacity: 1 }} transition={{ delay: 0.3 }} className="absolute bottom-0 right-0 w-[55%] h-[33%] bg-primary/30" />
-    <div className="absolute inset-0 flex items-center justify-center">
-      <TextBlock className="text-center" align="center" />
+    <div className="absolute inset-0 grid grid-cols-2">
+      <ShapeMotion initial={{ x: -50, opacity: 0 }} whileInView={{ x: 0, opacity: 1 }} transition={{ delay: 0.1 }} className="relative h-full overflow-hidden">
+        <img src={portraitImage} alt="" className="w-full h-full object-cover object-left" />
+      </ShapeMotion>
+      <div className="relative h-full flex items-center justify-center p-[8%] bg-slate-50">
+        <TextBlock className="text-center" align="center" />
+      </div>
     </div>
   </Box>
 );
@@ -316,12 +340,12 @@ export const ZigzagShape: React.FC = () => (
 /** 11. החלון — four-pane grid */
 export const WindowShape: React.FC = () => (
   <Box>
-    <ShapeMotion initial={{ scale: 0 }} whileInView={{ scale: 1 }} transition={{ duration: 0.5 }} className="absolute top-[2%] right-[2%] w-[47%] h-[47%] bg-primary" />
-    <ShapeMotion initial={{ scale: 0 }} whileInView={{ scale: 1 }} transition={{ duration: 0.5, delay: 0.1 }} className="absolute top-[2%] left-[2%] w-[47%] h-[47%] bg-primary/25" />
-    <ShapeMotion initial={{ scale: 0 }} whileInView={{ scale: 1 }} transition={{ duration: 0.5, delay: 0.2 }} className="absolute bottom-[2%] right-[2%] w-[47%] h-[47%] bg-primary/45" />
-    <ShapeMotion initial={{ scale: 0 }} whileInView={{ scale: 1 }} transition={{ duration: 0.5, delay: 0.3 }} className="absolute bottom-[2%] left-[2%] w-[47%] h-[47%] bg-primary/12" />
-    <div className="absolute inset-0 flex items-center justify-center">
-      <TextBlock className="text-center" align="center" />
+    <ShapeMotion initial={{ scale: 0.9, opacity: 0 }} whileInView={{ scale: 1, opacity: 1 }} transition={{ duration: 0.8 }} className="absolute inset-[10%] bg-primary overflow-hidden border-4 border-white shadow-xl">
+      <img src={portraitImage} alt="" className="w-full h-full object-cover object-top" />
+    </ShapeMotion>
+
+    <div className="absolute top-[10%] right-[10%] bg-white p-4 shadow-md -mt-4 -mr-4 z-10 rounded-sm">
+      <TextBlock className="text-right" />
     </div>
   </Box>
 );
@@ -329,13 +353,12 @@ export const WindowShape: React.FC = () => (
 /** 12. הגרדיאנט — fading vertical strips */
 export const GradientShape: React.FC = () => (
   <Box>
-    <ShapeMotion initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} transition={{ delay: 0.0 }} className="absolute inset-y-0 right-0 w-[20%] bg-primary" />
-    <ShapeMotion initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} transition={{ delay: 0.1 }} className="absolute inset-y-0 right-[20%] w-[20%] bg-primary/70" />
-    <ShapeMotion initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} transition={{ delay: 0.2 }} className="absolute inset-y-0 right-[40%] w-[20%] bg-primary/45" />
-    <ShapeMotion initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} transition={{ delay: 0.3 }} className="absolute inset-y-0 right-[60%] w-[20%] bg-primary/22" />
-    <ShapeMotion initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} transition={{ delay: 0.4 }} className="absolute inset-y-0 left-0 w-[20%] bg-primary/8" />
-    <div className="absolute inset-0 flex items-center px-[8%]">
-      <TextBlock light className="text-right max-w-[35%]" />
+    <ShapeMotion initial={{ x: "100%" }} whileInView={{ x: "0%" }} transition={{ delay: 0.0, duration: 0.8 }} className="absolute inset-y-0 right-0 w-[45%] bg-primary overflow-hidden">
+      <img src={portraitImage} alt="" className="w-full h-full object-cover object-center" />
+    </ShapeMotion>
+
+    <div className="absolute inset-y-0 left-0 w-[55%] flex items-center p-[8%] bg-gradient-to-r from-slate-50 to-white/0">
+      <TextBlock className="text-left" align="left" />
     </div>
   </Box>
 );
@@ -344,30 +367,29 @@ export const GradientShape: React.FC = () => (
 export const MosaicShape: React.FC = () => {
   const full = useContext(FullScreenCtx);
   return (
-    <Box className={full ? "p-4 sm:p-6" : "p-2 sm:p-3"}>
-      <div className={`grid grid-cols-4 grid-rows-3 w-full h-full ${full ? "gap-3 sm:gap-4" : "gap-1.5 sm:gap-2"}`}>
-        <ShapeMotion initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} transition={{ delay: 0.1 }} className="bg-primary col-span-1 row-span-2" />
-        <ShapeMotion initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} transition={{ delay: 0.2 }} className="bg-primary/20" />
-        <ShapeMotion initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} transition={{ delay: 0.3 }} className="bg-primary col-span-2" />
-        <ShapeMotion initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} transition={{ delay: 0.4 }} className="bg-primary/45 col-span-2" />
-        <ShapeMotion initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} transition={{ delay: 0.5 }} className="bg-primary/12" />
+    <Box>
+      <div className="absolute inset-0 grid grid-cols-12 grid-rows-6 w-full h-full gap-2 p-4 bg-slate-100">
         <ShapeMotion
-          initial={{ y: 20, opacity: 0 }}
-          whileInView={{ y: 0, opacity: 1 }}
-          transition={{ delay: 0.6 }}
-          className="bg-primary col-span-2 flex items-end p-[8%]"
+          initial={{ opacity: 0, scale: 0.9 }}
+          whileInView={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.7 }}
+          className="col-span-8 row-span-4 bg-white rounded-2xl overflow-hidden shadow-lg"
         >
-          <div>
-            <h2 className={`${full ? "text-2xl sm:text-3xl lg:text-4xl" : "text-xs sm:text-sm"} font-extrabold text-white leading-tight drop-shadow-md`}>
-              כותרת ראשית
-            </h2>
-            <h3 className={`${full ? "text-base sm:text-lg mt-1" : "text-[9px] sm:text-[10px] mt-0.5"} font-semibold text-white/90 drop-shadow-sm`}>
-              כותרת משנית
-            </h3>
-          </div>
+          <img src={portraitImage} alt="" className="w-full h-full object-cover object-top" />
         </ShapeMotion>
-        <ShapeMotion initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} transition={{ delay: 0.7 }} className="bg-primary/35" />
-        <ShapeMotion initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} transition={{ delay: 0.8 }} className="bg-primary" />
+
+        <ShapeMotion
+          initial={{ opacity: 0, scale: 0.8 }}
+          whileInView={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.5, delay: 0.2 }}
+          className="col-span-4 row-span-3 bg-primary rounded-2xl flex items-center justify-center p-4"
+        >
+          <span className="text-white font-bold text-center">New Collection</span>
+        </ShapeMotion>
+
+        <div className="col-span-12 row-span-2 flex items-center justify-between px-4">
+          <TextBlock className="text-left w-full" align="left" />
+        </div>
       </div>
     </Box>
   );
@@ -378,18 +400,15 @@ export const HorizonShape: React.FC = () => (
   <Box>
     <ShapeMotion
       initial={{ height: "0%" }}
-      whileInView={{ height: "38%" }}
+      whileInView={{ height: "55%" }}
       transition={{ duration: 0.8, ease: "circOut" }}
-      className="absolute bottom-0 left-0 right-0 bg-primary"
-    />
-    <ShapeMotion
-      initial={{ scaleX: 0 }}
-      whileInView={{ scaleX: 1 }}
-      transition={{ duration: 1, delay: 0.4, ease: "circOut" }}
-      className="absolute bottom-[38%] left-0 right-0 h-[3px] bg-primary-dark"
-    />
-    <div className="absolute inset-0 flex items-center px-[8%]">
-      <TextBlock className="text-right max-w-[50%]" />
+      className="absolute bottom-0 left-0 right-0 bg-primary overflow-hidden"
+    >
+      <img src={portraitImage} alt="" className="w-full h-full object-cover object-top" />
+    </ShapeMotion>
+
+    <div className="absolute top-0 left-0 right-0 h-[45%] flex items-center justify-center p-[8%] bg-white">
+      <TextBlock className="text-center w-full" align="center" />
     </div>
   </Box>
 );
@@ -403,20 +422,18 @@ export const ArchShape: React.FC = () => (
       transition={{ duration: 0.7, ease: "easeOut" }}
       className="absolute bg-primary"
       style={{
-        width: "70%",
-        height: "55%",
+        width: "60%",
+        height: "70%",
         top: 0,
-        left: "15%",
-        borderRadius: "0 0 50% 50%",
+        left: "20%",
+        borderRadius: "0 0 100px 100px",
+        overflow: "hidden"
       }}
-    />
-    <ShapeMotion
-      initial={{ opacity: 0 }}
-      whileInView={{ opacity: 1 }}
-      transition={{ delay: 0.5 }}
-      className="absolute bottom-0 left-0 right-0 h-[12%] bg-primary/15"
-    />
-    <div className="absolute inset-0 flex items-end justify-center pb-[14%]">
+    >
+      <img src={portraitImage} alt="" className="w-full h-full object-cover object-center" />
+    </ShapeMotion>
+
+    <div className="absolute inset-0 flex items-end justify-center pb-[10%]">
       <TextBlock className="text-center" align="center" />
     </div>
   </Box>
@@ -429,43 +446,39 @@ export const DiamondShape: React.FC = () => (
       initial={{ scale: 0, rotate: 0 }}
       whileInView={{ scale: 1, rotate: 45 }}
       transition={{ duration: 0.8, type: "spring" }}
-      className="absolute bg-primary"
+      className="absolute bg-primary border-4 border-white shadow-xl overflow-hidden"
       style={{
-        width: "42%",
-        height: "42%",
+        width: "55%",
+        height: "55%",
         top: "50%",
         left: "50%",
         transform: "translate(-50%, -50%) rotate(45deg)",
       }}
-    />
-    <ShapeMotion
-      initial={{ scale: 0, opacity: 0 }}
-      whileInView={{ scale: 1, opacity: 1 }}
-      transition={{ duration: 0.8, delay: 0.2 }}
-      className="absolute bg-primary/20"
-      style={{
-        width: "54%",
-        height: "54%",
-        top: "50%",
-        left: "50%",
-        transform: "translate(-50%, -50%) rotate(45deg)",
-      }}
-    />
-    <div className="absolute inset-0 flex items-start justify-end p-[8%]">
-      <TextBlock className="text-right max-w-[40%]" />
+    >
+      <img src={portraitImage} alt="" className="w-full h-full object-cover object-top" style={{ transform: "rotate(-45deg) scale(1.4)" }} />
+    </ShapeMotion>
+
+    <div className="absolute top-[5%] right-[5%] max-w-[40%] text-right bg-white/80 p-4 rounded-lg backdrop-blur-sm shadow-sm z-10">
+      <TextBlock className="text-right" align="right" />
     </div>
   </Box>
 );
 
+
 /** 17. הספירלה — concentric offset rectangles */
 export const SpiralShape: React.FC = () => (
   <Box>
-    <ShapeMotion initial={{ opacity: 0, scale: 1.1 }} whileInView={{ opacity: 1, scale: 1 }} transition={{ delay: 0.0 }} className="absolute top-[6%] right-[6%] w-[82%] h-[82%] border-[3px] border-primary" />
-    <ShapeMotion initial={{ opacity: 0, scale: 1.1 }} whileInView={{ opacity: 1, scale: 1 }} transition={{ delay: 0.1 }} className="absolute top-[14%] right-[14%] w-[66%] h-[66%] border-[3px] border-primary/60" />
-    <ShapeMotion initial={{ opacity: 0, scale: 1.1 }} whileInView={{ opacity: 1, scale: 1 }} transition={{ delay: 0.2 }} className="absolute top-[22%] right-[22%] w-[50%] h-[50%] border-[3px] border-primary/35" />
-    <ShapeMotion initial={{ opacity: 0, scale: 1.1 }} whileInView={{ opacity: 1, scale: 1 }} transition={{ delay: 0.3 }} className="absolute top-[30%] right-[30%] w-[34%] h-[34%] bg-primary/12" />
-    <div className="absolute inset-0 flex items-end px-[8%] pb-[6%]">
-      <TextBlock className="text-right max-w-[50%]" />
+    <div className="absolute inset-y-0 right-0 w-[55%] flex items-center justify-center p-[8%]">
+      <div className="relative z-10">
+        <div className="absolute -inset-4 border-2 border-primary/20 rounded-full animate-spin-slow" style={{ animationDuration: '20s' }} />
+        <div className="w-64 h-64 rounded-full overflow-hidden border-4 border-white shadow-xl">
+          <img src={portraitImage} alt="" className="w-full h-full object-cover object-top" />
+        </div>
+      </div>
+    </div>
+
+    <div className="absolute inset-y-0 left-0 w-[45%] flex items-center p-[8%] bg-slate-50">
+      <TextBlock className="text-left" align="left" />
     </div>
   </Box>
 );
@@ -475,34 +488,23 @@ export const RibbonShape: React.FC = () => (
   <Box>
     <ShapeMotion
       initial={{ x: "-100%" }}
-      whileInView={{ x: "-30%" }}
+      whileInView={{ x: "-20%" }}
       transition={{ duration: 0.8, ease: "anticipate" }}
-      className="absolute bg-primary"
+      className="absolute bg-primary overflow-hidden shadow-xl"
       style={{
-        width: "160%",
-        height: "22%",
-        top: "40%",
-        left: "-30%",
-        transform: "rotate(-15deg)",
+        width: "140%",
+        height: "35%",
+        top: "35%",
+        left: "-20%",
+        transform: "rotate(-10deg)",
         transformOrigin: "center",
       }}
-    />
-    <ShapeMotion
-      initial={{ x: "-100%" }}
-      whileInView={{ x: "-30%" }}
-      transition={{ duration: 0.9, delay: 0.1, ease: "anticipate" }}
-      className="absolute bg-primary/15"
-      style={{
-        width: "160%",
-        height: "10%",
-        top: "20%",
-        left: "-30%",
-        transform: "rotate(-15deg)",
-        transformOrigin: "center",
-      }}
-    />
-    <div className="absolute inset-0 flex items-start justify-end p-[8%]">
-      <TextBlock className="text-right max-w-[44%]" />
+    >
+      <img src={portraitImage} alt="" className="w-full h-full object-cover object-[center_30%]" style={{ transform: "rotate(10deg) scale(1.1)" }} />
+    </ShapeMotion>
+
+    <div className="absolute inset-0 flex flex-col justify-between p-[8%] pointer-events-none">
+      <div className="text-right"> <TextBlock className="text-right" align="right" /> </div>
     </div>
   </Box>
 );
@@ -510,12 +512,19 @@ export const RibbonShape: React.FC = () => (
 /** 19. העמודים — vertical columns of varying widths */
 export const PillarsShape: React.FC = () => (
   <Box>
-    <ShapeMotion initial={{ height: 0 }} whileInView={{ height: "88%" }} transition={{ duration: 0.6, delay: 0.0 }} className="absolute bottom-[6%] right-[5%] w-[18%] bg-primary" />
-    <ShapeMotion initial={{ height: 0 }} whileInView={{ height: "76%" }} transition={{ duration: 0.6, delay: 0.1 }} className="absolute bottom-[12%] right-[27%] w-[12%] bg-primary/65" />
-    <ShapeMotion initial={{ height: 0 }} whileInView={{ height: "64%" }} transition={{ duration: 0.6, delay: 0.2 }} className="absolute bottom-[18%] right-[43%] w-[8%] bg-primary/40" />
-    <ShapeMotion initial={{ height: 0 }} whileInView={{ height: "52%" }} transition={{ duration: 0.6, delay: 0.3 }} className="absolute bottom-[24%] right-[55%] w-[6%] bg-primary/20" />
-    <div className="absolute inset-0 flex items-end px-[8%] pb-[8%]">
-      <TextBlock className="text-right max-w-[38%]" />
+    <div className="absolute inset-0 flex items-end justify-center">
+      <ShapeMotion initial={{ height: 0 }} whileInView={{ height: "100%" }} transition={{ duration: 0.8, delay: 0.0 }} className="w-[30%] h-full bg-slate-200 mx-1 overflow-hidden rounded-t-lg">
+        <img src={portraitImage} alt="" className="w-full h-full object-cover object-left" />
+      </ShapeMotion>
+      <ShapeMotion initial={{ height: 0 }} whileInView={{ height: "80%" }} transition={{ duration: 0.8, delay: 0.2 }} className="w-[30%] bg-primary mx-1 overflow-hidden rounded-t-lg">
+        <img src={portraitImage} alt="" className="w-full h-full object-cover object-center" />
+      </ShapeMotion>
+      <ShapeMotion initial={{ height: 0 }} whileInView={{ height: "60%" }} transition={{ duration: 0.8, delay: 0.4 }} className="w-[20%] bg-slate-300 mx-1 overflow-hidden rounded-t-lg">
+        <img src={portraitImage} alt="" className="w-full h-full object-cover object-right" />
+      </ShapeMotion>
+    </div>
+    <div className="absolute top-0 left-0 right-0 p-[8%] flex justify-center bg-gradient-to-b from-white to-transparent h-[40%]">
+      <TextBlock className="text-center" align="center" />
     </div>
   </Box>
 );
@@ -523,12 +532,17 @@ export const PillarsShape: React.FC = () => (
 /** 20. המדרגות — staircase ascending blocks */
 export const StepsShape: React.FC = () => (
   <Box>
-    <ShapeMotion initial={{ y: "100%" }} whileInView={{ y: "0%" }} transition={{ duration: 0.5, delay: 0.0 }} className="absolute bottom-0 right-0 w-[25%] h-[25%] bg-primary/20" />
-    <ShapeMotion initial={{ y: "100%" }} whileInView={{ y: "0%" }} transition={{ duration: 0.5, delay: 0.1 }} className="absolute bottom-0 right-[25%] w-[25%] h-[50%] bg-primary/40" />
-    <ShapeMotion initial={{ y: "100%" }} whileInView={{ y: "0%" }} transition={{ duration: 0.5, delay: 0.2 }} className="absolute bottom-0 right-[50%] w-[25%] h-[75%] bg-primary/70" />
-    <ShapeMotion initial={{ y: "100%" }} whileInView={{ y: "0%" }} transition={{ duration: 0.5, delay: 0.3 }} className="absolute bottom-0 right-[75%] w-[25%] h-full bg-primary" />
-    <div className="absolute inset-0 flex items-start justify-end p-[8%]">
-      <TextBlock className="text-right max-w-[48%]" />
+    <div className="absolute inset-0 grid grid-cols-2">
+      <div className="relative h-full bg-slate-100 flex items-center justify-center p-8">
+        <TextBlock className="text-center" align="center" />
+      </div>
+      <div className="relative h-full">
+        <ShapeMotion initial={{ y: "100%" }} whileInView={{ y: "0%" }} transition={{ duration: 0.5, delay: 0.0 }} className="absolute bottom-0 left-0 w-[50%] h-[40%] bg-primary/20" />
+        <ShapeMotion initial={{ y: "100%" }} whileInView={{ y: "0%" }} transition={{ duration: 0.5, delay: 0.1 }} className="absolute bottom-0 left-[50%] w-[50%] h-[70%] bg-primary/40" />
+        <ShapeMotion initial={{ y: "100%" }} whileInView={{ y: "0%" }} transition={{ duration: 0.5, delay: 0.2 }} className="absolute bottom-0 left-0 w-full h-[85%] bg-primary overflow-hidden rounded-t-xl shadow-lg border-4 border-white">
+          <img src={portraitImage} alt="" className="w-full h-full object-cover object-top" />
+        </ShapeMotion>
+      </div>
     </div>
   </Box>
 );
