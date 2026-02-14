@@ -1,11 +1,19 @@
 ﻿import React, { createContext, useContext } from "react";
+import {
+  RadarShape, PrismShape, TargetShape, StreamShape, CavernShape, LadderShape, CircuitShape, MeshShape, VoidShape, SpotShape,
+  StripeShape, CheckersShape, ClockShape, FanShape, DoorShape, ScrollShape, IslandShape, CloudShape, ForestShape, MountainShape,
+  ValleyShape, SunriseShape, SunsetShape, StarShape, ShieldShape, BannerShape, ArrowShape, PlusShape, MinusShape, DivideShape,
+  EqualShape, PercentShape, QuoteShape, BracketShape, SlashShape, HashShape, AtShape, AmpersandShape, QuestionShape, ExclamationShape,
+  DropShape, LeafShape, FlowerShape, TreeShape, RootShape, SeedShape, SproutShape, BloomShape, CactusShape, PalmShape,
+  OceanShape, RiverShape, LakeShape, RainShape, SnowShape, WindShape, FireShape, IceShape, EarthShape, SkyShape
+} from "./shapes_part2";
 import { motion, type Variants } from "framer-motion";
 
 /* ── Full-screen context ── */
 export const FullScreenCtx = createContext(false);
 
-const MDiv = motion.div;
-const ShapeMotion: React.FC<React.ComponentProps<typeof motion.div>> = ({ children, ...props }) => {
+export const MDiv = motion.div;
+export const ShapeMotion: React.FC<React.ComponentProps<typeof motion.div>> = ({ children, ...props }) => {
   const full = useContext(FullScreenCtx);
   const p = { ...props };
   // In detail view, force animation if using whileInView
@@ -20,7 +28,7 @@ const ShapeMotion: React.FC<React.ComponentProps<typeof motion.div>> = ({ childr
 
 /* ── Text block — scales up in full-screen ── */
 /* ── Text block — scales up in full-screen ── */
-const TextBlock: React.FC<{
+export const TextBlock: React.FC<{
   light?: boolean;
   className?: string;
   align?: "left" | "center" | "right";
@@ -107,7 +115,7 @@ const TextBlock: React.FC<{
 };
 
 /** Shared wrapper */
-const Box: React.FC<{ children: React.ReactNode; className?: string }> = ({
+export const Box: React.FC<{ children: React.ReactNode; className?: string }> = ({
   children,
   className = "",
 }) => (
@@ -1053,6 +1061,66 @@ export const shapeMap: Record<string, React.FC> = {
   portal: PortalShape,
   symmetry: SymmetryShape,
   matrix: MatrixShape,
+  radar: RadarShape,
+  prism: PrismShape,
+  target: TargetShape,
+  stream: StreamShape,
+  cavern: CavernShape,
+  ladder: LadderShape,
+  circuit: CircuitShape,
+  mesh: MeshShape,
+  void: VoidShape,
+  spot: SpotShape,
+  stripe: StripeShape,
+  checkers: CheckersShape,
+  clock: ClockShape,
+  fan: FanShape,
+  door: DoorShape,
+  scroll: ScrollShape,
+  island: IslandShape,
+  cloud: CloudShape,
+  forest: ForestShape,
+  mountain: MountainShape,
+  valley: ValleyShape,
+  sunrise: SunriseShape,
+  sunset: SunsetShape,
+  star: StarShape,
+  shield: ShieldShape,
+  banner: BannerShape,
+  arrow: ArrowShape,
+  plus: PlusShape,
+  minus: MinusShape,
+  divide: DivideShape,
+  equal: EqualShape,
+  percent: PercentShape,
+  quote: QuoteShape,
+  bracket: BracketShape,
+  slash: SlashShape,
+  hash: HashShape,
+  at: AtShape,
+  ampersand: AmpersandShape,
+  question: QuestionShape,
+  exclamation: ExclamationShape,
+  drop: DropShape,
+  leaf: LeafShape,
+  flower: FlowerShape,
+  tree: TreeShape,
+  root: RootShape,
+  seed: SeedShape,
+  sprout: SproutShape,
+  bloom: BloomShape,
+  cactus: CactusShape,
+  palm: PalmShape,
+  ocean: OceanShape,
+  river: RiverShape,
+  lake: LakeShape,
+  rain: RainShape,
+  snow: SnowShape,
+  wind: WindShape,
+  fire: FireShape,
+  ice: IceShape,
+  earth: EarthShape,
+  sky: SkyShape,
 };
 
 
