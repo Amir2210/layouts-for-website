@@ -52,12 +52,12 @@ export default function DetailPage({
       </FullScreenCtx.Provider>
 
       {/* Top bar with gradient */}
-      <div className="absolute top-0 left-0 right-0 h-24 bg-linear-to-b from-black/30 to-transparent pointer-events-none z-5" />
+      <div className="absolute top-0 left-0 right-0 h-24 bg-linear-to-b from-black/30 to-transparent pointer-events-none z-30" />
 
       {/* Back button — luxury gold accent */}
       <motion.button
         onClick={onBack}
-        className="absolute top-6 right-6 z-10 flex items-center gap-3 px-5 py-3 bg-surface/90 hover:bg-surface border border-primary/20 hover:border-primary/40 rounded-2xl shadow-lg backdrop-blur-md transition-all duration-300 hover:gold-glow group"
+        className="absolute top-6 right-6 z-40 flex items-center gap-3 px-5 py-3 bg-surface/90 hover:bg-surface border border-primary/20 hover:border-primary/40 rounded-2xl shadow-lg backdrop-blur-md transition-all duration-300 hover:gold-glow group"
         initial={prefersReduced ? {} : { opacity: 0, y: -12 }}
         animate={{ opacity: 1, y: 0 }}
         transition={
@@ -74,7 +74,7 @@ export default function DetailPage({
 
       {/* Layout title badge */}
       <motion.div
-        className="absolute top-6 left-6 z-10 flex items-center gap-2 px-4 py-2.5 bg-surface/90 border border-border/50 rounded-xl backdrop-blur-md"
+        className="absolute top-6 left-6 z-40 flex items-center gap-2 px-4 py-2.5 bg-surface/90 border border-border/50 rounded-xl backdrop-blur-md"
         initial={prefersReduced ? {} : { opacity: 0, y: -12 }}
         animate={{ opacity: 1, y: 0 }}
         transition={

@@ -1,12 +1,5 @@
 import React, { createContext, useContext } from "react";
-import {
-  RadarShape, PrismShape, TargetShape, StreamShape, CavernShape, LadderShape, CircuitShape, MeshShape, VoidShape, SpotShape,
-  StripeShape, CheckersShape, ClockShape, FanShape, DoorShape, ScrollShape, IslandShape, CloudShape, ForestShape, MountainShape,
-  ValleyShape, SunriseShape, SunsetShape, StarShape, ShieldShape, BannerShape, ArrowShape, PlusShape, MinusShape, DivideShape,
-  EqualShape, PercentShape, QuoteShape, BracketShape, SlashShape, HashShape, AtShape, AmpersandShape, QuestionShape, ExclamationShape,
-  DropShape, LeafShape, FlowerShape, TreeShape, RootShape, SeedShape, SproutShape, BloomShape, CactusShape, PalmShape,
-  OceanShape, RiverShape, LakeShape, RainShape, SnowShape, WindShape, FireShape, IceShape, EarthShape, SkyShape
-} from "./shapes_part2";
+
 import { motion, type Variants } from "framer-motion";
 import portraitImage from "./assets/portrait/portrait png.png";
 
@@ -17,17 +10,14 @@ export const MDiv = motion.div;
 export const ShapeMotion: React.FC<React.ComponentProps<typeof motion.div>> = ({ children, ...props }) => {
   const full = useContext(FullScreenCtx);
   const p = { ...props };
-  // In detail view, force animation if using whileInView
   if (full && p.whileInView && !p.animate) {
     p.animate = p.whileInView;
     delete p.whileInView;
   }
-  // Ensure permissive viewport check
   p.viewport = { once: true, amount: 0, ...p.viewport };
   return <MDiv {...p}>{children}</MDiv>;
 };
 
-/* ── Text block — scales up in full-screen ── */
 /* ── Text block — scales up in full-screen ── */
 export const TextBlock: React.FC<{
   light?: boolean;
@@ -36,29 +26,18 @@ export const TextBlock: React.FC<{
 }> = ({ light = false, className = "", align = "right" }) => {
   const full = useContext(FullScreenCtx);
 
-  const h2 = full
-    ? "text-4xl sm:text-5xl lg:text-7xl mb-4"
-    : "text-lg sm:text-xl mb-1";
-  const h3 = full
-    ? "text-xl sm:text-2xl lg:text-3xl mb-6"
-    : "text-[10px] sm:text-xs mb-1";
-  const p = full
-    ? "text-base sm:text-lg lg:text-xl leading-8 max-w-[600px]"
-    : "text-[9px] sm:text-[10px] leading-tight max-w-[180px]";
+  const h2 = full ? "text-4xl sm:text-5xl lg:text-7xl mb-4" : "text-lg sm:text-xl mb-1";
+  const h3 = full ? "text-xl sm:text-2xl lg:text-3xl mb-6" : "text-[10px] sm:text-xs mb-1";
+  const p = full ? "text-base sm:text-lg lg:text-xl leading-8 max-w-[600px]" : "text-[9px] sm:text-[10px] leading-tight max-w-[180px]";
 
   const textColor = light ? "text-white" : "text-slate-950";
   const subColor = light ? "text-white/95" : "text-slate-700";
   const descColor = light ? "text-white/90" : "text-slate-600";
-
-  // Text shadow for light text to pop on any bg
   const shadowClass = light ? "drop-shadow-md" : "";
 
   const containerVariants: Variants = {
     hidden: { opacity: 0 },
-    show: {
-      opacity: 1,
-      transition: { staggerChildren: 0.1, delayChildren: 0.2 },
-    },
+    show: { opacity: 1, transition: { staggerChildren: 0.1, delayChildren: 0.2 } },
   };
 
   const itemVariants: Variants = {
@@ -68,182 +47,157 @@ export const TextBlock: React.FC<{
 
   return (
     <ShapeMotion
-      className={`relative z-10 flex flex-col ${align === "center"
-        ? "items-center text-center"
-        : align === "left"
-          ? "items-start text-left"
-          : "items-end text-right"
-        } ${className}`}
+      className={`relative z-10 flex flex-col ${align === "center" ? "items-center text-center" : align === "left" ? "items-start text-left" : "items-end text-right"} ${className}`}
       variants={full ? containerVariants : {}}
       initial={full ? "hidden" : "show"}
       animate={full ? "show" : undefined}
       whileInView={full ? undefined : "show"}
       viewport={{ once: true, amount: 0 }}
     >
-      <motion.h2
-        variants={itemVariants}
-        className={`${h2} font-extrabold tracking-tight ${textColor} ${shadowClass}`}
-      >
-        כותרת ראשית
-      </motion.h2>
-      <motion.h3
-        variants={itemVariants}
-        className={`${h3} font-bold tracking-wide uppercase ${subColor} ${shadowClass}`}
-      >
-        כותרת משנית מרשימה
-      </motion.h3>
-      <motion.p
-        variants={itemVariants}
-        className={`${p} font-medium ${descColor} ${shadowClass}`}
-      >
-        טקסט לדוגמה הממחיש את העיצוב הנקי והמקצועי של התבנית. הטיפוגרפיה מותאמת לקריאות מיטבית.
-      </motion.p>
-
-      {/* Decorative button for "Call to Action" feel */}
+      <motion.h2 variants={itemVariants} className={`${h2} font-extrabold tracking-tight ${textColor} ${shadowClass}`}>כותרת ראשית</motion.h2>
+      <motion.h3 variants={itemVariants} className={`${h3} font-bold tracking-wide uppercase ${subColor} ${shadowClass}`}>כותרת משנית מרשימה</motion.h3>
+      <motion.p variants={itemVariants} className={`${p} font-medium ${descColor} ${shadowClass}`}>טקסט לדוגמה הממחיש את העיצוב הנקי והמקצועי של התבנית. הטיפוגרפיה מותאמת לקריאות מיטבית.</motion.p>
       {full && (
-        <motion.button
-          variants={itemVariants}
-          className={`mt-8 px-8 py-3 rounded-full text-sm font-bold tracking-wider uppercase transition-transform hover:scale-105 active:scale-95 ${light
-            ? "bg-white text-slate-900 hover:bg-white/90"
-            : "bg-slate-900 text-white hover:bg-slate-800"
-            }`}
-        >
-          קרא עוד
-        </motion.button>
+        <motion.button variants={itemVariants} className={`mt-8 px-8 py-3 rounded-full text-sm font-bold tracking-wider uppercase transition-transform hover:scale-105 active:scale-95 ${light ? "bg-white text-slate-900 hover:bg-white/90" : "bg-slate-900 text-white hover:bg-slate-800"}`}>קרא עוד</motion.button>
       )}
     </ShapeMotion>
   );
 };
 
 /** Shared wrapper */
-export const Box: React.FC<{ children: React.ReactNode; className?: string }> = ({
-  children,
-  className = "",
-}) => (
-  <div className={`relative w-full h-full overflow-hidden bg-white ${className}`}>
-    {children}
+export const Box: React.FC<{ children: React.ReactNode; className?: string }> = ({ children, className = "" }) => (
+  <div className={`relative w-full h-full overflow-hidden bg-white ${className}`}>{children}</div>
+);
+
+/* ── Decorative helpers ── */
+const Dots: React.FC<{ full: boolean; className?: string; count?: number; color?: string }> = ({ full, className = "", count = 9, color = "bg-primary/30" }) => (
+  <div className={`absolute opacity-40 ${className}`} style={{ display: "grid", gridTemplateColumns: `repeat(${Math.ceil(Math.sqrt(count))}, 1fr)`, gap: full ? "10px" : "3px" }}>
+    {Array.from({ length: count }).map((_, i) => (
+      <div key={i} className={`rounded-full ${color}`} style={{ width: full ? "5px" : "2px", height: full ? "5px" : "2px" }} />
+    ))}
   </div>
 );
 
-/* ════════════════════════════════════════════════════════════ */
-
-/** 1. הקוביה — clean vertical split */
-export const CubeShape: React.FC = () => (
-  <Box>
-    <ShapeMotion
-      initial={{ x: "100%" }}
-      whileInView={{ x: "0%" }}
-      transition={{ duration: 0.8, ease: "circOut" }}
-      className="absolute inset-y-0 right-0 w-[50%] bg-primary overflow-hidden"
-    >
-      <img src={portraitImage} alt="Portrait" className="w-full h-full object-cover object-top" />
-      <div className="absolute inset-0 bg-gradient-to-l from-transparent to-primary/10 mix-blend-multiply" />
-    </ShapeMotion>
-    <div className="absolute inset-0 flex items-center justify-end px-[8%]">
-      <TextBlock className="text-left max-w-[40%]" align="left" />
-    </div>
-  </Box>
+const Ring: React.FC<{ full: boolean; size: string; smallSize: string; className?: string; color?: string; delay?: number }> = ({ full, size, smallSize, className = "", color = "border-primary/20", delay = 0.5 }) => (
+  <ShapeMotion initial={{ scale: 0, opacity: 0 }} whileInView={{ scale: 1, opacity: 1 }} transition={{ duration: 0.8, delay }} className={`absolute rounded-full border-2 ${color} ${className}`} style={{ width: full ? size : smallSize, height: full ? size : smallSize }} />
 );
 
-/** 2. האלכסון — bold diagonal cut */
-export const DiagonalShape: React.FC = () => (
-  <Box>
-    <ShapeMotion
-      initial={{ x: "-100%", rotate: -10 }}
-      whileInView={{ x: "-15%", rotate: -10 }}
-      transition={{ duration: 0.8, delay: 0.1, ease: "backOut" }}
-      className="absolute bg-primary overflow-hidden shadow-2xl"
-      style={{
-        width: "120%",
-        height: "60%",
-        top: "20%",
-        left: "-20%",
-        transformOrigin: "center",
-      }}
-    >
-      <img src={portraitImage} alt="" className="w-full h-full object-cover object-top -rotate-[10deg] scale-125" style={{ transform: "rotate(10deg) scale(1.1)" }} />
-    </ShapeMotion>
-    <div className="absolute inset-0 flex items-end justify-end p-[8%]">
-      <TextBlock className="text-right max-w-[45%]" />
-    </div>
-  </Box>
+const GlowBlob: React.FC<{ full: boolean; className?: string; color?: string; size?: string; smallSize?: string }> = ({ full, className = "", color = "bg-primary", size = "300px", smallSize = "80px" }) => (
+  <div className={`absolute rounded-full ${color} ${className}`} style={{ width: full ? size : smallSize, height: full ? size : smallSize, filter: full ? "blur(50px)" : "blur(15px)", opacity: 0.12 }} />
 );
 
-/** 3. הכדור — large offset circle */
-export const BallShape: React.FC = () => (
-  <Box>
-    <ShapeMotion
-      initial={{ scale: 0, opacity: 0 }}
-      whileInView={{ scale: 1, opacity: 1 }}
-      transition={{ duration: 0.8, type: "spring", bounce: 0.3 }}
-      className="absolute right-[-10%] top-[10%] w-[70%] pb-[70%] bg-primary rounded-full overflow-hidden shadow-2xl border-4 border-white"
-    >
-      <img src={portraitImage} alt="" className="absolute inset-0 w-full h-full object-cover object-[center_20%]" />
-    </ShapeMotion>
-    <div className="absolute inset-0 flex items-center justify-end px-[8%]">
-      <TextBlock className="text-left max-w-[45%]" align="left" />
+const FloatingBadge: React.FC<{ full: boolean; icon: string; label: string; sub: string; className?: string; delay?: number; bgColor?: string }> = ({ full, icon, label, sub, className = "", delay = 0.5, bgColor = "bg-amber-100" }) => (
+  <ShapeMotion
+    initial={{ opacity: 0, scale: 0.6, y: 20 }}
+    whileInView={{ opacity: 1, scale: 1, y: 0 }}
+    transition={{ duration: 0.5, delay, type: "spring", bounce: 0.4 }}
+    className={`absolute bg-white rounded-2xl shadow-lg border border-slate-100 flex items-center gap-2 z-20 ${className}`}
+    style={{ padding: full ? "10px 16px" : "3px 7px" }}
+  >
+    <div className={`${full ? "w-7 h-7" : "w-3 h-3"} rounded-full ${bgColor} flex items-center justify-center`}>
+      <span style={{ fontSize: full ? "14px" : "6px" }}>{icon}</span>
     </div>
-  </Box>
+    <div>
+      <div className={`${full ? "text-xs font-bold" : "text-[5px] font-bold"} text-slate-800`}>{label}</div>
+      <div className={`${full ? "text-[10px]" : "text-[4px]"} text-slate-500`}>{sub}</div>
+    </div>
+  </ShapeMotion>
 );
 
-/** 4. המסגרת — elegant picture frame */
-export const FrameShape: React.FC = () => (
-  <Box>
-    <div className="absolute inset-0 bg-slate-100" />
-    <ShapeMotion
-      initial={{ scale: 0.9, opacity: 0 }}
-      whileInView={{ scale: 1, opacity: 1 }}
-      transition={{ duration: 0.8, ease: "easeOut" }}
-      className="absolute inset-[8%] bg-white shadow-2xl overflow-hidden"
-    >
-      <div className="absolute inset-0 grid grid-cols-2">
-        <div className="relative h-full overflow-hidden">
-          <img src={portraitImage} alt="" className="w-full h-full object-cover object-center" />
-        </div>
-        <div className="flex items-center justify-center p-8 bg-white">
-          <TextBlock className="text-center" align="center" />
-        </div>
+/* ════════════════════════════════════════════════════════════ */
+
+/** 1. הקוביה — vertical split with warm gradient & floating accents */
+export const CubeShape: React.FC = () => {
+  const full = useContext(FullScreenCtx);
+  return (
+    <Box className="bg-linear-to-br! from-amber-50/80 via-white to-orange-50/60">
+      <GlowBlob full={full} className="top-[-10%] right-[-5%]" color="bg-primary" size="400px" smallSize="100px" />
+      <GlowBlob full={full} className="bottom-[-5%] left-[10%]" color="bg-orange-300" size="250px" smallSize="60px" />
+
+      <ShapeMotion initial={{ x: "-100%" }} whileInView={{ x: "0%" }} transition={{ duration: 0.8, ease: "circOut" }} className="absolute inset-y-0 left-0 w-[50%] bg-primary overflow-hidden rounded-r-3xl shadow-2xl">
+        <img src={portraitImage} alt="" className="w-full h-full object-cover object-[center_15%]" />
+        <div className="absolute inset-0 bg-linear-to-r from-transparent to-primary/20 mix-blend-multiply" />
+      </ShapeMotion>
+
+      <Dots full={full} className="bottom-[10%] left-[52%]" count={12} />
+      <Ring full={full} size="100px" smallSize="28px" className="top-[8%] right-[8%]" />
+      <FloatingBadge full={full} icon="⭐" label="Premium" sub="Quality" className={full ? "bottom-[15%] left-[54%]" : "bottom-[12%] left-[52%]"} delay={0.6} />
+
+      <div className="absolute inset-0 flex items-center justify-start px-[8%]">
+        <TextBlock className="text-right max-w-[40%]" />
       </div>
-    </ShapeMotion>
-  </Box>
-);
+    </Box>
+  );
+};
 
-/** 5. הגריד — bento grid */
+/** 2. הכדור — offset circle — TEAL/CYAN theme */
+export const BallShape: React.FC = () => {
+  const full = useContext(FullScreenCtx);
+  return (
+    <Box className="bg-linear-to-tl! from-teal-50/70 via-white to-cyan-50/50">
+      <GlowBlob full={full} className="top-[5%] left-[-10%]" color="bg-teal-400" size="350px" smallSize="90px" />
+      <GlowBlob full={full} className="bottom-[-5%] right-[20%]" color="bg-cyan-300" size="200px" smallSize="50px" />
+
+      <ShapeMotion initial={{ scale: 0, opacity: 0 }} whileInView={{ scale: 1, opacity: 1 }} transition={{ duration: 0.8, type: "spring", bounce: 0.3 }} className="absolute bg-teal-500 rounded-full overflow-hidden shadow-2xl border-4 border-white aspect-square" style={{ height: "75%", top: "12%", left: "-5%" }}>
+        <img src={portraitImage} alt="" className="w-full h-full object-cover object-[center_15%]" />
+      </ShapeMotion>
+
+      <Ring full={full} size="130px" smallSize="35px" className="top-[5%] left-[25%]" color="border-teal-300/30" delay={0.3} />
+      <Ring full={full} size="60px" smallSize="16px" className="bottom-[12%] left-[30%]" color="border-teal-400/25" delay={0.6} />
+      <Dots full={full} className="top-[15%] right-[10%]" count={9} color="bg-teal-300/40" />
+      <FloatingBadge full={full} icon="✨" label="Exclusive" sub="Design" className={full ? "bottom-[20%] right-[10%]" : "bottom-[18%] right-[8%]"} delay={0.7} bgColor="bg-teal-100" />
+
+      <div className="absolute inset-0 flex items-center justify-start px-[8%]">
+        <TextBlock className="text-right max-w-[45%]" />
+      </div>
+    </Box>
+  );
+};
+
+/** 3. המסגרת — elegant picture frame — ROSE/PINK theme */
+export const FrameShape: React.FC = () => {
+  const full = useContext(FullScreenCtx);
+  return (
+    <Box className="bg-linear-to-br! from-rose-50/80 via-pink-50/30 to-white">
+      <GlowBlob full={full} className="top-[-5%] left-[40%]" color="bg-rose-300" size="200px" smallSize="50px" />
+      <GlowBlob full={full} className="bottom-[5%] right-[10%]" color="bg-pink-200" size="150px" smallSize="40px" />
+
+      <ShapeMotion initial={{ scale: 0.9, opacity: 0 }} whileInView={{ scale: 1, opacity: 1 }} transition={{ duration: 0.8, ease: "easeOut" }} className="absolute inset-[8%] bg-white shadow-2xl overflow-hidden rounded-2xl border border-rose-200/60">
+        <div className="absolute inset-0 grid grid-cols-2" dir="ltr">
+          <div className="relative h-full overflow-hidden">
+            <img src={portraitImage} alt="" className="w-full h-full object-cover object-[center_15%]" />
+            <div className="absolute inset-0 bg-linear-to-t from-rose-900/10 to-transparent" />
+          </div>
+          <div className="flex items-center justify-center p-8 bg-white">
+            <TextBlock className="text-center" align="center" />
+          </div>
+        </div>
+      </ShapeMotion>
+
+      <Ring full={full} size="80px" smallSize="22px" className="top-[3%] right-[3%]" color="border-rose-300/30" delay={0.4} />
+      <Dots full={full} className="bottom-[3%] left-[3%]" count={6} color="bg-rose-300/40" />
+    </Box>
+  );
+};
+
+/** 4. הגריד — bento grid — INDIGO/BLUE theme */
 export const GridShape: React.FC = () => {
   const full = useContext(FullScreenCtx);
   return (
-    <Box className={full ? "p-4 sm:p-6" : "p-2 sm:p-3"}>
-      <div className={`grid grid-cols-2 grid-rows-2 w-full h-full ${full ? "gap-3 sm:gap-4" : "gap-1.5 sm:gap-2"}`}>
-        <ShapeMotion
-          initial={{ opacity: 0, scale: 0.95 }}
-          whileInView={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 0.6 }}
-          className="relative row-span-2 overflow-hidden bg-slate-200 rounded-lg"
-        >
-          <img src={portraitImage} alt="" className="w-full h-full object-cover object-center" />
+    <Box className={`bg-linear-to-br! from-indigo-50/60 to-blue-50/40 ${full ? "p-4 sm:p-6" : "p-2 sm:p-3"}`}>
+      <div dir="ltr" className={`grid grid-cols-2 grid-rows-2 w-full h-full ${full ? "gap-3 sm:gap-4" : "gap-1.5 sm:gap-2"}`}>
+        <ShapeMotion initial={{ opacity: 0, scale: 0.95 }} whileInView={{ opacity: 1, scale: 1 }} transition={{ duration: 0.6 }} className="relative row-span-2 overflow-hidden rounded-2xl shadow-lg">
+          <img src={portraitImage} alt="" className="w-full h-full object-cover object-[center_15%]" />
+          <div className="absolute inset-0 bg-linear-to-t from-indigo-900/15 to-transparent" />
         </ShapeMotion>
-
-        <ShapeMotion
-          initial={{ opacity: 0, x: 20 }}
-          whileInView={{ opacity: 1, x: 0 }}
-          transition={{ duration: 0.5, delay: 0.1 }}
-          className="bg-primary flex items-end p-[10%] rounded-lg"
-        >
-          <div>
-            <h2 className={`${full ? "text-2xl sm:text-3xl lg:text-4xl" : "text-sm sm:text-base"} font-extrabold text-white leading-tight`}>
-              כותרת ראשית
-            </h2>
+        <ShapeMotion initial={{ opacity: 0, x: 20 }} whileInView={{ opacity: 1, x: 0 }} transition={{ duration: 0.5, delay: 0.1 }} className="bg-linear-to-br from-indigo-500 to-blue-600 flex items-end p-[10%] rounded-2xl shadow-md">
+          <div dir="rtl">
+            <h2 className={`${full ? "text-2xl sm:text-3xl lg:text-4xl" : "text-sm sm:text-base"} font-extrabold text-white leading-tight drop-shadow-sm`}>כותרת ראשית</h2>
           </div>
         </ShapeMotion>
-
-        <ShapeMotion
-          initial={{ opacity: 0, x: 20 }}
-          whileInView={{ opacity: 1, x: 0 }}
-          transition={{ duration: 0.5, delay: 0.2 }}
-          className="bg-slate-100 flex items-start p-[10%] rounded-lg"
-        >
-          <div className="text-slate-800">
-            <h3 className={`${full ? "text-base sm:text-lg" : "text-xs"} font-semibold mb-2`}>פסקה קצרה</h3>
+        <ShapeMotion initial={{ opacity: 0, x: 20 }} whileInView={{ opacity: 1, x: 0 }} transition={{ duration: 0.5, delay: 0.2 }} className="bg-white flex items-start p-[10%] rounded-2xl shadow-md border border-indigo-100">
+          <div dir="rtl" className="text-slate-800">
+            <h3 className={`${full ? "text-base sm:text-lg" : "text-xs"} font-semibold mb-2 text-indigo-900`}>פסקה קצרה</h3>
             <p className={`${full ? "text-sm" : "text-[10px]"} leading-tight opacity-80`}>לורם איפסום דולור סיט אמט, קונסקטור אדיפיסינג אלית.</p>
           </div>
         </ShapeMotion>
@@ -252,141 +206,88 @@ export const GridShape: React.FC = () => {
   );
 };
 
-/** 6. השלישיות — three columns with center content */
-export const ThirdsShape: React.FC = () => (
-  <Box>
-    <ShapeMotion
-      initial={{ width: "0%" }}
-      whileInView={{ width: "45%" }}
-      transition={{ duration: 0.6, ease: "easeInOut" }}
-      className="absolute inset-y-0 right-0 bg-primary overflow-hidden z-10"
-    >
-      <img src={portraitImage} alt="" className="w-full h-full object-cover object-left" />
-    </ShapeMotion>
-    <ShapeMotion
-      initial={{ width: "0%" }}
-      whileInView={{ width: "100%" }}
-      transition={{ duration: 0.8, delay: 0.1, ease: "easeInOut" }}
-      className="absolute inset-y-0 left-0 bg-slate-100"
-    />
-    <div className="absolute inset-0 flex items-center justify-end px-[8%] z-20">
-      <TextBlock className="text-left max-w-[45%]" align="left" />
-    </div>
-  </Box>
-);
-
-/** 7. הגל — wave with curved divider */
-export const WaveShape: React.FC = () => (
-  <Box>
-    <ShapeMotion
-      initial={{ y: "100%" }}
-      whileInView={{ y: "15%" }}
-      transition={{ duration: 0.8, ease: "circOut" }}
-      className="absolute bottom-0 left-0 right-0 h-full bg-primary overflow-hidden rounded-t-[50%]"
-    >
-      <img src={portraitImage} alt="" className="w-full h-full object-cover object-top" />
-    </ShapeMotion>
-
-    <div className="absolute top-0 left-0 right-0 h-[25%] flex items-center justify-center px-[8%] z-20 bg-white/80 backdrop-blur-sm">
-      <TextBlock className="text-center" align="center" />
-    </div>
-  </Box>
-);
-
-/** 8. הפינה — L-shaped corner composition */
-export const CornerShape: React.FC = () => (
-  <Box>
-    <ShapeMotion
-      initial={{ x: "100%" }}
-      whileInView={{ x: "0%" }}
-      transition={{ duration: 0.8, ease: "circOut" }}
-      className="absolute top-0 right-0 left-[30%] bottom-[10%] bg-primary overflow-hidden rounded-bl-[100px]"
-    >
-      <img src={portraitImage} alt="" className="w-full h-full object-cover object-center" />
-    </ShapeMotion>
-    <div className="absolute inset-y-0 left-0 w-[40%] flex items-center p-[8%] bg-gradient-to-r from-white via-white/90 to-transparent z-10">
-      <TextBlock className="text-left" align="left" />
-    </div>
-  </Box>
-);
-
-/** 9. השכבות — three fading horizontal bands */
-export const LayersShape: React.FC = () => (
-  <Box>
-    <ShapeMotion initial={{ height: "0%" }} whileInView={{ height: "65%" }} transition={{ duration: 0.8 }} className="absolute bottom-0 left-0 right-0 bg-primary overflow-hidden">
-      <img src={portraitImage} alt="" className="w-full h-full object-cover object-top" />
-    </ShapeMotion>
-
-    <div className="absolute top-0 left-0 right-0 h-[35%] flex items-center justify-center p-[8%]">
-      <TextBlock className="text-center" align="center" />
-    </div>
-  </Box>
-);
-
-/** 10. הזיגזג — alternating staggered blocks */
-export const ZigzagShape: React.FC = () => (
-  <Box>
-    <div className="absolute inset-0 grid grid-cols-2">
-      <ShapeMotion initial={{ x: -50, opacity: 0 }} whileInView={{ x: 0, opacity: 1 }} transition={{ delay: 0.1 }} className="relative h-full overflow-hidden">
-        <img src={portraitImage} alt="" className="w-full h-full object-cover object-left" />
-      </ShapeMotion>
-      <div className="relative h-full flex items-center justify-center p-[8%] bg-slate-50">
-        <TextBlock className="text-center" align="center" />
-      </div>
-    </div>
-  </Box>
-);
-
-/** 11. החלון — four-pane grid */
-export const WindowShape: React.FC = () => (
-  <Box>
-    <ShapeMotion initial={{ scale: 0.9, opacity: 0 }} whileInView={{ scale: 1, opacity: 1 }} transition={{ duration: 0.8 }} className="absolute inset-[10%] bg-primary overflow-hidden border-4 border-white shadow-xl">
-      <img src={portraitImage} alt="" className="w-full h-full object-cover object-top" />
-    </ShapeMotion>
-
-    <div className="absolute top-[10%] right-[10%] bg-white p-4 shadow-md -mt-4 -mr-4 z-10 rounded-sm">
-      <TextBlock className="text-right" />
-    </div>
-  </Box>
-);
-
-/** 12. הגרדיאנט — fading vertical strips */
-export const GradientShape: React.FC = () => (
-  <Box>
-    <ShapeMotion initial={{ x: "100%" }} whileInView={{ x: "0%" }} transition={{ delay: 0.0, duration: 0.8 }} className="absolute inset-y-0 right-0 w-[45%] bg-primary overflow-hidden">
-      <img src={portraitImage} alt="" className="w-full h-full object-cover object-center" />
-    </ShapeMotion>
-
-    <div className="absolute inset-y-0 left-0 w-[55%] flex items-center p-[8%] bg-gradient-to-r from-slate-50 to-white/0">
-      <TextBlock className="text-left" align="left" />
-    </div>
-  </Box>
-);
-
-/** 13. הפסיפס — scattered mosaic grid */
-export const MosaicShape: React.FC = () => {
+/** 5. השלישיות — three columns — EMERALD/GREEN theme */
+export const ThirdsShape: React.FC = () => {
   const full = useContext(FullScreenCtx);
   return (
     <Box>
-      <div className="absolute inset-0 grid grid-cols-12 grid-rows-6 w-full h-full gap-2 p-4 bg-slate-100">
-        <ShapeMotion
-          initial={{ opacity: 0, scale: 0.9 }}
-          whileInView={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 0.7 }}
-          className="col-span-8 row-span-4 bg-white rounded-2xl overflow-hidden shadow-lg"
-        >
-          <img src={portraitImage} alt="" className="w-full h-full object-cover object-top" />
+      <div className="absolute inset-0 grid grid-cols-3 gap-[3px] bg-emerald-50" dir="ltr">
+        <ShapeMotion initial={{ y: "100%" }} whileInView={{ y: "0%" }} transition={{ duration: 0.6, ease: "circOut" }} className="relative overflow-hidden bg-emerald-600 rounded-r-xl">
+          <img src={portraitImage} alt="" className="w-full h-full object-cover object-[center_15%]" />
+          <div className="absolute inset-0 bg-linear-to-t from-emerald-900/15 to-transparent" />
         </ShapeMotion>
-
-        <ShapeMotion
-          initial={{ opacity: 0, scale: 0.8 }}
-          whileInView={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 0.5, delay: 0.2 }}
-          className="col-span-4 row-span-3 bg-primary rounded-2xl flex items-center justify-center p-4"
-        >
-          <span className="text-white font-bold text-center">New Collection</span>
+        <ShapeMotion initial={{ y: "-100%" }} whileInView={{ y: "0%" }} transition={{ duration: 0.6, delay: 0.15, ease: "circOut" }} className="relative bg-linear-to-b from-emerald-500 to-emerald-700 flex items-end p-[12%]">
+          <TextBlock className="text-right max-w-full" light />
+          <Dots full={full} className="top-[8%] right-[8%]" count={6} color="bg-white/30" />
         </ShapeMotion>
+        <ShapeMotion initial={{ y: "100%" }} whileInView={{ y: "0%" }} transition={{ duration: 0.6, delay: 0.3, ease: "circOut" }} className="relative bg-emerald-100 rounded-l-xl flex items-center justify-center">
+          <Ring full={full} size="80px" smallSize="22px" className="relative" color="border-emerald-400/40" delay={0.5} />
+        </ShapeMotion>
+      </div>
+    </Box>
+  );
+};
 
+/** 6. הפינה — L-shaped corner — CORAL/WARM RED theme */
+export const CornerShape: React.FC = () => {
+  const full = useContext(FullScreenCtx);
+  return (
+    <Box className="bg-linear-to-br! from-red-50/40 via-white to-orange-50/30">
+      <GlowBlob full={full} className="bottom-[5%] right-[5%]" color="bg-red-300" size="200px" smallSize="50px" />
+      <GlowBlob full={full} className="top-[-5%] left-[30%]" color="bg-orange-200" size="180px" smallSize="45px" />
+
+      <ShapeMotion initial={{ x: "-100%" }} whileInView={{ x: "0%" }} transition={{ duration: 0.8, ease: "circOut" }} className="absolute top-0 left-0 right-[30%] bottom-[10%] bg-red-500 overflow-hidden rounded-br-[100px] shadow-xl">
+        <img src={portraitImage} alt="" className="w-full h-full object-cover object-[center_15%]" />
+        <div className="absolute inset-0 bg-linear-to-br from-transparent to-red-600/15" />
+      </ShapeMotion>
+
+      <FloatingBadge full={full} icon="🔥" label="Hot" sub="Trending" className={full ? "top-[8%] right-[8%]" : "top-[6%] right-[5%]"} delay={0.5} bgColor="bg-red-100" />
+      <Ring full={full} size="70px" smallSize="18px" className="bottom-[5%] left-[5%]" color="border-red-300/25" delay={0.7} />
+
+      <div className="absolute inset-y-0 right-0 w-[40%] flex items-center p-[8%]">
+        <TextBlock className="text-right" />
+      </div>
+    </Box>
+  );
+};
+
+/** 7. הזיגזג — two-column — SKY BLUE theme */
+export const ZigzagShape: React.FC = () => {
+  const full = useContext(FullScreenCtx);
+  return (
+    <Box className="bg-linear-to-r! from-sky-50/60 to-blue-50/40">
+      <GlowBlob full={full} className="top-[10%] right-[20%]" color="bg-sky-300" size="180px" smallSize="45px" />
+      <div className="absolute inset-0 grid grid-cols-2" dir="ltr">
+        <ShapeMotion initial={{ x: -50, opacity: 0 }} whileInView={{ x: 0, opacity: 1 }} transition={{ delay: 0.1 }} className="relative h-full overflow-hidden rounded-r-3xl shadow-lg">
+          <img src={portraitImage} alt="" className="w-full h-full object-cover object-[center_15%]" />
+          <div className="absolute inset-0 bg-linear-to-r from-transparent to-sky-900/5" />
+        </ShapeMotion>
+        <div className="relative h-full flex items-center justify-center p-[8%]">
+          <TextBlock className="text-center" align="center" />
+          <Dots full={full} className="top-[8%] right-[8%]" count={9} color="bg-sky-300/40" />
+          <Ring full={full} size="90px" smallSize="24px" className="bottom-[8%] right-[8%]" color="border-sky-300/30" delay={0.6} />
+        </div>
+      </div>
+    </Box>
+  );
+};
+
+/** 8. הפסיפס — mosaic grid — PURPLE/FUCHSIA theme */
+export const MosaicShape: React.FC = () => {
+  const full = useContext(FullScreenCtx);
+  return (
+    <Box className="bg-linear-to-br! from-purple-50/50 to-fuchsia-50/30">
+      <div className="absolute inset-0 grid grid-cols-12 grid-rows-6 w-full h-full gap-2 p-4">
+        <ShapeMotion initial={{ opacity: 0, scale: 0.9 }} whileInView={{ opacity: 1, scale: 1 }} transition={{ duration: 0.7 }} className="col-span-8 row-span-4 bg-white rounded-2xl overflow-hidden shadow-lg">
+          <img src={portraitImage} alt="" className="w-full h-full object-cover object-[center_15%]" />
+          <div className="absolute inset-0 bg-linear-to-t from-purple-900/10 to-transparent" />
+        </ShapeMotion>
+        <ShapeMotion initial={{ opacity: 0, scale: 0.8 }} whileInView={{ opacity: 1, scale: 1 }} transition={{ duration: 0.5, delay: 0.2 }} className="col-span-4 row-span-3 bg-linear-to-br from-purple-500 to-fuchsia-600 rounded-2xl flex items-center justify-center p-4 shadow-md">
+          <span className={`text-white font-bold text-center ${full ? "text-lg" : "text-[8px]"}`}>New Collection</span>
+        </ShapeMotion>
+        <ShapeMotion initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} transition={{ delay: 0.3 }} className="col-span-4 row-span-1 bg-white/80 backdrop-blur-sm rounded-xl flex items-center justify-center border border-purple-100 shadow-sm">
+          <span className={`text-purple-600 font-semibold ${full ? "text-sm" : "text-[6px]"}`}>💎 Premium</span>
+        </ShapeMotion>
         <div className="col-span-12 row-span-2 flex items-center justify-between px-4">
           <TextBlock className="text-left w-full" align="left" />
         </div>
@@ -395,746 +296,630 @@ export const MosaicShape: React.FC = () => {
   );
 };
 
-/** 14. האופק — clean horizon split */
-export const HorizonShape: React.FC = () => (
-  <Box>
-    <ShapeMotion
-      initial={{ height: "0%" }}
-      whileInView={{ height: "55%" }}
-      transition={{ duration: 0.8, ease: "circOut" }}
-      className="absolute bottom-0 left-0 right-0 bg-primary overflow-hidden"
-    >
-      <img src={portraitImage} alt="" className="w-full h-full object-cover object-top" />
-    </ShapeMotion>
+/** 9. הספירלה — circular portrait with orbit rings — VIOLET/LAVENDER theme */
+export const SpiralShape: React.FC = () => {
+  const full = useContext(FullScreenCtx);
+  return (
+    <Box className="bg-linear-to-br! from-violet-50/60 via-white to-purple-50/30">
+      <GlowBlob full={full} className="top-[10%] left-[10%]" color="bg-violet-400" size="280px" smallSize="70px" />
+      <GlowBlob full={full} className="bottom-[5%] right-[15%]" color="bg-purple-300" size="180px" smallSize="45px" />
 
-    <div className="absolute top-0 left-0 right-0 h-[45%] flex items-center justify-center p-[8%] bg-white">
-      <TextBlock className="text-center w-full" align="center" />
-    </div>
-  </Box>
-);
-
-/** 15. הקשת — rounded arch with content below */
-export const ArchShape: React.FC = () => (
-  <Box>
-    <ShapeMotion
-      initial={{ y: "-100%" }}
-      whileInView={{ y: "0%" }}
-      transition={{ duration: 0.7, ease: "easeOut" }}
-      className="absolute bg-primary"
-      style={{
-        width: "60%",
-        height: "70%",
-        top: 0,
-        left: "20%",
-        borderRadius: "0 0 100px 100px",
-        overflow: "hidden"
-      }}
-    >
-      <img src={portraitImage} alt="" className="w-full h-full object-cover object-center" />
-    </ShapeMotion>
-
-    <div className="absolute inset-0 flex items-end justify-center pb-[10%]">
-      <TextBlock className="text-center" align="center" />
-    </div>
-  </Box>
-);
-
-/** 16. היהלום — rotated diamond focal point */
-export const DiamondShape: React.FC = () => (
-  <Box>
-    <ShapeMotion
-      initial={{ scale: 0, rotate: 0 }}
-      whileInView={{ scale: 1, rotate: 45 }}
-      transition={{ duration: 0.8, type: "spring" }}
-      className="absolute bg-primary border-4 border-white shadow-xl overflow-hidden"
-      style={{
-        width: "55%",
-        height: "55%",
-        top: "50%",
-        left: "50%",
-        transform: "translate(-50%, -50%) rotate(45deg)",
-      }}
-    >
-      <img src={portraitImage} alt="" className="w-full h-full object-cover object-top" style={{ transform: "rotate(-45deg) scale(1.4)" }} />
-    </ShapeMotion>
-
-    <div className="absolute top-[5%] right-[5%] max-w-[40%] text-right bg-white/80 p-4 rounded-lg backdrop-blur-sm shadow-sm z-10">
-      <TextBlock className="text-right" align="right" />
-    </div>
-  </Box>
-);
-
-
-/** 17. הספירלה — concentric offset rectangles */
-export const SpiralShape: React.FC = () => (
-  <Box>
-    <div className="absolute inset-y-0 right-0 w-[55%] flex items-center justify-center p-[8%]">
-      <div className="relative z-10">
-        <div className="absolute -inset-4 border-2 border-primary/20 rounded-full animate-spin-slow" style={{ animationDuration: '20s' }} />
-        <div className="w-64 h-64 rounded-full overflow-hidden border-4 border-white shadow-xl">
-          <img src={portraitImage} alt="" className="w-full h-full object-cover object-top" />
+      <div className="absolute inset-y-0 left-0 w-[55%] flex items-center justify-center p-[8%]">
+        <div className="relative z-10">
+          <Ring full={full} size="280px" smallSize="80px" className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2" color="border-violet-300/25" delay={0.2} />
+          <Ring full={full} size="220px" smallSize="64px" className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2" color="border-violet-400/30" delay={0.4} />
+          <div className={`${full ? "w-48 h-48 lg:w-64 lg:h-64" : "w-16 h-16"} rounded-full overflow-hidden border-4 border-white shadow-xl relative z-10`}>
+            <img src={portraitImage} alt="" className="w-full h-full object-cover object-[center_15%]" />
+          </div>
         </div>
       </div>
-    </div>
 
-    <div className="absolute inset-y-0 left-0 w-[45%] flex items-center p-[8%] bg-slate-50">
-      <TextBlock className="text-left" align="left" />
-    </div>
-  </Box>
-);
+      <FloatingBadge full={full} icon="✦" label="Creative" sub="Studio" className={full ? "top-[15%] left-[40%]" : "top-[12%] left-[35%]"} delay={0.6} bgColor="bg-violet-100" />
+      <Dots full={full} className="bottom-[15%] left-[15%]" count={6} color="bg-violet-300/50" />
 
-/** 18. הסרט — diagonal ribbon banner */
-export const RibbonShape: React.FC = () => (
-  <Box>
-    <ShapeMotion
-      initial={{ x: "-100%" }}
-      whileInView={{ x: "-20%" }}
-      transition={{ duration: 0.8, ease: "anticipate" }}
-      className="absolute bg-primary overflow-hidden shadow-xl"
-      style={{
-        width: "140%",
-        height: "35%",
-        top: "35%",
-        left: "-20%",
-        transform: "rotate(-10deg)",
-        transformOrigin: "center",
-      }}
-    >
-      <img src={portraitImage} alt="" className="w-full h-full object-cover object-[center_30%]" style={{ transform: "rotate(10deg) scale(1.1)" }} />
-    </ShapeMotion>
-
-    <div className="absolute inset-0 flex flex-col justify-between p-[8%] pointer-events-none">
-      <div className="text-right"> <TextBlock className="text-right" align="right" /> </div>
-    </div>
-  </Box>
-);
-
-/** 19. העמודים — vertical columns of varying widths */
-export const PillarsShape: React.FC = () => (
-  <Box>
-    <div className="absolute inset-0 flex items-end justify-center">
-      <ShapeMotion initial={{ height: 0 }} whileInView={{ height: "100%" }} transition={{ duration: 0.8, delay: 0.0 }} className="w-[30%] h-full bg-slate-200 mx-1 overflow-hidden rounded-t-lg">
-        <img src={portraitImage} alt="" className="w-full h-full object-cover object-left" />
-      </ShapeMotion>
-      <ShapeMotion initial={{ height: 0 }} whileInView={{ height: "80%" }} transition={{ duration: 0.8, delay: 0.2 }} className="w-[30%] bg-primary mx-1 overflow-hidden rounded-t-lg">
-        <img src={portraitImage} alt="" className="w-full h-full object-cover object-center" />
-      </ShapeMotion>
-      <ShapeMotion initial={{ height: 0 }} whileInView={{ height: "60%" }} transition={{ duration: 0.8, delay: 0.4 }} className="w-[20%] bg-slate-300 mx-1 overflow-hidden rounded-t-lg">
-        <img src={portraitImage} alt="" className="w-full h-full object-cover object-right" />
-      </ShapeMotion>
-    </div>
-    <div className="absolute top-0 left-0 right-0 p-[8%] flex justify-center bg-gradient-to-b from-white to-transparent h-[40%]">
-      <TextBlock className="text-center" align="center" />
-    </div>
-  </Box>
-);
-
-/** 20. המדרגות — staircase ascending blocks */
-export const StepsShape: React.FC = () => (
-  <Box>
-    <div className="absolute inset-0 grid grid-cols-2">
-      <div className="relative h-full bg-slate-100 flex items-center justify-center p-8">
-        <TextBlock className="text-center" align="center" />
-      </div>
-      <div className="relative h-full">
-        <ShapeMotion initial={{ y: "100%" }} whileInView={{ y: "0%" }} transition={{ duration: 0.5, delay: 0.0 }} className="absolute bottom-0 left-0 w-[50%] h-[40%] bg-primary/20" />
-        <ShapeMotion initial={{ y: "100%" }} whileInView={{ y: "0%" }} transition={{ duration: 0.5, delay: 0.1 }} className="absolute bottom-0 left-[50%] w-[50%] h-[70%] bg-primary/40" />
-        <ShapeMotion initial={{ y: "100%" }} whileInView={{ y: "0%" }} transition={{ duration: 0.5, delay: 0.2 }} className="absolute bottom-0 left-0 w-full h-[85%] bg-primary overflow-hidden rounded-t-xl shadow-lg border-4 border-white">
-          <img src={portraitImage} alt="" className="w-full h-full object-cover object-top" />
-        </ShapeMotion>
-      </div>
-    </div>
-  </Box>
-);
-
-/** 21. הליקוי — overlapping circles */
-export const EclipseShape: React.FC = () => (
-  <Box>
-    <ShapeMotion
-      initial={{ scale: 0 }}
-      whileInView={{ scale: 1 }}
-      transition={{ duration: 0.8, type: "spring" }}
-      className="absolute bg-primary rounded-full"
-      style={{ width: "48%", paddingBottom: "48%", top: "18%", right: "10%" }}
-    />
-    <ShapeMotion
-      initial={{ scale: 0 }}
-      whileInView={{ scale: 1 }}
-      transition={{ duration: 0.8, delay: 0.1, type: "spring" }}
-      className="absolute bg-primary/35 rounded-full"
-      style={{ width: "48%", paddingBottom: "48%", top: "30%", right: "30%" }}
-    />
-    <ShapeMotion
-      initial={{ scale: 0 }}
-      whileInView={{ scale: 1 }}
-      transition={{ duration: 0.8, delay: 0.2, type: "spring" }}
-      className="absolute bg-primary/15 rounded-full"
-      style={{ width: "32%", paddingBottom: "32%", top: "10%", right: "50%" }}
-    />
-    <div className="absolute inset-0 flex items-end px-[8%] pb-[6%]">
-      <TextBlock className="text-right max-w-[45%]" />
-    </div>
-  </Box>
-);
-
-/** 22. הצלב — plus/cross intersection */
-export const CrossShape: React.FC = () => (
-  <Box>
-    {/* Vertical bar */}
-    <ShapeMotion initial={{ scaleY: 0 }} whileInView={{ scaleY: 1 }} transition={{ duration: 0.6 }} className="absolute top-0 bottom-0 left-1/2 -translate-x-1/2 w-[30%] bg-primary/30" />
-    {/* Horizontal bar */}
-    <ShapeMotion initial={{ scaleX: 0 }} whileInView={{ scaleX: 1 }} transition={{ duration: 0.6, delay: 0.2 }} className="absolute left-0 right-0 top-1/2 -translate-y-1/2 h-[30%] bg-primary" />
-    {/* Center square */}
-    <ShapeMotion initial={{ scale: 0, rotate: -90 }} whileInView={{ scale: 1, rotate: 0 }} transition={{ duration: 0.6, delay: 0.4 }} className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[30%] h-[30%] bg-primary" />
-    <div className="absolute inset-0 flex items-start justify-end p-[8%]">
-      <TextBlock className="text-right max-w-[30%]" />
-    </div>
-  </Box>
-);
-
-/** 23. הפירמידה — triangular pyramid composition */
-export const PyramidShape: React.FC = () => (
-  <Box>
-    <ShapeMotion
-      initial={{ y: "100%" }}
-      whileInView={{ y: "0%" }}
-      transition={{ duration: 0.8, ease: "circOut" }}
-      className="absolute bg-primary"
-      style={{
-        width: 0,
-        height: 0,
-        bottom: "12%",
-        left: "50%",
-        transform: "translateX(-50%)",
-        borderLeft: "28vw solid transparent",
-        borderRight: "28vw solid transparent",
-        borderBottom: "52vh solid var(--color-primary)",
-      }}
-    />
-    <ShapeMotion initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} transition={{ delay: 0.4 }} className="absolute bottom-0 left-0 right-0 h-[12%] bg-primary/20" />
-    <div className="absolute inset-0 flex items-start justify-center pt-[8%]">
-      <TextBlock className="text-center" align="center" />
-    </div>
-  </Box>
-);
-
-/** 24. הפיצול — asymmetric offset split */
-export const SplitShape: React.FC = () => (
-  <Box>
-    <ShapeMotion initial={{ x: "100%" }} whileInView={{ x: "0%" }} transition={{ duration: 0.7 }} className="absolute top-0 right-0 w-[55%] h-[60%] bg-primary" />
-    <ShapeMotion initial={{ x: "-100%" }} whileInView={{ x: "0%" }} transition={{ duration: 0.7 }} className="absolute bottom-0 left-0 w-[55%] h-[60%] bg-primary/40" />
-    <ShapeMotion initial={{ x: "100%" }} whileInView={{ x: "0%" }} transition={{ duration: 0.7, delay: 0.2 }} className="absolute top-[60%] right-0 w-[55%] h-[10%] bg-primary/15" />
-    <div className="absolute inset-0 flex items-center justify-center">
-      <div className="bg-white/90 backdrop-blur-sm p-6 rounded-xl shadow-lg border border-white/20">
-        <TextBlock className="text-center" align="center" />
-      </div>
-    </div>
-  </Box>
-);
-
-/** 25. האריחים — irregular tile layout */
-export const TilesShape: React.FC = () => {
-  const full = useContext(FullScreenCtx);
-  return (
-    <Box className={full ? "p-4 sm:p-6" : "p-2 sm:p-3"}>
-      <div className={`grid grid-cols-5 grid-rows-3 w-full h-full ${full ? "gap-3 sm:gap-4" : "gap-1.5 sm:gap-2"}`}>
-        <ShapeMotion initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} transition={{ delay: 0.0 }} className="bg-primary col-span-2 row-span-1" />
-        <ShapeMotion initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} transition={{ delay: 0.1 }} className="bg-primary/20 col-span-1 row-span-2" />
-        <ShapeMotion initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} transition={{ delay: 0.2 }} className="bg-primary/55 col-span-2 row-span-1" />
-        <ShapeMotion initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} transition={{ delay: 0.3 }} className="bg-primary/35 col-span-1 row-span-1" />
-        <ShapeMotion initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} transition={{ delay: 0.4 }} className="bg-primary col-span-1 row-span-2" />
-        <ShapeMotion initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} transition={{ delay: 0.5 }} className="bg-primary/15 col-span-2 row-span-1" />
-        <ShapeMotion initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} transition={{ delay: 0.6 }} className="bg-primary/70 col-span-1 row-span-1" />
-        <ShapeMotion
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.7 }}
-          className="bg-primary col-span-2 row-span-1 flex items-end p-[8%]"
-        >
-          <div>
-            <h2 className={`${full ? "text-2xl sm:text-3xl lg:text-4xl" : "text-xs sm:text-sm"} font-extrabold text-white leading-tight drop-shadow-md`}>
-              כותרת ראשית
-            </h2>
-            <h3 className={`${full ? "text-base sm:text-lg mt-1" : "text-[9px] sm:text-[10px] mt-0.5"} font-semibold text-white/90 drop-shadow-sm`}>
-              כותרת משנית
-            </h3>
-          </div>
-        </ShapeMotion>
-        <ShapeMotion initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} transition={{ delay: 0.8 }} className="bg-primary/45 col-span-1 row-span-1" />
+      <div className="absolute inset-y-0 right-0 w-[45%] flex items-center p-[8%]">
+        <TextBlock className="text-right" />
       </div>
     </Box>
   );
 };
 
-/** 26. הוילון — side curtain reveal */
-export const CurtainShape: React.FC = () => (
-  <Box>
-    <ShapeMotion initial={{ width: "0%" }} whileInView={{ width: "35%" }} transition={{ duration: 0.8, ease: "easeInOut" }} className="absolute inset-y-0 right-0 bg-primary" />
-    <ShapeMotion initial={{ width: "0%" }} whileInView={{ width: "8%" }} transition={{ duration: 0.8, delay: 0.1, ease: "easeInOut" }} className="absolute inset-y-0 right-[35%] bg-primary/50" />
-    <ShapeMotion initial={{ width: "0%" }} whileInView={{ width: "4%" }} transition={{ duration: 0.8, delay: 0.2, ease: "easeInOut" }} className="absolute inset-y-0 right-[43%] bg-primary/25" />
-    <ShapeMotion initial={{ width: "0%" }} whileInView={{ width: "2%" }} transition={{ duration: 0.8, delay: 0.3, ease: "easeInOut" }} className="absolute inset-y-0 right-[47%] bg-primary/10" />
-    <div className="absolute inset-0 flex items-center px-[8%]">
-      <TextBlock className="text-right max-w-[32%]" light />
-    </div>
-  </Box>
-);
-
-/** 27. הגשר — horizontal bridge with supports */
-export const BridgeShape: React.FC = () => (
-  <Box>
-    {/* Bridge deck */}
-    <ShapeMotion initial={{ scaleX: 0 }} whileInView={{ scaleX: 1 }} transition={{ duration: 0.8 }} className="absolute left-0 right-0 top-[35%] h-[14%] bg-primary" />
-    {/* Left support */}
-    <ShapeMotion initial={{ height: 0 }} whileInView={{ height: "55%" }} transition={{ duration: 0.6, delay: 0.4 }} className="absolute top-[35%] right-[12%] w-[14%] bg-primary/60" />
-    {/* Right support */}
-    <ShapeMotion initial={{ height: 0 }} whileInView={{ height: "55%" }} transition={{ duration: 0.6, delay: 0.5 }} className="absolute top-[35%] left-[12%] w-[14%] bg-primary/60" />
-    {/* Base */}
-    <ShapeMotion initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} transition={{ delay: 0.6 }} className="absolute bottom-0 left-0 right-0 h-[10%] bg-primary/20" />
-    <div className="absolute inset-0 flex items-start justify-center pt-[8%]">
-      <TextBlock className="text-center" align="center" />
-    </div>
-  </Box>
-);
-
-/** 28. הקן — nested rectangles / frames */
-export const NestShape: React.FC = () => (
-  <Box>
-    <ShapeMotion initial={{ opacity: 0, scale: 0.8 }} whileInView={{ opacity: 1, scale: 1 }} transition={{ delay: 0.0 }} className="absolute inset-[5%] border-[3px] border-primary" />
-    <ShapeMotion initial={{ opacity: 0, scale: 0.8 }} whileInView={{ opacity: 1, scale: 1 }} transition={{ delay: 0.1 }} className="absolute inset-[12%] border-[3px] border-primary/55" />
-    <ShapeMotion initial={{ opacity: 0, scale: 0.8 }} whileInView={{ opacity: 1, scale: 1 }} transition={{ delay: 0.2 }} className="absolute inset-[19%] border-[3px] border-primary/30" />
-    <ShapeMotion initial={{ opacity: 0, scale: 0.8 }} whileInView={{ opacity: 1, scale: 1 }} transition={{ delay: 0.3 }} className="absolute inset-[26%] bg-primary/10" />
-    <div className="absolute inset-0 flex items-center justify-center">
-      <TextBlock className="text-center" align="center" />
-    </div>
-  </Box>
-);
-
-/** 29. הפסגה — mountain peak / chevron */
-export const PeakShape: React.FC = () => (
-  <Box>
-    {/* Main peak */}
-    <ShapeMotion
-      initial={{ y: "100%" }}
-      whileInView={{ y: "0%" }}
-      transition={{ duration: 0.6, ease: "easeOut" }}
-      className="absolute bg-primary"
-      style={{
-        width: "50%",
-        height: "70%",
-        bottom: 0,
-        left: "25%",
-        clipPath: "polygon(50% 0%, 100% 100%, 0% 100%)",
-      }}
-    />
-    {/* Secondary peak */}
-    <ShapeMotion
-      initial={{ y: "100%" }}
-      whileInView={{ y: "0%" }}
-      transition={{ duration: 0.6, delay: 0.1, ease: "easeOut" }}
-      className="absolute bg-primary/30"
-      style={{
-        width: "35%",
-        height: "50%",
-        bottom: 0,
-        left: "5%",
-        clipPath: "polygon(50% 0%, 100% 100%, 0% 100%)",
-      }}
-    />
-    {/* Small peak */}
-    <ShapeMotion
-      initial={{ y: "100%" }}
-      whileInView={{ y: "0%" }}
-      transition={{ duration: 0.6, delay: 0.2, ease: "easeOut" }}
-      className="absolute bg-primary/18"
-      style={{
-        width: "28%",
-        height: "38%",
-        bottom: 0,
-        right: "4%",
-        clipPath: "polygon(50% 0%, 100% 100%, 0% 100%)",
-      }}
-    />
-    <div className="absolute inset-0 flex items-start justify-end p-[8%]">
-      <TextBlock className="text-right max-w-[40%]" />
-    </div>
-  </Box>
-);
-
-/** 30. המסלול — circular orbital paths */
-export const OrbitShape: React.FC = () => (
-  <Box>
-    {/* Outer orbit ring */}
-    <ShapeMotion initial={{ rotate: 0 }} whileInView={{ rotate: 360 }} transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
-      className="absolute border-2 border-primary/25 rounded-full"
-      style={{ width: "80%", height: "80%", top: "10%", left: "10%" }}
-    />
-    {/* Middle orbit ring */}
-    <ShapeMotion initial={{ rotate: 0 }} whileInView={{ rotate: -360 }} transition={{ duration: 15, repeat: Infinity, ease: "linear" }}
-      className="absolute border-2 border-primary/45 rounded-full"
-      style={{ width: "55%", height: "55%", top: "22.5%", left: "22.5%" }}
-    />
-    {/* Inner orbit ring */}
-    <ShapeMotion initial={{ rotate: 0 }} whileInView={{ rotate: 360 }} transition={{ duration: 10, repeat: Infinity, ease: "linear" }}
-      className="absolute border-2 border-primary/70 rounded-full"
-      style={{ width: "30%", height: "30%", top: "35%", left: "35%" }}
-    />
-    {/* Center dot */}
-    <ShapeMotion initial={{ scale: 0 }} whileInView={{ scale: 1 }} className="absolute bg-primary rounded-full"
-      style={{ width: "10%", height: "10%", top: "45%", left: "45%" }}
-    />
-    {/* Orbiting element 1 */}
-    <ShapeMotion
-      animate={{ rotate: 360 }}
-      transition={{ duration: 8, repeat: Infinity, ease: "linear" }}
-      className="absolute w-full h-full top-0 left-0 pointer-events-none"
-    >
-      <div className="absolute bg-primary rounded-full" style={{ width: "6%", paddingBottom: "6%", top: "8%", left: "47%" }} />
-    </ShapeMotion>
-
-    <div className="absolute inset-0 flex items-end justify-end p-[8%]">
-      <TextBlock className="text-right max-w-[40%]" />
-    </div>
-  </Box>
-);
-
-/** 31. המשושה — Hexagon mask */
-export const HexagonShape: React.FC = () => (
-  <Box>
-    <ShapeMotion
-      initial={{ scale: 0, opacity: 0 }}
-      whileInView={{ scale: 1, opacity: 1 }}
-      transition={{ duration: 0.8, type: "spring" }}
-      className="absolute bg-primary"
-      style={{
-        width: "60%",
-        height: "60%",
-        top: "20%",
-        left: "20%",
-        clipPath: "polygon(25% 0%, 75% 0%, 100% 50%, 75% 100%, 25% 100%, 0% 50%)",
-      }}
-    />
-    <ShapeMotion
-      initial={{ scale: 0, opacity: 0 }}
-      whileInView={{ scale: 1, opacity: 1 }}
-      transition={{ duration: 0.8, delay: 0.2, type: "spring" }}
-      className="absolute bg-primary/20"
-      style={{
-        width: "70%",
-        height: "70%",
-        top: "15%",
-        left: "15%",
-        clipPath: "polygon(25% 0%, 75% 0%, 100% 50%, 75% 100%, 25% 100%, 0% 50%)",
-        zIndex: -1,
-      }}
-    />
-    <div className="absolute inset-0 flex items-center justify-center">
-      <TextBlock className="text-center" light align="center" />
-    </div>
-  </Box>
-);
-
-/** 32. הקולנוע — Cinematic widescreen */
-export const CinemaShape: React.FC = () => (
-  <Box className="bg-black">
-    <ShapeMotion initial={{ height: "50%" }} whileInView={{ height: "15%" }} transition={{ duration: 1, ease: "easeInOut" }} className="absolute inset-x-0 top-0 bg-black z-10" />
-    <ShapeMotion initial={{ height: "50%" }} whileInView={{ height: "15%" }} transition={{ duration: 1, ease: "easeInOut" }} className="absolute inset-x-0 bottom-0 bg-black z-10" />
-    <ShapeMotion initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} transition={{ delay: 0.8, duration: 0.5 }} className="absolute inset-0 top-[15%] bottom-[15%] bg-primary/80 flex items-center justify-center">
-      <TextBlock className="text-center max-w-[60%]" light align="center" />
-    </ShapeMotion>
-  </Box>
-);
-
-/** 33. האוריגמי — Folded paper look */
-export const OrigamiShape: React.FC = () => (
-  <Box>
-    <ShapeMotion
-      initial={{ rotateY: 90, opacity: 0 }}
-      whileInView={{ rotateY: 0, opacity: 1 }}
-      transition={{ duration: 0.8 }}
-      className="absolute bg-primary"
-      style={{
-        width: "50%",
-        height: "50%",
-        top: "10%",
-        left: "10%",
-        clipPath: "polygon(0 0, 100% 0, 0 100%)",
-      }}
-    />
-    <ShapeMotion
-      initial={{ rotateX: 90, opacity: 0 }}
-      whileInView={{ rotateX: 0, opacity: 1 }}
-      transition={{ duration: 0.8, delay: 0.2 }}
-      className="absolute bg-primary/70"
-      style={{
-        width: "50%",
-        height: "50%",
-        top: "10%",
-        left: "10%",
-        clipPath: "polygon(100% 0, 100% 100%, 0 100%)",
-      }}
-    />
-    <ShapeMotion
-      initial={{ rotateY: -90, opacity: 0 }}
-      whileInView={{ rotateY: 0, opacity: 1 }}
-      transition={{ duration: 0.8, delay: 0.4 }}
-      className="absolute bg-primary/40"
-      style={{
-        width: "50%",
-        height: "50%",
-        bottom: "10%",
-        right: "10%",
-        clipPath: "polygon(0 0, 100% 100%, 0 100%)",
-      }}
-    />
-    <ShapeMotion
-      initial={{ rotateX: -90, opacity: 0 }}
-      whileInView={{ rotateX: 0, opacity: 1 }}
-      transition={{ duration: 0.8, delay: 0.6 }}
-      className="absolute bg-primary/20"
-      style={{
-        width: "50%",
-        height: "50%",
-        bottom: "10%",
-        right: "10%",
-        clipPath: "polygon(0 0, 100% 0, 100% 100%)",
-      }}
-    />
-    <div className="absolute inset-0 flex items-center justify-center">
-      <TextBlock className="text-center" align="center" />
-    </div>
-  </Box>
-);
-
-/** 34. הריחוף — Floating card with shadow */
-export const FloatShape: React.FC = () => (
-  <Box className="bg-slate-50">
-    <ShapeMotion
-      initial={{ y: 0 }}
-      animate={{ y: [0, -15, 0] }}
-      transition={{ repeat: Infinity, duration: 4, ease: "easeInOut" }}
-      className="absolute inset-[15%] bg-white shadow-2xl rounded-xl border border-slate-100 flex items-center justify-center p-6"
-    >
-      <div className="absolute top-0 left-0 w-full h-2 bg-primary" />
-      <TextBlock className="text-center" align="center" />
-    </ShapeMotion>
-  </Box>
-);
-
-/** 35. הפרוסות — Glitch/Slice effect */
-export const SlicesShape: React.FC = () => (
-  <Box>
-    <div className="flex w-full h-full">
-      <div className="w-1/4 h-full bg-primary/10 relative overflow-hidden">
-        <ShapeMotion initial={{ y: "100%" }} whileInView={{ y: 16 }} transition={{ duration: 0.5, delay: 0.0 }} className="absolute inset-0 bg-primary/20" />
-      </div>
-      <div className="w-1/4 h-full bg-primary/20 relative overflow-hidden">
-        <ShapeMotion initial={{ y: "-100%" }} whileInView={{ y: -8 }} transition={{ duration: 0.5, delay: 0.1 }} className="absolute inset-0 bg-primary/40" />
-      </div>
-      <div className="w-1/4 h-full bg-primary/30 relative overflow-hidden">
-        <ShapeMotion initial={{ y: "100%" }} whileInView={{ y: 24 }} transition={{ duration: 0.5, delay: 0.2 }} className="absolute inset-0 bg-primary/60" />
-      </div>
-      <div className="w-1/4 h-full bg-primary/40 relative overflow-hidden">
-        <ShapeMotion initial={{ y: "-100%" }} whileInView={{ y: -12 }} transition={{ duration: 0.5, delay: 0.3 }} className="absolute inset-0 bg-primary/80" />
-      </div>
-    </div>
-    <div className="absolute inset-0 flex items-center justify-center mix-blend-multiply">
-      <TextBlock className="text-center" align="center" />
-    </div>
-  </Box>
-);
-
-/** 36. המיקוד — Blur focus center */
-export const FocusShape: React.FC = () => (
-  <Box>
-    <ShapeMotion initial={{ filter: "blur(0px)" }} whileInView={{ filter: "blur(4px)" }} transition={{ duration: 1 }} className="absolute inset-0 bg-primary/10 backdrop-blur-sm" />
-    <ShapeMotion
-      initial={{ scale: 1.5, opacity: 0 }}
-      whileInView={{ scale: 1, opacity: 1 }}
-      transition={{ duration: 0.6, ease: "easeOut" }}
-      className="absolute inset-[20%] bg-white rounded-full shadow-lg z-10 flex items-center justify-center border-4 border-primary/20"
-    >
-      <TextBlock className="text-center max-w-[70%]" align="center" />
-    </ShapeMotion>
-  </Box>
-);
-
-/** 37. הספקטרום — Gradient spectrum */
-export const SpectrumShape: React.FC = () => (
-  <Box>
-    <ShapeMotion initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} transition={{ duration: 1.5 }} className="absolute inset-0 bg-gradient-to-tr from-primary via-primary/40 to-white" />
-    <ShapeMotion
-      animate={{ opacity: [0.5, 0.8, 0.5], scale: [1, 1.1, 1] }}
-      transition={{ duration: 4, repeat: Infinity }}
-      className="absolute inset-0 bg-gradient-to-bl from-transparent via-white/30 to-primary/20 mix-blend-overlay"
-    />
-    <div className="absolute inset-0 flex items-end p-[10%]">
-      <TextBlock className="text-right" light />
-    </div>
-  </Box>
-);
-
-/** 38. השער — Portal frames */
-export const PortalShape: React.FC = () => (
-  <Box>
-    <ShapeMotion initial={{ scale: 0 }} whileInView={{ scale: 1 }} transition={{ duration: 0.5, delay: 0.0 }} className="absolute inset-0 bg-primary/5" />
-    <ShapeMotion initial={{ scale: 0 }} whileInView={{ scale: 1 }} transition={{ duration: 0.5, delay: 0.1 }} className="absolute inset-[10%] border border-primary/20" />
-    <ShapeMotion initial={{ scale: 0 }} whileInView={{ scale: 1 }} transition={{ duration: 0.5, delay: 0.2 }} className="absolute inset-[20%] border border-primary/40" />
-    <ShapeMotion initial={{ scale: 0 }} whileInView={{ scale: 1 }} transition={{ duration: 0.5, delay: 0.3 }} className="absolute inset-[30%] border border-primary/60" />
-    <ShapeMotion
-      initial={{ scale: 0, rotate: 180 }}
-      whileInView={{ scale: 1, rotate: 0 }}
-      transition={{ duration: 0.8, delay: 0.4 }}
-      className="absolute inset-[40%] bg-primary shadow-lg flex items-center justify-center"
-    >
-      <span className="text-white text-4xl font-bold">↩</span>
-    </ShapeMotion>
-    <div className="absolute inset-x-0 bottom-[10%] text-center">
-      <TextBlock className="inline-block" align="center" />
-    </div>
-  </Box>
-);
-
-/** 39. הסימטריה — Mirror split */
-export const SymmetryShape: React.FC = () => (
-  <Box>
-    <ShapeMotion initial={{ x: "-100%" }} whileInView={{ x: "0%" }} transition={{ duration: 0.7, ease: "circOut" }} className="absolute inset-y-0 left-0 w-1/2 bg-primary flex items-center justify-end pr-4">
-      <div className="w-16 h-16 border-4 border-white/30 rounded-full" />
-    </ShapeMotion>
-    <ShapeMotion initial={{ x: "100%" }} whileInView={{ x: "0%" }} transition={{ duration: 0.7, ease: "circOut" }} className="absolute inset-y-0 right-0 w-1/2 bg-primary/10 flex items-center justify-start pl-4">
-      <div className="w-16 h-16 border-4 border-primary/30 rounded-full" />
-    </ShapeMotion>
-    <div className="absolute inset-0 flex items-center justify-center pt-[40%]">
-      <div className="bg-white/90 backdrop-blur-sm p-6 rounded-xl shadow-lg border border-white/20">
-        <TextBlock className="text-center" align="center" />
-      </div>
-    </div>
-  </Box>
-);
-
-/** 40. המטריצה — Tech/Code look */
-export const MatrixShape: React.FC = () => {
+/** 10. המדרגות — stepped reveal — SLATE BLUE/STEEL theme */
+export const StepsShape: React.FC = () => {
   const full = useContext(FullScreenCtx);
   return (
-    <Box className="bg-slate-900 text-primary-content">
-      <div className="absolute inset-0 opacity-20"
-        style={{ backgroundImage: 'radial-gradient(var(--color-primary) 1px, transparent 1px)', backgroundSize: '10px 10px' }}
+    <Box className="bg-linear-to-r! from-slate-50 to-blue-50/30">
+      <GlowBlob full={full} className="top-[5%] left-[40%]" color="bg-blue-300" size="200px" smallSize="50px" />
+      <div className="absolute inset-0 grid grid-cols-2">
+        <div className="relative h-full flex items-center justify-center p-8">
+          <TextBlock className="text-center" align="center" />
+          <Ring full={full} size="90px" smallSize="24px" className="top-[8%] left-[8%]" color="border-blue-300/25" delay={0.4} />
+          <Dots full={full} className="bottom-[8%] left-[8%]" count={6} color="bg-blue-300/30" />
+        </div>
+        <div className="relative h-full">
+          <ShapeMotion initial={{ y: "100%" }} whileInView={{ y: "0%" }} transition={{ duration: 0.5, delay: 0.0 }} className="absolute bottom-0 left-0 w-[50%] h-[40%] bg-slate-300/30 rounded-t-lg" />
+          <ShapeMotion initial={{ y: "100%" }} whileInView={{ y: "0%" }} transition={{ duration: 0.5, delay: 0.1 }} className="absolute bottom-0 left-[50%] w-[50%] h-[70%] bg-slate-400/40 rounded-t-lg" />
+          <ShapeMotion initial={{ y: "100%" }} whileInView={{ y: "0%" }} transition={{ duration: 0.5, delay: 0.2 }} className="absolute bottom-0 left-0 w-full h-[85%] bg-slate-700 overflow-hidden rounded-t-2xl shadow-lg border-4 border-white">
+            <img src={portraitImage} alt="" className="w-full h-full object-cover object-[center_15%]" />
+            <div className="absolute inset-0 bg-linear-to-t from-slate-800/20 to-transparent" />
+          </ShapeMotion>
+          <FloatingBadge full={full} icon="🚀" label="Launch" sub="Ready" className={full ? "top-[5%] right-[10%]" : "top-[3%] right-[5%]"} delay={0.8} bgColor="bg-blue-100" />
+        </div>
+      </div>
+    </Box>
+  );
+};
+
+/** 11. הזרקור — THE SPOTLIGHT — hero-style with tilted accent & badges */
+export const SpotlightShape: React.FC = () => {
+  const full = useContext(FullScreenCtx);
+  return (
+    <Box className="bg-linear-to-br! from-amber-50 via-white to-orange-50">
+      <GlowBlob full={full} className="top-[-10%] right-[5%]" color="bg-primary" size="500px" smallSize="140px" />
+      <GlowBlob full={full} className="bottom-[10%] left-[5%]" color="bg-orange-400" size="300px" smallSize="80px" />
+
+      <ShapeMotion initial={{ x: "100%", rotate: -15 }} whileInView={{ x: "0%", rotate: -15 }} transition={{ duration: 0.7, ease: "circOut" }} className="absolute bg-primary overflow-hidden" style={{ width: "55%", height: "120%", top: "-10%", right: "-5%", borderRadius: full ? "40px" : "12px" }} />
+      <ShapeMotion initial={{ x: "120%", rotate: -15 }} whileInView={{ x: "0%", rotate: -15 }} transition={{ duration: 0.6, ease: "circOut", delay: 0.1 }} className="absolute border-4 border-primary/30" style={{ width: "50%", height: "110%", top: "-5%", right: "0%", borderRadius: full ? "40px" : "12px" }} />
+
+      <ShapeMotion initial={{ y: "30%", opacity: 0 }} whileInView={{ y: "0%", opacity: 1 }} transition={{ duration: 0.7, delay: 0.2, ease: "circOut" }} className="absolute bottom-0 overflow-hidden z-10" style={{ right: full ? "8%" : "5%", width: full ? "40%" : "38%", height: "95%" }}>
+        <img src={portraitImage} alt="" className="w-full h-full object-cover object-[center_15%]" style={{ filter: "drop-shadow(0 10px 30px rgba(0,0,0,0.15))" }} />
+      </ShapeMotion>
+
+      <Dots full={full} className={full ? "top-[15%] left-[55%]" : "top-[10%] left-[50%]"} count={full ? 15 : 9} />
+      <FloatingBadge full={full} icon="⭐" label="Premium" sub="Quality" className={full ? "top-[18%] right-[8%]" : "top-[15%] right-[5%]"} delay={0.5} />
+      <FloatingBadge full={full} icon="✓" label="24/7" sub="Service" className={full ? "bottom-[25%] right-[5%]" : "bottom-[22%] right-[3%]"} delay={0.7} bgColor="bg-green-100" />
+      <FloatingBadge full={full} icon="🏆" label="Best" sub="Agency" className={full ? "top-[45%] right-[48%]" : "top-[42%] right-[40%]"} delay={0.9} bgColor="bg-rose-100" />
+
+      <div className="absolute inset-y-0 left-0 flex items-center z-10" style={{ width: full ? "48%" : "50%", padding: full ? "8%" : "6%" }}>
+        <TextBlock className="text-right w-full" align="right" />
+      </div>
+
+      <Ring full={full} size="120px" smallSize="35px" className="bottom-[8%] left-[3%]" delay={0.6} />
+      <Ring full={full} size="80px" smallSize="22px" className="bottom-[10%] left-[5%]" delay={0.8} color="border-primary/10" />
+    </Box>
+  );
+};
+
+/* ════════════════════════════════════════════════════════════ */
+/* ★ NEW LAYOUTS — inspired by reference images               */
+/* ════════════════════════════════════════════════════════════ */
+
+/** 12. הבמה — THE STAGE — torn-paper cutout with doodle elements (inspired by tbh) */
+export const StageShape: React.FC = () => {
+  const full = useContext(FullScreenCtx);
+  return (
+    <Box className="bg-linear-to-br! from-lime-50/40 via-white to-emerald-50/30">
+      {/* Large irregular green accent shape behind person */}
+      <ShapeMotion
+        initial={{ scale: 0, rotate: 5 }}
+        whileInView={{ scale: 1, rotate: 5 }}
+        transition={{ duration: 0.6, type: "spring" }}
+        className="absolute bg-emerald-400 z-0"
+        style={{
+          width: "45%", height: "75%",
+          top: "10%", right: full ? "5%" : "3%",
+          borderRadius: full ? "30% 70% 50% 50% / 40% 60% 40% 60%" : "30% 70% 50% 50% / 40% 60% 40% 60%",
+        }}
+      />
+
+      {/* Person image — cut out over the shape */}
+      <ShapeMotion
+        initial={{ y: "20%", opacity: 0 }}
+        whileInView={{ y: "0%", opacity: 1 }}
+        transition={{ duration: 0.6, delay: 0.15, ease: "circOut" }}
+        className="absolute bottom-0 z-10 overflow-hidden"
+        style={{ right: full ? "10%" : "6%", width: full ? "38%" : "36%", height: "90%" }}
+      >
+        <img src={portraitImage} alt="" className="w-full h-full object-cover object-[center_15%]" style={{ filter: "drop-shadow(0 8px 25px rgba(0,0,0,0.2))" }} />
+      </ShapeMotion>
+
+      {/* Doodle-style decorations */}
+      <ShapeMotion initial={{ scale: 0 }} whileInView={{ scale: 1 }} transition={{ delay: 0.5, type: "spring" }} className="absolute z-20" style={{ top: full ? "8%" : "5%", right: full ? "15%" : "12%", fontSize: full ? "32px" : "12px" }}>💬</ShapeMotion>
+      <ShapeMotion initial={{ scale: 0 }} whileInView={{ scale: 1 }} transition={{ delay: 0.7, type: "spring" }} className="absolute z-20" style={{ top: full ? "20%" : "15%", right: full ? "48%" : "42%", fontSize: full ? "24px" : "9px" }}>🧩</ShapeMotion>
+
+      {/* Hand-drawn style circle outline */}
+      <ShapeMotion
+        initial={{ pathLength: 0, opacity: 0 }}
+        whileInView={{ opacity: 0.3 }}
+        transition={{ duration: 1, delay: 0.4 }}
+        className="absolute rounded-full border-[3px] border-dashed border-slate-800/20"
+        style={{ width: full ? "200px" : "55px", height: full ? "130px" : "35px", top: full ? "30%" : "25%", right: full ? "25%" : "20%", transform: "rotate(-10deg)" }}
+      />
+
+      {/* Decorative stars/sparkles */}
+      <ShapeMotion initial={{ rotate: -20, opacity: 0 }} whileInView={{ rotate: 0, opacity: 0.5 }} transition={{ delay: 0.8 }} className="absolute text-slate-800" style={{ top: full ? "5%" : "3%", right: full ? "40%" : "35%", fontSize: full ? "20px" : "8px" }}>✦</ShapeMotion>
+      <ShapeMotion initial={{ rotate: 20, opacity: 0 }} whileInView={{ rotate: 0, opacity: 0.3 }} transition={{ delay: 0.9 }} className="absolute text-slate-800" style={{ bottom: full ? "25%" : "20%", right: full ? "50%" : "42%", fontSize: full ? "16px" : "6px" }}>✧</ShapeMotion>
+      <ShapeMotion initial={{ opacity: 0 }} whileInView={{ opacity: 0.4 }} transition={{ delay: 0.6 }} className="absolute rounded-full bg-slate-800" style={{ width: full ? "8px" : "3px", height: full ? "8px" : "3px", top: full ? "50%" : "45%", right: full ? "52%" : "45%" }} />
+
+      {/* Text on the left */}
+      <div className="absolute inset-y-0 left-0 flex items-center z-10" style={{ width: full ? "48%" : "50%", padding: full ? "8%" : "6%" }}>
+        <TextBlock className="text-right w-full" align="right" />
+      </div>
+    </Box>
+  );
+};
+
+/** 13. הגיבור — THE HERO — bold chevron/arrow behind person (inspired by Crafto) */
+export const HeroShape: React.FC = () => {
+  const full = useContext(FullScreenCtx);
+  return (
+    <Box className="bg-linear-to-br! from-orange-50/40 via-white to-rose-50/20">
+      <GlowBlob full={full} className="top-[20%] right-[20%]" color="bg-orange-400" size="350px" smallSize="90px" />
+
+      {/* Large bold arrow/chevron shape */}
+      <ShapeMotion
+        initial={{ x: "100%", opacity: 0 }}
+        whileInView={{ x: "0%", opacity: 1 }}
+        transition={{ duration: 0.7, ease: "circOut" }}
+        className="absolute bg-orange-500 z-0"
+        style={{
+          width: "50%", height: "80%",
+          top: "10%", right: "-5%",
+          clipPath: "polygon(30% 0%, 100% 0%, 100% 100%, 30% 100%, 0% 50%)",
+        }}
+      />
+
+      {/* Secondary arrow outline */}
+      <ShapeMotion
+        initial={{ x: "80%", opacity: 0 }}
+        whileInView={{ x: "0%", opacity: 0.3 }}
+        transition={{ duration: 0.6, ease: "circOut", delay: 0.1 }}
+        className="absolute border-[3px] border-orange-400 z-0"
+        style={{
+          width: "45%", height: "70%",
+          top: "15%", right: "0%",
+          clipPath: "polygon(30% 0%, 100% 0%, 100% 100%, 30% 100%, 0% 50%)",
+        }}
+      />
+
+      {/* Person image */}
+      <ShapeMotion
+        initial={{ y: "20%", opacity: 0 }}
+        whileInView={{ y: "0%", opacity: 1 }}
+        transition={{ duration: 0.6, delay: 0.2, ease: "circOut" }}
+        className="absolute bottom-0 z-10 overflow-hidden"
+        style={{ right: full ? "8%" : "5%", width: full ? "35%" : "34%", height: "92%" }}
+      >
+        <img src={portraitImage} alt="" className="w-full h-full object-cover object-[center_15%]" style={{ filter: "drop-shadow(0 10px 30px rgba(0,0,0,0.2))" }} />
+      </ShapeMotion>
+
+      {/* Floating card note */}
+      <ShapeMotion
+        initial={{ scale: 0.7, opacity: 0, rotate: 3 }}
+        whileInView={{ scale: 1, opacity: 1, rotate: 3 }}
+        transition={{ delay: 0.6, type: "spring" }}
+        className="absolute bg-amber-200 z-20 shadow-lg"
+        style={{
+          padding: full ? "14px 20px" : "4px 8px",
+          top: full ? "12%" : "8%",
+          right: full ? "5%" : "3%",
+          borderRadius: full ? "8px" : "4px",
+        }}
+      >
+        <span className={`font-bold text-slate-800 ${full ? "text-sm" : "text-[5px]"}`}>We are creative agency</span>
+      </ShapeMotion>
+
+      {/* Check mark badges at bottom */}
+      <ShapeMotion
+        initial={{ opacity: 0, y: 10 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.8 }}
+        className={`absolute z-10 flex items-center gap-2 ${full ? "bottom-[8%] left-[8%]" : "bottom-[5%] left-[5%]"}`}
+      >
+        <div className={`flex items-center gap-1 ${full ? "text-xs" : "text-[5px]"}`}>
+          <span className="text-green-500">✓</span>
+          <span className="text-slate-600 font-medium">Conversion strategy</span>
+        </div>
+      </ShapeMotion>
+
+      <Dots full={full} className="bottom-[20%] left-[45%]" count={6} color="bg-orange-300/40" />
+
+      {/* Text on the left */}
+      <div className="absolute inset-y-0 left-0 flex items-center z-10" style={{ width: full ? "48%" : "50%", padding: full ? "8%" : "6%" }}>
+        <TextBlock className="text-right w-full" align="right" />
+      </div>
+    </Box>
+  );
+};
+
+/** 14. הניאון — THE NEON — dark theme with glass-morphism (inspired by Socialised) */
+export const NeonShape: React.FC = () => {
+  const full = useContext(FullScreenCtx);
+  return (
+    <Box className="bg-linear-to-br! from-slate-900 via-violet-950 to-slate-900">
+      {/* Purple glow blobs */}
+      <div className="absolute rounded-full bg-violet-500" style={{ width: full ? "400px" : "100px", height: full ? "400px" : "100px", top: "-15%", right: "10%", filter: full ? "blur(80px)" : "blur(25px)", opacity: 0.25 }} />
+      <div className="absolute rounded-full bg-purple-600" style={{ width: full ? "300px" : "80px", height: full ? "300px" : "80px", bottom: "5%", left: "5%", filter: full ? "blur(60px)" : "blur(20px)", opacity: 0.2 }} />
+
+      {/* Large dark circle accent */}
+      <ShapeMotion
+        initial={{ scale: 0 }}
+        whileInView={{ scale: 1 }}
+        transition={{ duration: 0.8, type: "spring" }}
+        className="absolute bg-violet-800/40 rounded-full"
+        style={{ width: "50%", paddingBottom: "50%", top: "8%", right: "-5%" }}
+      />
+
+      {/* Person image */}
+      <ShapeMotion
+        initial={{ y: "30%", opacity: 0 }}
+        whileInView={{ y: "0%", opacity: 1 }}
+        transition={{ duration: 0.7, delay: 0.2, ease: "circOut" }}
+        className="absolute bottom-0 z-10 overflow-hidden"
+        style={{ right: full ? "10%" : "6%", width: full ? "38%" : "36%", height: "90%" }}
+      >
+        <img src={portraitImage} alt="" className="w-full h-full object-cover object-[center_15%]" style={{ filter: "drop-shadow(0 10px 40px rgba(139,92,246,0.3))" }} />
+      </ShapeMotion>
+
+      {/* Glass-morphism floating card */}
+      <ShapeMotion
+        initial={{ opacity: 0, scale: 0.8 }}
+        whileInView={{ opacity: 1, scale: 1 }}
+        transition={{ delay: 0.5, type: "spring" }}
+        className="absolute z-20 bg-white/10 backdrop-blur-md border border-white/20 rounded-2xl shadow-xl"
+        style={{ padding: full ? "14px 20px" : "4px 8px", top: full ? "15%" : "10%", right: full ? "8%" : "5%" }}
+      >
+        <div className="flex items-center gap-2">
+          <span style={{ fontSize: full ? "18px" : "7px" }}>🚀</span>
+          <div>
+            <div className={`${full ? "text-xs font-bold" : "text-[5px] font-bold"} text-white`}>Trending</div>
+            <div className={`${full ? "text-[10px]" : "text-[4px]"} text-white/60`}>#1 Solution</div>
+          </div>
+        </div>
+      </ShapeMotion>
+
+      {/* Glass-morphism badge bottom */}
+      <ShapeMotion
+        initial={{ opacity: 0, scale: 0.8 }}
+        whileInView={{ opacity: 1, scale: 1 }}
+        transition={{ delay: 0.7, type: "spring" }}
+        className="absolute z-20 bg-white/10 backdrop-blur-md border border-white/20 rounded-xl"
+        style={{ padding: full ? "10px 16px" : "3px 6px", bottom: full ? "25%" : "20%", right: full ? "5%" : "3%" }}
+      >
+        <div className="flex items-center gap-2">
+          <span style={{ fontSize: full ? "14px" : "6px" }}>⚡</span>
+          <span className={`${full ? "text-xs font-semibold" : "text-[5px] font-semibold"} text-white`}>24/7 Active</span>
+        </div>
+      </ShapeMotion>
+
+      {/* Decorative 3D-like floating elements */}
+      <ShapeMotion initial={{ scale: 0, rotate: -20 }} whileInView={{ scale: 1, rotate: 0 }} transition={{ delay: 0.9, type: "spring" }} className="absolute z-20" style={{ bottom: full ? "35%" : "30%", left: full ? "45%" : "40%", fontSize: full ? "24px" : "9px" }}>🏀</ShapeMotion>
+
+      {/* Dot grid */}
+      <Dots full={full} className={full ? "top-[60%] right-[50%]" : "top-[55%] right-[45%]"} count={6} color="bg-white/20" />
+
+      {/* Text on the left — light for dark bg */}
+      <div className="absolute inset-y-0 left-0 flex items-center z-10" style={{ width: full ? "48%" : "50%", padding: full ? "8%" : "6%" }}>
+        <TextBlock className="text-right w-full" align="right" light />
+      </div>
+    </Box>
+  );
+};
+
+/** 15. הקנבס — THE CANVAS — soft gradient with person & floating social badges (inspired by Social Sizzle) */
+export const CanvasShape: React.FC = () => {
+  const full = useContext(FullScreenCtx);
+  return (
+    <Box className="bg-linear-to-br! from-rose-100/60 via-amber-50/40 to-teal-50/30">
+      {/* Soft colorful gradient blob behind person */}
+      <div className="absolute rounded-full bg-linear-to-br from-rose-300 to-amber-200" style={{ width: full ? "450px" : "120px", height: full ? "450px" : "120px", top: "-5%", right: "-5%", filter: full ? "blur(60px)" : "blur(20px)", opacity: 0.35 }} />
+      <div className="absolute rounded-full bg-teal-200" style={{ width: full ? "200px" : "50px", height: full ? "200px" : "50px", bottom: "10%", right: "30%", filter: full ? "blur(40px)" : "blur(12px)", opacity: 0.25 }} />
+
+      {/* Rounded accent card behind the person */}
+      <ShapeMotion
+        initial={{ scale: 0.8, opacity: 0 }}
+        whileInView={{ scale: 1, opacity: 1 }}
+        transition={{ duration: 0.6 }}
+        className="absolute bg-white/70 backdrop-blur-sm rounded-3xl border border-white/80 shadow-xl z-0"
+        style={{ width: "48%", height: "85%", top: "8%", right: full ? "3%" : "2%" }}
+      />
+
+      {/* Person image */}
+      <ShapeMotion
+        initial={{ y: "20%", opacity: 0 }}
+        whileInView={{ y: "0%", opacity: 1 }}
+        transition={{ duration: 0.6, delay: 0.15, ease: "circOut" }}
+        className="absolute bottom-0 z-10 overflow-hidden"
+        style={{ right: full ? "8%" : "5%", width: full ? "38%" : "36%", height: "90%" }}
+      >
+        <img src={portraitImage} alt="" className="w-full h-full object-cover object-[center_15%]" style={{ filter: "drop-shadow(0 6px 20px rgba(0,0,0,0.12))" }} />
+      </ShapeMotion>
+
+      {/* Floating social badges around person */}
+      <FloatingBadge full={full} icon="🏅" label="Best Agency" sub="Awards" className={full ? "top-[28%] right-[40%]" : "top-[25%] right-[35%]"} delay={0.5} bgColor="bg-amber-100" />
+      <FloatingBadge full={full} icon="⚡" label="24/7 Service" sub="Free Access" className={full ? "bottom-[20%] right-[3%]" : "bottom-[18%] right-[2%]"} delay={0.7} bgColor="bg-blue-100" />
+      <FloatingBadge full={full} icon="❤️" label="10K+" sub="Reviews" className={full ? "top-[10%] right-[15%]" : "top-[8%] right-[12%]"} delay={0.9} bgColor="bg-rose-100" />
+
+      {/* Text on the left */}
+      <div className="absolute inset-y-0 left-0 flex items-center z-10" style={{ width: full ? "48%" : "50%", padding: full ? "8%" : "6%" }}>
+        <TextBlock className="text-right w-full" align="right" />
+      </div>
+    </Box>
+  );
+};
+
+/* ════════════════════════════════════════════════════════════ */
+/* ★ MORE LAYOUTS — clean, elegant, colorful                  */
+/* ════════════════════════════════════════════════════════════ */
+
+/** 16. המראה — THE MIRROR — centered portrait with symmetric mint accents */
+export const MirrorShape: React.FC = () => {
+  const full = useContext(FullScreenCtx);
+  return (
+    <Box className="bg-linear-to-b! from-emerald-50/50 via-white to-teal-50/40">
+      <GlowBlob full={full} className="top-[5%] left-[30%]" color="bg-teal-300" size="300px" smallSize="80px" />
+
+      {/* Symmetric accent bars */}
+      <ShapeMotion initial={{ scaleY: 0 }} whileInView={{ scaleY: 1 }} transition={{ duration: 0.6 }} className="absolute left-[8%] top-[10%] bottom-[10%] w-[3px] bg-linear-to-b from-teal-300 to-emerald-400 rounded-full origin-top" />
+      <ShapeMotion initial={{ scaleY: 0 }} whileInView={{ scaleY: 1 }} transition={{ duration: 0.6, delay: 0.1 }} className="absolute right-[8%] top-[10%] bottom-[10%] w-[3px] bg-linear-to-b from-teal-300 to-emerald-400 rounded-full origin-top" />
+
+      {/* Central portrait card */}
+      <ShapeMotion
+        initial={{ y: "20%", opacity: 0 }}
+        whileInView={{ y: "0%", opacity: 1 }}
+        transition={{ duration: 0.7, ease: "circOut" }}
+        className="absolute left-1/2 -translate-x-1/2 bottom-0 z-10 overflow-hidden"
+        style={{ width: full ? "35%" : "34%", height: "88%" }}
+      >
+        <img src={portraitImage} alt="" className="w-full h-full object-cover object-[center_15%]" style={{ filter: "drop-shadow(0 8px 25px rgba(0,0,0,0.12))" }} />
+      </ShapeMotion>
+
+      {/* Frosted glass card behind person */}
+      <ShapeMotion initial={{ scale: 0.9, opacity: 0 }} whileInView={{ scale: 1, opacity: 1 }} transition={{ duration: 0.6, delay: 0.1 }} className="absolute left-1/2 -translate-x-1/2 top-[8%] bg-white/60 backdrop-blur-sm rounded-3xl border border-teal-100/60 shadow-lg z-0" style={{ width: "42%", height: "80%" }} />
+
+      {/* Text — left side */}
+      <div className="absolute inset-y-0 left-0 flex items-center z-10" style={{ width: full ? "30%" : "28%", padding: full ? "5%" : "4%" }}>
+        <TextBlock className="text-right w-full" align="right" />
+      </div>
+
+      {/* Badge — right side */}
+      <FloatingBadge full={full} icon="🪞" label="Reflect" sub="Beauty" className={full ? "top-[15%] right-[12%]" : "top-[12%] right-[10%]"} delay={0.6} bgColor="bg-teal-100" />
+      <Dots full={full} className={full ? "bottom-[12%] right-[12%]" : "bottom-[10%] right-[10%]"} count={6} color="bg-teal-300/40" />
+    </Box>
+  );
+};
+
+/** 17. הפנינה — THE PEARL — luxurious minimal cream/ivory with soft gold */
+export const PearlShape: React.FC = () => {
+  const full = useContext(FullScreenCtx);
+  return (
+    <Box className="bg-linear-to-br! from-amber-50/30 via-stone-50 to-yellow-50/20">
+      {/* Subtle warm glow */}
+      <div className="absolute rounded-full bg-amber-200" style={{ width: full ? "350px" : "90px", height: full ? "350px" : "90px", top: "10%", right: "15%", filter: full ? "blur(70px)" : "blur(22px)", opacity: 0.15 }} />
+
+      {/* Elegant thin gold frame */}
+      <ShapeMotion initial={{ opacity: 0, scale: 0.95 }} whileInView={{ opacity: 1, scale: 1 }} transition={{ duration: 0.8 }} className="absolute inset-[6%] border border-amber-300/40 rounded-2xl" />
+      <ShapeMotion initial={{ opacity: 0, scale: 0.9 }} whileInView={{ opacity: 1, scale: 1 }} transition={{ duration: 0.8, delay: 0.1 }} className="absolute inset-[8%] border border-amber-200/25 rounded-xl" />
+
+      {/* Person — right side, elegant crop */}
+      <ShapeMotion
+        initial={{ x: "20%", opacity: 0 }}
+        whileInView={{ x: "0%", opacity: 1 }}
+        transition={{ duration: 0.7, delay: 0.2, ease: "circOut" }}
+        className="absolute top-[10%] bottom-[10%] right-[10%] overflow-hidden rounded-2xl shadow-xl z-10"
+        style={{ width: full ? "38%" : "36%" }}
+      >
+        <img src={portraitImage} alt="" className="w-full h-full object-cover object-[center_15%]" />
+        <div className="absolute inset-0 bg-linear-to-l from-transparent to-amber-900/5" />
+      </ShapeMotion>
+
+      {/* Text — left side */}
+      <div className="absolute inset-y-0 left-0 flex items-center z-10" style={{ width: full ? "48%" : "50%", padding: full ? "10%" : "7%" }}>
+        <TextBlock className="text-right w-full" align="right" />
+      </div>
+
+      {/* Minimal decorations */}
+      <ShapeMotion initial={{ scaleX: 0 }} whileInView={{ scaleX: 1 }} transition={{ duration: 0.6, delay: 0.5 }} className="absolute left-[10%] bottom-[15%] h-px bg-amber-300/40 origin-left" style={{ width: full ? "120px" : "35px" }} />
+      <ShapeMotion initial={{ scaleX: 0 }} whileInView={{ scaleX: 1 }} transition={{ duration: 0.6, delay: 0.6 }} className="absolute left-[10%] bottom-[17%] h-px bg-amber-300/25 origin-left" style={{ width: full ? "80px" : "22px" }} />
+    </Box>
+  );
+};
+
+/** 18. הברק — THE LIGHTNING — electric blue/cyan bold energy */
+export const LightningShape: React.FC = () => {
+  const full = useContext(FullScreenCtx);
+  return (
+    <Box className="bg-linear-to-br! from-slate-900 via-blue-950 to-cyan-950">
+      {/* Electric glow blobs */}
+      <div className="absolute rounded-full bg-cyan-400" style={{ width: full ? "350px" : "90px", height: full ? "350px" : "90px", top: "-10%", right: "15%", filter: full ? "blur(70px)" : "blur(22px)", opacity: 0.2 }} />
+      <div className="absolute rounded-full bg-blue-500" style={{ width: full ? "250px" : "65px", height: full ? "250px" : "65px", bottom: "5%", left: "10%", filter: full ? "blur(50px)" : "blur(16px)", opacity: 0.18 }} />
+
+      {/* Diagonal electric stripe */}
+      <ShapeMotion
+        initial={{ x: "100%", opacity: 0 }}
+        whileInView={{ x: "0%", opacity: 1 }}
+        transition={{ duration: 0.5, ease: "circOut" }}
+        className="absolute bg-linear-to-r from-cyan-400 to-blue-500 z-0"
+        style={{ width: "60%", height: full ? "6px" : "2px", top: "30%", right: "-5%", transform: "rotate(-15deg)" }}
       />
       <ShapeMotion
-        initial={{ height: 0, opacity: 0 }}
-        whileInView={{ height: "80%", opacity: 1 }}
-        transition={{ duration: 0.8 }}
-        className="absolute top-[10%] left-[10%] border-l-2 border-primary h-[80%] pl-4 flex flex-col justify-center"
+        initial={{ x: "100%", opacity: 0 }}
+        whileInView={{ x: "0%", opacity: 0.4 }}
+        transition={{ duration: 0.5, delay: 0.1, ease: "circOut" }}
+        className="absolute bg-linear-to-r from-cyan-300 to-blue-400 z-0"
+        style={{ width: "50%", height: full ? "3px" : "1px", top: "35%", right: "0%", transform: "rotate(-15deg)" }}
+      />
+
+      {/* Person image */}
+      <ShapeMotion
+        initial={{ y: "25%", opacity: 0 }}
+        whileInView={{ y: "0%", opacity: 1 }}
+        transition={{ duration: 0.6, delay: 0.2, ease: "circOut" }}
+        className="absolute bottom-0 z-10 overflow-hidden"
+        style={{ right: full ? "8%" : "5%", width: full ? "38%" : "36%", height: "90%" }}
       >
-        <h2 className={`${full ? "text-5xl" : "text-xl"} font-mono text-primary mb-2`}>&lt;Code /&gt;</h2>
-        <TextBlock className="text-left font-mono" light align="left" />
+        <img src={portraitImage} alt="" className="w-full h-full object-cover object-[center_15%]" style={{ filter: "drop-shadow(0 8px 30px rgba(34,211,238,0.25))" }} />
       </ShapeMotion>
+
+      {/* Glass badges */}
+      <ShapeMotion initial={{ opacity: 0, scale: 0.8 }} whileInView={{ opacity: 1, scale: 1 }} transition={{ delay: 0.5, type: "spring" }} className="absolute z-20 bg-white/10 backdrop-blur-md border border-cyan-400/30 rounded-2xl shadow-xl" style={{ padding: full ? "12px 18px" : "3px 7px", top: full ? "15%" : "10%", right: full ? "8%" : "5%" }}>
+        <div className="flex items-center gap-2">
+          <span style={{ fontSize: full ? "16px" : "6px" }}>⚡</span>
+          <div>
+            <div className={`${full ? "text-xs font-bold" : "text-[5px] font-bold"} text-cyan-300`}>Fast</div>
+            <div className={`${full ? "text-[10px]" : "text-[4px]"} text-white/50`}>Lightning Speed</div>
+          </div>
+        </div>
+      </ShapeMotion>
+
+      <ShapeMotion initial={{ opacity: 0, scale: 0.8 }} whileInView={{ opacity: 1, scale: 1 }} transition={{ delay: 0.7, type: "spring" }} className="absolute z-20 bg-white/10 backdrop-blur-md border border-blue-400/30 rounded-xl" style={{ padding: full ? "10px 14px" : "3px 6px", bottom: full ? "22%" : "18%", right: full ? "5%" : "3%" }}>
+        <div className="flex items-center gap-2">
+          <span style={{ fontSize: full ? "14px" : "6px" }}>💎</span>
+          <span className={`${full ? "text-xs font-semibold" : "text-[5px] font-semibold"} text-blue-300`}>Pro Access</span>
+        </div>
+      </ShapeMotion>
+
+      <Dots full={full} className={full ? "bottom-[15%] left-[45%]" : "bottom-[12%] left-[40%]"} count={6} color="bg-cyan-400/25" />
+
+      {/* Text on the left — light */}
+      <div className="absolute inset-y-0 left-0 flex items-center z-10" style={{ width: full ? "48%" : "50%", padding: full ? "8%" : "6%" }}>
+        <TextBlock className="text-right w-full" align="right" light />
+      </div>
     </Box>
   );
 };
 
-/* ════════════════════════════════════════════════════════════ */
+/** 19. הקשת — THE ARCH — warm gradient arch with person inside */
+export const RainbowShape: React.FC = () => {
+  const full = useContext(FullScreenCtx);
+  return (
+    <Box className="bg-linear-to-b! from-fuchsia-50/50 via-white to-pink-50/30">
+      <GlowBlob full={full} className="top-[-5%] left-[25%]" color="bg-fuchsia-300" size="300px" smallSize="80px" />
+      <GlowBlob full={full} className="bottom-[10%] right-[10%]" color="bg-pink-200" size="200px" smallSize="50px" />
+
+      {/* Large arch shape */}
+      <ShapeMotion
+        initial={{ y: "-100%" }}
+        whileInView={{ y: "0%" }}
+        transition={{ duration: 0.7, ease: "circOut" }}
+        className="absolute bg-linear-to-b from-fuchsia-400 to-pink-500 overflow-hidden z-0"
+        style={{ width: "55%", height: "80%", top: 0, left: "22.5%", borderRadius: "0 0 50% 50%" }}
+      >
+        <img src={portraitImage} alt="" className="w-full h-full object-cover object-[center_15%]" />
+        <div className="absolute inset-0 bg-linear-to-t from-fuchsia-600/20 to-transparent" />
+      </ShapeMotion>
+
+      {/* Outline arch echo */}
+      <ShapeMotion
+        initial={{ y: "-80%", opacity: 0 }}
+        whileInView={{ y: "0%", opacity: 0.3 }}
+        transition={{ duration: 0.6, delay: 0.1, ease: "circOut" }}
+        className="absolute border-[3px] border-fuchsia-300 z-0"
+        style={{ width: "62%", height: "85%", top: "-3%", left: "19%", borderRadius: "0 0 50% 50%" }}
+      />
+
+      <FloatingBadge full={full} icon="💜" label="Trendy" sub="Style" className={full ? "top-[10%] right-[8%]" : "top-[8%] right-[5%]"} delay={0.5} bgColor="bg-fuchsia-100" />
+      <Ring full={full} size="70px" smallSize="18px" className="bottom-[10%] left-[8%]" color="border-pink-300/30" delay={0.6} />
+      <Dots full={full} className={full ? "bottom-[8%] right-[8%]" : "bottom-[6%] right-[5%]"} count={6} color="bg-fuchsia-300/40" />
+
+      {/* Text — bottom center */}
+      <div className="absolute bottom-0 left-0 right-0 flex items-end justify-center pb-[6%] z-20">
+        <TextBlock className="text-center" align="center" />
+      </div>
+    </Box>
+  );
+};
+
+/** 20. השקיעה — THE SUNSET — warm gradient sky with silhouette feel */
+export const SunsetShape: React.FC = () => {
+  const full = useContext(FullScreenCtx);
+  return (
+    <Box className="bg-linear-to-b! from-orange-100 via-rose-200/60 to-violet-300/40">
+      {/* Sun glow */}
+      <div className="absolute rounded-full bg-amber-300" style={{ width: full ? "250px" : "65px", height: full ? "250px" : "65px", top: "8%", left: "25%", filter: full ? "blur(50px)" : "blur(16px)", opacity: 0.35 }} />
+
+      {/* Horizon line */}
+      <ShapeMotion initial={{ scaleX: 0 }} whileInView={{ scaleX: 1 }} transition={{ duration: 0.8 }} className="absolute left-0 right-0 h-[2px] bg-linear-to-r from-transparent via-amber-400/50 to-transparent" style={{ bottom: "35%" }} />
+
+      {/* Person — right side */}
+      <ShapeMotion
+        initial={{ y: "15%", opacity: 0 }}
+        whileInView={{ y: "0%", opacity: 1 }}
+        transition={{ duration: 0.7, delay: 0.15, ease: "circOut" }}
+        className="absolute bottom-0 z-10 overflow-hidden"
+        style={{ right: full ? "8%" : "5%", width: full ? "38%" : "36%", height: "92%" }}
+      >
+        <img src={portraitImage} alt="" className="w-full h-full object-cover object-[center_15%]" style={{ filter: "drop-shadow(0 6px 25px rgba(0,0,0,0.15))" }} />
+      </ShapeMotion>
+
+      {/* Warm floating badges */}
+      <FloatingBadge full={full} icon="🌅" label="Golden" sub="Hour" className={full ? "top-[12%] right-[12%]" : "top-[10%] right-[8%]"} delay={0.5} bgColor="bg-orange-100" />
+      <Dots full={full} className={full ? "bottom-[40%] right-[50%]" : "bottom-[38%] right-[45%]"} count={6} color="bg-amber-400/30" />
+      <Ring full={full} size="90px" smallSize="24px" className="top-[20%] left-[8%]" color="border-amber-300/25" delay={0.6} />
+
+      {/* Text — left side */}
+      <div className="absolute inset-y-0 left-0 flex items-center z-10" style={{ width: full ? "48%" : "50%", padding: full ? "8%" : "6%" }}>
+        <TextBlock className="text-right w-full" align="right" />
+      </div>
+    </Box>
+  );
+};
+
+/** 21. הצל — THE SHADOW — dramatic dark charcoal with accent color pop */
+export const ShadowShape: React.FC = () => {
+  const full = useContext(FullScreenCtx);
+  return (
+    <Box className="bg-linear-to-br! from-slate-800 via-gray-900 to-slate-950">
+      {/* Subtle warm accent glow */}
+      <div className="absolute rounded-full bg-amber-500" style={{ width: full ? "300px" : "75px", height: full ? "300px" : "75px", bottom: "-10%", right: "20%", filter: full ? "blur(80px)" : "blur(25px)", opacity: 0.12 }} />
+
+      {/* Accent stripe */}
+      <ShapeMotion initial={{ height: "0%" }} whileInView={{ height: "100%" }} transition={{ duration: 0.7 }} className="absolute left-[45%] top-0 w-[2px] bg-linear-to-b from-amber-400/60 via-amber-500/30 to-transparent origin-top" />
+
+      {/* Person — left side with dramatic lighting */}
+      <ShapeMotion
+        initial={{ x: "-20%", opacity: 0 }}
+        whileInView={{ x: "0%", opacity: 1 }}
+        transition={{ duration: 0.7, delay: 0.15, ease: "circOut" }}
+        className="absolute top-[5%] bottom-[5%] left-[5%] overflow-hidden rounded-2xl z-10"
+        style={{ width: full ? "40%" : "38%" }}
+      >
+        <img src={portraitImage} alt="" className="w-full h-full object-cover object-[center_15%]" />
+        <div className="absolute inset-0 bg-linear-to-r from-transparent to-slate-900/30" />
+      </ShapeMotion>
+
+      {/* Elegant thin line decorations */}
+      <ShapeMotion initial={{ scaleX: 0 }} whileInView={{ scaleX: 1 }} transition={{ duration: 0.5, delay: 0.4 }} className="absolute h-px bg-amber-400/30 origin-left" style={{ width: full ? "100px" : "28px", top: full ? "25%" : "22%", right: full ? "10%" : "8%" }} />
+      <ShapeMotion initial={{ scaleX: 0 }} whileInView={{ scaleX: 1 }} transition={{ duration: 0.5, delay: 0.5 }} className="absolute h-px bg-amber-400/20 origin-left" style={{ width: full ? "60px" : "16px", top: full ? "28%" : "25%", right: full ? "10%" : "8%" }} />
+
+      {/* Floating amber badge */}
+      <ShapeMotion initial={{ opacity: 0, scale: 0.8 }} whileInView={{ opacity: 1, scale: 1 }} transition={{ delay: 0.6, type: "spring" }} className="absolute z-20 bg-white/8 backdrop-blur-md border border-amber-400/20 rounded-xl" style={{ padding: full ? "10px 16px" : "3px 6px", top: full ? "15%" : "12%", right: full ? "8%" : "6%" }}>
+        <div className="flex items-center gap-2">
+          <span style={{ fontSize: full ? "14px" : "6px" }}>✦</span>
+          <span className={`${full ? "text-xs font-semibold" : "text-[5px] font-semibold"} text-amber-300`}>Elite Design</span>
+        </div>
+      </ShapeMotion>
+
+      {/* Text — right side, light for dark bg */}
+      <div className="absolute inset-y-0 right-0 flex items-center z-10" style={{ width: full ? "48%" : "48%", padding: full ? "8%" : "6%" }}>
+        <TextBlock className="text-right w-full" align="right" light />
+      </div>
+    </Box>
+  );
+};
+
+/* ════════════════════════════════════════════════════════════ */
 
 export const shapeMap: Record<string, React.FC> = {
   cube: CubeShape,
-  diagonal: DiagonalShape,
   ball: BallShape,
   frame: FrameShape,
   grid: GridShape,
   thirds: ThirdsShape,
-  wave: WaveShape,
   corner: CornerShape,
-  layers: LayersShape,
   zigzag: ZigzagShape,
-  window: WindowShape,
-  gradient: GradientShape,
   mosaic: MosaicShape,
-  horizon: HorizonShape,
-  arch: ArchShape,
-  diamond: DiamondShape,
   spiral: SpiralShape,
-  ribbon: RibbonShape,
-  pillars: PillarsShape,
   steps: StepsShape,
-  eclipse: EclipseShape,
-  cross: CrossShape,
-  pyramid: PyramidShape,
-  split: SplitShape,
-  tiles: TilesShape,
-  curtain: CurtainShape,
-  bridge: BridgeShape,
-  nest: NestShape,
-  peak: PeakShape,
-  orbit: OrbitShape,
-  hexagon: HexagonShape,
-  cinema: CinemaShape,
-  origami: OrigamiShape,
-  float: FloatShape,
-  slices: SlicesShape,
-  focus: FocusShape,
-  spectrum: SpectrumShape,
-  portal: PortalShape,
-  symmetry: SymmetryShape,
-  matrix: MatrixShape,
-  radar: RadarShape,
-  prism: PrismShape,
-  target: TargetShape,
-  stream: StreamShape,
-  cavern: CavernShape,
-  ladder: LadderShape,
-  circuit: CircuitShape,
-  mesh: MeshShape,
-  void: VoidShape,
-  spot: SpotShape,
-  stripe: StripeShape,
-  checkers: CheckersShape,
-  clock: ClockShape,
-  fan: FanShape,
-  door: DoorShape,
-  scroll: ScrollShape,
-  island: IslandShape,
-  cloud: CloudShape,
-  forest: ForestShape,
-  mountain: MountainShape,
-  valley: ValleyShape,
-  sunrise: SunriseShape,
+  spotlight: SpotlightShape,
+  stage: StageShape,
+  hero: HeroShape,
+  neon: NeonShape,
+  canvas: CanvasShape,
+  mirror: MirrorShape,
+  pearl: PearlShape,
+  lightning: LightningShape,
+  rainbow: RainbowShape,
   sunset: SunsetShape,
-  star: StarShape,
-  shield: ShieldShape,
-  banner: BannerShape,
-  arrow: ArrowShape,
-  plus: PlusShape,
-  minus: MinusShape,
-  divide: DivideShape,
-  equal: EqualShape,
-  percent: PercentShape,
-  quote: QuoteShape,
-  bracket: BracketShape,
-  slash: SlashShape,
-  hash: HashShape,
-  at: AtShape,
-  ampersand: AmpersandShape,
-  question: QuestionShape,
-  exclamation: ExclamationShape,
-  drop: DropShape,
-  leaf: LeafShape,
-  flower: FlowerShape,
-  tree: TreeShape,
-  root: RootShape,
-  seed: SeedShape,
-  sprout: SproutShape,
-  bloom: BloomShape,
-  cactus: CactusShape,
-  palm: PalmShape,
-  ocean: OceanShape,
-  river: RiverShape,
-  lake: LakeShape,
-  rain: RainShape,
-  snow: SnowShape,
-  wind: WindShape,
-  fire: FireShape,
-  ice: IceShape,
-  earth: EarthShape,
-  sky: SkyShape,
+  shadow: ShadowShape,
 };
-
-
