@@ -1,0 +1,28 @@
+# SEO and Performance Best Practices
+
+When building, updating, or designing websites, ALWAYS adhere to the following best SEO and performance rules:
+
+## 1. Meta Tags & SEO Optimization
+- **Unique Metadata:** Every page must have a unique title and description (e.g., using the Next.js Metadata API in layout.tsx or page.tsx).
+- **Favicons & OpenGraph:** Always include configurations for favicons and OpenGraph images (OG Tags) to ensure professional link sharing on social media and WhatsApp.
+- **Canonical Tags:** Implement canonical URLs to prevent duplicate content issues.
+
+## 2. Semantic HTML Architecture
+- **Structural Tags:** Avoid "Div-soup." Use meaningful tags: `<header>`, `<main>`, `<footer>`, `<section>`, and `<article>`.
+- **Heading Hierarchy:** Maintain a strict `<h1>` to `<h6>` hierarchy. Ensure there is only one `<h1>` per page, containing the primary keyword.
+- **Buttons vs. Links:** Use `<a>` (or Link component) for navigation and `<button>` for functional actions.
+
+## 3. Core Web Vitals & Performance
+- **Image Optimization:** Use modern image components (e.g., `next/image`) for all images. Ensure they are served in modern formats (like WebP) with automatic resizing and lazy loading.
+- **Font Optimization:** Utilize local font hosting (e.g., `next/font`) to prevent Layout Shift (CLS).
+- **Code Splitting:** Keep components small and use dynamic imports where necessary to reduce the initial bundle size.
+
+## 4. Accessibility (a11y)
+- **Image Alts:** Every Image or img tag must have a descriptive alt attribute for screen readers and SEO indexing.
+- **Aria Labels:** Use `aria-label` for icon-only buttons or interactive elements that lack text.
+- **Color Contrast:** Ensure text remains readable against background colors to meet WCAG standards.
+
+## 5. Lead Generation & Forms
+- **Form Validation:** Use client-side validation for immediate feedback and server-side validation for security.
+- **Success States:** Always implement a clear "Success" message or redirect page after a lead is submitted.
+- **Input Optimization:** Use correct type attributes (e.g., `type="email"`, `type="tel"`) to trigger the correct keyboard on mobile devices.

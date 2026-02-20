@@ -1,14 +1,15 @@
-import { motion } from "framer-motion";
-import { ArrowLeft } from "lucide-react";
-import { useEffect, useState } from "react";
-import { type LayoutItem } from "../data";
+import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
+import { ArrowLeft, CheckCircle, AlertCircle, Loader2 } from "lucide-react";
+import { useState, useRef } from "react";
+
+const GOOGLE_SHEETS_URL = import.meta.env.VITE_GOOGLE_SHEETS_URL as string | undefined;
+
+type SubmitStatus = "idle" | "loading" | "success" | "error";
 
 /* ─── Contact Section ──────────────────────────────────── */
 export default function ContactSection({
-  selectedTemplate,
   prefersReduced,
 }: {
-  selectedTemplate: LayoutItem | null;
   prefersReduced: boolean | null;
 }) {
   const [formData, setFormData] = useState({
@@ -16,23 +17,42 @@ export default function ContactSection({
     email: "",
     message: "",
   });
+  const [status, setStatus] = useState<SubmitStatus>("idle");
+  const reducedMotion = useReducedMotion();
+  const formRef = useRef<HTMLFormElement>(null);
 
-  // Smooth scroll data handling
-  useEffect(() => {
-    if (selectedTemplate) {
-      setFormData((prev) => ({
-        ...prev,
-        message: `שלום, אשמח לקבל פרטים נוספים על תבנית "${selectedTemplate.title}".`,
-      }));
-    }
-  }, [selectedTemplate]);
-
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Here implies backend integration
-    alert("תודה על פנייתך! נחזור אליך בהקדם.");
-    // Reset form or redirect
-    setFormData({ name: "", email: "", message: "" });
+
+    if (!GOOGLE_SHEETS_URL) {
+      console.error("Missing VITE_GOOGLE_SHEETS_URL env variable");
+      setStatus("error");
+      return;
+    }
+
+    setStatus("loading");
+
+    const payload = {
+      name: formData.name,
+      email: formData.email,
+      message: formData.message,
+      date: new Date().toLocaleString("he-IL", { timeZone: "Asia/Jerusalem" }),
+    };
+
+    try {
+      await fetch(GOOGLE_SHEETS_URL, {
+        method: "POST",
+        mode: "no-cors",
+        body: JSON.stringify(payload),
+      });
+
+      setStatus("success");
+      setFormData({ name: "", email: "", message: "" });
+      setTimeout(() => setStatus("idle"), 5000);
+    } catch {
+      setStatus("error");
+      setTimeout(() => setStatus("idle"), 5000);
+    }
   };
 
   return (
@@ -58,65 +78,102 @@ export default function ContactSection({
             </p>
           </header>
 
-          <form onSubmit={handleSubmit} className="space-y-6">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <form ref={formRef} onSubmit={handleSubmit} className="space-y-6">
+            <fieldset disabled={status === "loading"} className="space-y-6">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div className="space-y-2">
+                  <label htmlFor="name" className="text-sm font-semibold text-text-muted">שם מלא</label>
+                  <input
+                    type="text"
+                    id="name"
+                    required
+                    value={formData.name}
+                    onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                    className="w-full px-4 py-3 bg-white/5 border border-border rounded-lg focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all outline-none text-text disabled:opacity-50"
+                    placeholder="ישראל ישראלי"
+                  />
+                </div>
+                <div className="space-y-2">
+                  <label htmlFor="email" className="text-sm font-semibold text-text-muted">אימייל</label>
+                  <input
+                    type="email"
+                    id="email"
+                    required
+                    value={formData.email}
+                    onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                    className="w-full px-4 py-3 bg-white/5 border border-border rounded-lg focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all outline-none text-text disabled:opacity-50"
+                    placeholder="example@email.com"
+                  />
+                </div>
+              </div>
+
               <div className="space-y-2">
-                <label htmlFor="name" className="text-sm font-semibold text-text-muted">שם מלא</label>
-                <input
-                  type="text"
-                  id="name"
+                <label htmlFor="message" className="text-sm font-semibold text-text-muted">הודעה</label>
+                <textarea
+                  id="message"
+                  rows={4}
                   required
-                  value={formData.name}
-                  onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                  className="w-full px-4 py-3 bg-white/5 border border-border rounded-lg focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all outline-none text-text"
-                  placeholder="ישראל ישראלי"
+                  value={formData.message}
+                  onChange={(e) => setFormData({ ...formData, message: e.target.value })}
+                  className="w-full px-4 py-3 bg-white/5 border border-border rounded-lg focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all outline-none text-text resize-none disabled:opacity-50"
+                  placeholder="תוכן ההודעה..."
                 />
               </div>
-              <div className="space-y-2">
-                <label htmlFor="email" className="text-sm font-semibold text-text-muted">אימייל</label>
-                <input
-                  type="email"
-                  id="email"
-                  required
-                  value={formData.email}
-                  onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                  className="w-full px-4 py-3 bg-white/5 border border-border rounded-lg focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all outline-none text-text"
-                  placeholder="example@email.com"
-                />
-              </div>
-            </div>
 
-            <div className="space-y-2">
-              <label htmlFor="message" className="text-sm font-semibold text-text-muted">הודעה</label>
-              <textarea
-                id="message"
-                rows={4}
-                required
-                value={formData.message}
-                onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-                className="w-full px-4 py-3 bg-white/5 border border-border rounded-lg focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all outline-none text-text resize-none"
-                placeholder="תוכן ההודעה..."
-              />
-            </div>
+              <motion.button
+                whileHover={status === "loading" ? {} : { scale: 1.02 }}
+                whileTap={status === "loading" ? {} : { scale: 0.98 }}
+                type="submit"
+                disabled={status === "loading"}
+                className="w-full py-4 bg-primary text-black font-bold text-lg rounded-xl shadow-lg hover:bg-primary-light transition-colors flex items-center justify-center gap-2 disabled:opacity-70 disabled:cursor-not-allowed"
+              >
+                {status === "loading" ? (
+                  <>
+                    <Loader2 size={20} className="animate-spin" />
+                    <span>שולח...</span>
+                  </>
+                ) : (
+                  <>
+                    <span>שלח פנייה</span>
+                    <ArrowLeft size={20} />
+                  </>
+                )}
+              </motion.button>
+            </fieldset>
 
-            {selectedTemplate && (
-              <div className="flex items-center gap-3 p-4 bg-primary/10 rounded-lg border border-primary/20">
-                <div className="w-2 h-2 rounded-full bg-primary animate-pulse" />
-                <span className="text-sm text-primary font-medium">
-                  מביע עניין בתבנית: <strong>{selectedTemplate.title}</strong>
-                </span>
-              </div>
-            )}
+            <AnimatePresence>
+              {status === "success" && (
+                <motion.div
+                  initial={reducedMotion ? {} : { opacity: 0, y: 8 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -8 }}
+                  transition={reducedMotion ? { duration: 0 } : { duration: 0.3 }}
+                  className="flex items-center gap-3 p-4 bg-green-500/10 rounded-lg border border-green-500/30"
+                  role="alert"
+                >
+                  <CheckCircle size={20} className="text-green-400 shrink-0" />
+                  <span className="text-sm text-green-300 font-medium">
+                    תודה על פנייתך! נחזור אליך בהקדם.
+                  </span>
+                </motion.div>
+              )}
 
-            <motion.button
-              whileHover={{ scale: 1.02 }}
-              whileTap={{ scale: 0.98 }}
-              type="submit"
-              className="w-full py-4 bg-primary text-black font-bold text-lg rounded-xl shadow-lg hover:bg-primary-light transition-colors flex items-center justify-center gap-2"
-            >
-              <span>שלח פנייה</span>
-              <ArrowLeft size={20} />
-            </motion.button>
+              {status === "error" && (
+                <motion.div
+                  initial={reducedMotion ? {} : { opacity: 0, y: 8 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -8 }}
+                  transition={reducedMotion ? { duration: 0 } : { duration: 0.3 }}
+                  className="flex items-center gap-3 p-4 bg-red-500/10 rounded-lg border border-red-500/30"
+                  role="alert"
+                >
+                  <AlertCircle size={20} className="text-red-400 shrink-0" />
+                  <span className="text-sm text-red-300 font-medium">
+                    אירעה שגיאה בשליחה. אנא נסו שוב מאוחר יותר.
+                  </span>
+                </motion.div>
+              )}
+            </AnimatePresence>
           </form>
         </motion.div>
       </div>

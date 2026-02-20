@@ -55,12 +55,10 @@ function MainPage({
   onSelect,
   prefersReduced,
   initialScroll = 0,
-  selectedTemplateForContact,
 }: {
   onSelect: (item: LayoutItem) => void;
   prefersReduced: boolean | null;
   initialScroll?: number;
-  selectedTemplateForContact: LayoutItem | null;
 }) {
   useLayoutEffect(() => {
     if (initialScroll > 0) {
@@ -85,7 +83,7 @@ function MainPage({
     >
       <HeroSection prefersReduced={prefersReduced} onGetStarted={scrollToGallery} />
       <GallerySection onSelect={onSelect} prefersReduced={prefersReduced} />
-      <ContactSection selectedTemplate={selectedTemplateForContact} prefersReduced={prefersReduced} />
+      <ContactSection prefersReduced={prefersReduced} />
       <LuxuryFooter />
     </motion.main>
   );
@@ -219,7 +217,6 @@ export default function App() {
             onSelect={openDetail}
             prefersReduced={prefersReduced}
             initialScroll={scrollPositionRef.current}
-            selectedTemplateForContact={null}
           />
         )}
       </AnimatePresence>
